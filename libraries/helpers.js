@@ -6,7 +6,8 @@ export function dump(obj) {
   let out = '';
   for (const key in obj) {
     if (Object.prototype.hasOwnProperty.call(obj, key)) {
-      out += `${key}: ${obj[key]}\n`;
+      const value = JSON.stringify(obj[key], null, 4);
+      out += `${key}: ${value}\n`;
     }
   }
 
