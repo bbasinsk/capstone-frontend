@@ -13,10 +13,10 @@ const routes = require('next-routes')();
 //
 // ------------ ROUTES ---------------
 // @RANStartRoutes
-routes.add('details', '/details/:postId/:postTitle');
-routes.add('create', '/create_post');
-routes.add('signin', '/sign_in');
-routes.add('signup', '/sign_up');
+
+
+
+
 // @RANEndRoutes
 // ------------ ROUTES ---------------
 //
