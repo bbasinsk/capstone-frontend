@@ -2,7 +2,12 @@
   "schemaPath": "./schema.graphql",
   "extensions": {
     "endpoints": {
-      "default": "https://api.graph.cool/simple/v1/cj7ke77fv0e9i0122pflagbvx"
+      "dev": {
+        "url": "https://meeting-magic.herokuapp.com/v1alpha1/graphql",
+        "subscription": {
+          "url": "wss://meeting-magic.herokuapp.com/v1alpha1/graphql"
+        }
+      }
     }
   }
 }

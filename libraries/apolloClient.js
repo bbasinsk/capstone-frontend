@@ -1,14 +1,26 @@
+import ws from 'ws';
+import { split } from 'apollo-link';
 import { ApolloClient } from 'apollo-client';
 import { createHttpLink } from 'apollo-link-http';
+import { WebSocketLink } from 'apollo-link-ws';
 import { InMemoryCache } from 'apollo-cache-inmemory';
 import { ApolloLink } from 'apollo-client-preset';
+import { getMainDefinition } from 'apollo-utilities';
 import persist from './persist';
 
 let apolloClient = null;
 
 const httpLink = createHttpLink({
-  uri: 'https://api.graph.cool/simple/v1/cj7ke77fv0e9i0122pflagbvx',
+  uri: 'https://meeting-magic.herokuapp.com/v1alpha1/graphql',
   credentials: 'include'
+});
+
+const wsLink = new WebSocketLink({
+  uri: 'wss://meeting-magic.herokuapp.com/v1alpha1/graphql',
+  options: {
+    reconnect: true
+  },
+  webSocketImpl: process.browser ? undefined : ws
 });
 
 function createClient(headers, token, initialState) {
@@ -28,9 +40,19 @@ function createClient(headers, token, initialState) {
     return forward(operation);
   }).concat(httpLink);
 
+  const link = split(
+    // split based on operation type
+    ({ query }) => {
+      const { kind, operation } = getMainDefinition(query);
+      return kind === 'OperationDefinition' && operation === 'subscription';
+    },
+    wsLink,
+    authLink
+  );
+
   return new ApolloClient({
     headers,
-    link: authLink,
+    link,
     connectToDevTools: process.browser,
     ssrMode: !process.browser,
     cache: new InMemoryCache().restore(initialState || {})
