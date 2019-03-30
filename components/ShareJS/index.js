@@ -11,7 +11,7 @@ export default class ShareJS extends React.Component {
   }
 
   componentDidMount = () => {
-    const socket = new WebSocket('ws://localhost:8080');
+    const socket = new WebSocket(`ws://${window.location.host}`);
     const connection = new sharedb.Connection(socket);
 
     const doc = connection.get('examples', 'textarea');

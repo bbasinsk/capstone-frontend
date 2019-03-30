@@ -8,7 +8,6 @@ const fs = require('fs');
 const cors = require('cors');
 const helmet = require('helmet');
 const dotenv = require('dotenv');
-const http = require('http');
 const WebSocket = require('ws');
 const WebSocketJSONStream = require('websocket-json-stream');
 
@@ -36,8 +35,8 @@ const prettyHost = customHost || 'localhost';
 const port = parseInt(process.env.PORT, 10) || 3000;
 const publicEnvFilename = 'public.env';
 
-const app = next({ dev: isDev });
-const handle = app.getRequestHandler();
+const nextApp = next({ dev: isDev });
+const handle = nextApp.getRequestHandler();
 
 const ssrCache = new LRUCache({
   max: 100,
@@ -86,7 +85,7 @@ const renderAndCache = function renderAndCache(
     return;
   }
 
-  app
+  nextApp
     .renderToHTML(req, res, pagePath, queryParams)
     .then(html => {
       // Let's cache this page
@@ -98,116 +97,114 @@ const renderAndCache = function renderAndCache(
       res.send(html);
     })
     .catch(err => {
-      app.renderError(err, req, res, pagePath, queryParams);
+      nextApp.renderError(err, req, res, pagePath, queryParams);
     });
 };
 
 const routerHandler = router.getRequestHandler(
-  app,
+  nextApp,
   ({ req, res, route, query }) => {
     renderAndCache(req, res, route.page, query);
   }
 );
 
-app.prepare().then(() => {
-  const server = express();
+const startNextServer = () =>
+  nextApp.prepare().then(() => {
+    const server = express();
 
-  server.use(compression({ threshold: 0 }));
-  server.use(
-    cors({
-      origin:
-        prettyHost.indexOf('http') !== -1 ? prettyHost : `http://${prettyHost}`,
-      credentials: true
-    })
-  );
-  server.use(helmet());
-  server.use(routerHandler);
+    server.use(compression({ threshold: 0 }));
+    server.use(
+      cors({
+        origin:
+          prettyHost.indexOf('http') !== -1
+            ? prettyHost
+            : `http://${prettyHost}`,
+        credentials: true
+      })
+    );
+    server.use(helmet());
+    server.use(routerHandler);
 
-  server.get(`/favicon.ico`, (req, res) =>
-    app.serveStatic(req, res, path.resolve('./static/icons/favicon.ico'))
-  );
-
-  server.get('/sw.js', (req, res) =>
-    app.serveStatic(req, res, path.resolve('./.next/sw.js'))
-  );
-
-  server.get('/manifest.html', (req, res) =>
-    app.serveStatic(req, res, path.resolve('./.next/manifest.html'))
-  );
-
-  server.get('/manifest.appcache', (req, res) =>
-    app.serveStatic(req, res, path.resolve('./.next/manifest.appcache'))
-  );
-
-  if (isProd) {
-    server.get('/_next/-/app.js', (req, res) =>
-      app.serveStatic(req, res, path.resolve('./.next/app.js'))
+    server.get(`/favicon.ico`, (req, res) =>
+      nextApp.serveStatic(req, res, path.resolve('./static/icons/favicon.ico'))
     );
 
-    const hash = buildId;
-
-    server.get(`/_next/${hash}/app.js`, (req, res) =>
-      app.serveStatic(req, res, path.resolve('./.next/app.js'))
+    server.get('/sw.js', (req, res) =>
+      nextApp.serveStatic(req, res, path.resolve('./.next/sw.js'))
     );
-  }
 
-  server.get('*', (req, res) => handle(req, res));
+    server.get('/manifest.html', (req, res) =>
+      nextApp.serveStatic(req, res, path.resolve('./.next/manifest.html'))
+    );
 
-  server.listen(port, host, err => {
-    if (err) {
-      return logger.error(err.message);
-    }
+    server.get('/manifest.nextAppcache', (req, res) =>
+      nextApp.serveStatic(
+        req,
+        res,
+        path.resolve('./.next/manifest.nextAppcache')
+      )
+    );
 
-    if (ngrok) {
-      ngrok.connect(
-        port,
-        (innerErr, url) => {
-          if (innerErr) {
-            return logger.error(innerErr);
-          }
-          logger.appStarted(port, prettyHost, url);
-        }
+    if (isProd) {
+      server.get('/_next/-/nextApp.js', (req, res) =>
+        nextApp.serveStatic(req, res, path.resolve('./.next/nextApp.js'))
       );
-    } else {
-      logger.appStarted(port, prettyHost);
+
+      const hash = buildId;
+
+      server.get(`/_next/${hash}/nextApp.js`, (req, res) =>
+        nextApp.serveStatic(req, res, path.resolve('./.next/nextApp.js'))
+      );
     }
+
+    server.get('*', (req, res) => handle(req, res));
+
+    return server.listen(port, host, err => {
+      if (err) {
+        return logger.error(err.message);
+      }
+
+      if (ngrok) {
+        ngrok.connect(
+          port,
+          (innerErr, url) => {
+            if (innerErr) {
+              return logger.error(innerErr);
+            }
+            logger.appStarted(port, prettyHost, url);
+          }
+        );
+      } else {
+        logger.appStarted(port, prettyHost);
+      }
+    });
   });
-});
 
 // ShareDB connection ============================================================
 // TODO:
 // - convert to rich text format
 // - figure out how to have a connection for each textbox in the meeting
 
-// Create initial document then fire callback
-function createDoc(callback) {
+startNextServer().then(nextServer => {
+  // Start the web socket server on the same port as the nextjs server
+  function startWebSocketServer() {
+    // Connect any incoming WebSocket connection to ShareDB
+    const wss = new WebSocket.Server({ server: nextServer });
+    wss.on('connection', ws => {
+      const stream = new WebSocketJSONStream(ws);
+      shareDbBackend.listen(stream);
+    });
+  }
+
+  // Create initial document then fire callback
   const connection = shareDbBackend.connect();
   const doc = connection.get('examples', 'textarea');
   doc.fetch(err => {
     if (err) throw err;
     if (doc.type === null) {
-      doc.create({ content: 'asdf' }, callback);
+      doc.create({ content: '' }, startWebSocketServer);
       return;
     }
-    callback();
+    startWebSocketServer();
   });
-}
-
-function startServer() {
-  // Create a web server to serve files and listen to WebSocket connections
-  const shareApp = express();
-  shareApp.use(express.static('static'));
-  const server = http.createServer(shareApp);
-
-  // Connect any incoming WebSocket connection to ShareDB
-  const wss = new WebSocket.Server({ server });
-  wss.on('connection', ws => {
-    const stream = new WebSocketJSONStream(ws);
-    shareDbBackend.listen(stream);
-  });
-
-  server.listen(8080);
-  console.log('Listening on http://localhost:8080');
-}
-
-createDoc(startServer);
+});
