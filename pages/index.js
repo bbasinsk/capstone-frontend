@@ -3,6 +3,7 @@ import App from '../components/App';
 import withData from '../libraries/withData';
 import { dump } from '../libraries/helpers';
 import TextField from '../components/TextField';
+import Share from '../components/ShareJS';
 
 export default withData(props => (
   <App>
@@ -12,6 +13,7 @@ export default withData(props => (
     <div>
       <h1>index</h1>
       <TextField />
+      <Share />
       <hr />
       <pre>{dump(props)}</pre>
     </div>
