@@ -8,8 +8,21 @@ const fs = require('fs');
 const cors = require('cors');
 const helmet = require('helmet');
 const dotenv = require('dotenv');
+const http = require('http');
+const WebSocket = require('ws');
+const WebSocketJSONStream = require('websocket-json-stream');
 
 dotenv.config();
+
+const db = require('sharedb-postgres')({
+  user: process.env.PGUSER,
+  host: process.env.PGHOST,
+  database: process.env.PGDATABASE,
+  password: process.env.PGPASSWORD,
+  port: process.env.PGPORT,
+  ssl: true
+});
+const shareDbBackend = require('sharedb')({ db });
 
 const isDev = process.env.NODE_ENV !== 'production';
 const isProd = !isDev;
@@ -160,3 +173,41 @@ app.prepare().then(() => {
     }
   });
 });
+
+// ShareDB connection ============================================================
+// TODO:
+// - convert to rich text format
+// - figure out how to have a connection for each textbox in the meeting
+
+// Create initial document then fire callback
+function createDoc(callback) {
+  const connection = shareDbBackend.connect();
+  const doc = connection.get('examples', 'textarea');
+  doc.fetch(err => {
+    if (err) throw err;
+    if (doc.type === null) {
+      doc.create({ content: 'asdf' }, callback);
+      return;
+    }
+    callback();
+  });
+}
+
+function startServer() {
+  // Create a web server to serve files and listen to WebSocket connections
+  const shareApp = express();
+  shareApp.use(express.static('static'));
+  const server = http.createServer(shareApp);
+
+  // Connect any incoming WebSocket connection to ShareDB
+  const wss = new WebSocket.Server({ server });
+  wss.on('connection', ws => {
+    const stream = new WebSocketJSONStream(ws);
+    shareDbBackend.listen(stream);
+  });
+
+  server.listen(8080);
+  console.log('Listening on http://localhost:8080');
+}
+
+createDoc(startServer);
