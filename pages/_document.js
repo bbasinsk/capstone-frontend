@@ -1,6 +1,7 @@
 import Document, { Head, Main, NextScript } from 'next/document';
 import Helmet from 'react-helmet';
 import { ServerStyleSheet } from 'styled-components';
+import { omit } from 'lodash';
 import AppIcons from '../components/AppIcons';
 
 export default class MyDocument extends Document {
@@ -13,7 +14,7 @@ export default class MyDocument extends Document {
 
     // see https://github.com/nfl/react-helmet#server-usage for more information
     // 'head' was occupied by 'renderPage().head', we cannot use it
-    return { ...page, styleTags, helmet: Helmet.rewind() };
+    return { ...page, styleTags, helmet: omit(Helmet.rewind(), ['title']) };
   }
 
   // should render on <html>
