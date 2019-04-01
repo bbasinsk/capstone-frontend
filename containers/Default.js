@@ -5,9 +5,7 @@ import App from '../components/App';
 const Default = props => (
   <App>
     <Helmet>
-      <title>
-        {props.title !== '' ? props.title : ''}
-      </title>
+      <title>{props.title !== '' ? props.title : ''}</title>
     </Helmet>
     {props.children}
   </App>

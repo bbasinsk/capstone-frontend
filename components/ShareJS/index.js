@@ -34,7 +34,7 @@ export default class ShareJS extends React.Component {
       <div>
         <h1>ShareJS</h1>
         {/* TODO: dont use refs-- https://github.com/dmapper/react-sharedb */}
-        <textarea ref={this.textarea}>asdf</textarea>
+        <textarea ref={this.textarea} />
       </div>
     );
   }
