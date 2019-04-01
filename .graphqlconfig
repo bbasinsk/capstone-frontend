@@ -1,11 +1,13 @@
 {
-  "schemaPath": "./schema.graphql",
-  "extensions": {
-    "endpoints": {
-      "dev": {
-        "url": "https://meeting-magic.herokuapp.com/v1alpha1/graphql",
-        "subscription": {
-          "url": "wss://meeting-magic.herokuapp.com/v1alpha1/graphql"
+  "projects": {
+    "meeting-magic": {
+      "schemaPath": "schema.graphql",
+      "extensions": {
+        "endpoints": {
+          "default": {
+            "url": "http://meeting-magic.herokuapp.com/v1alpha1/graphql",
+            "subscription": "wss://meeting-magic.herokuapp.com/v1alpha1/graphql"
+          }
         }
       }
     }

@@ -1,1756 +1,883 @@
-# source: https://api.graph.cool/simple/v1/cj7ke77fv0e9i0122pflagbvx
-# timestamp: Sun Dec 24 2017 05:22:12 GMT+0100 (CET)
+# source: http://meeting-magic.herokuapp.com/v1alpha1/graphql
+# timestamp: Sun Mar 31 2019 21:47:05 GMT-0700 (Pacific Daylight Time)
 
-enum _ModelMutationType {
-  CREATED
-  UPDATED
-  DELETED
+schema {
+  query: query_root
+  mutation: mutation_root
+  subscription: subscription_root
 }
 
-"""Meta information about the query."""
-type _QueryMeta {
-  count: Int!
-}
-
-input AUTH_PROVIDER_EMAIL {
-  email: String!
-  password: String!
-}
-
-input AuthProviderSignupData {
-  email: AUTH_PROVIDER_EMAIL
-}
-
-input CreateFile {
-  name: String!
-}
-
-input CreatePost {
-  title: String!
-  url: String!
-  votes: Int
-}
-
-input CreateUser {
-  firstName: String!
-  lastName: String!
-}
-
-scalar DateTime
-
-type File implements Node {
-  contentType: String!
-  createdAt: DateTime!
-  id: ID!
-  name: String!
-  secret: String!
-  size: Int!
-  updatedAt: DateTime!
-  url: String!
-}
-
-input FileFilter {
-  """Logical AND on all given filters."""
-  AND: [FileFilter!]
-
-  """Logical OR on all given filters."""
-  OR: [FileFilter!]
-  contentType: String
-
-  """All values that are not equal to given value."""
-  contentType_not: String
-
-  """All values that are contained in given list."""
-  contentType_in: [String!]
-
-  """All values that are not contained in given list."""
-  contentType_not_in: [String!]
-
-  """All values less than the given value."""
-  contentType_lt: String
-
-  """All values less than or equal the given value."""
-  contentType_lte: String
-
-  """All values greater than the given value."""
-  contentType_gt: String
-
-  """All values greater than or equal the given value."""
-  contentType_gte: String
-
-  """All values containing the given string."""
-  contentType_contains: String
-
-  """All values not containing the given string."""
-  contentType_not_contains: String
-
-  """All values starting with the given string."""
-  contentType_starts_with: String
-
-  """All values not starting with the given string."""
-  contentType_not_starts_with: String
-
-  """All values ending with the given string."""
-  contentType_ends_with: String
-
-  """All values not ending with the given string."""
-  contentType_not_ends_with: String
-  createdAt: DateTime
-
-  """All values that are not equal to given value."""
-  createdAt_not: DateTime
-
-  """All values that are contained in given list."""
-  createdAt_in: [DateTime!]
-
-  """All values that are not contained in given list."""
-  createdAt_not_in: [DateTime!]
-
-  """All values less than the given value."""
-  createdAt_lt: DateTime
-
-  """All values less than or equal the given value."""
-  createdAt_lte: DateTime
-
-  """All values greater than the given value."""
-  createdAt_gt: DateTime
-
-  """All values greater than or equal the given value."""
-  createdAt_gte: DateTime
-  id: ID
-
-  """All values that are not equal to given value."""
-  id_not: ID
-
-  """All values that are contained in given list."""
-  id_in: [ID!]
-
-  """All values that are not contained in given list."""
-  id_not_in: [ID!]
-
-  """All values less than the given value."""
-  id_lt: ID
-
-  """All values less than or equal the given value."""
-  id_lte: ID
-
-  """All values greater than the given value."""
-  id_gt: ID
-
-  """All values greater than or equal the given value."""
-  id_gte: ID
-
-  """All values containing the given string."""
-  id_contains: ID
-
-  """All values not containing the given string."""
-  id_not_contains: ID
-
-  """All values starting with the given string."""
-  id_starts_with: ID
-
-  """All values not starting with the given string."""
-  id_not_starts_with: ID
-
-  """All values ending with the given string."""
-  id_ends_with: ID
-
-  """All values not ending with the given string."""
-  id_not_ends_with: ID
-  name: String
-
-  """All values that are not equal to given value."""
-  name_not: String
-
-  """All values that are contained in given list."""
-  name_in: [String!]
-
-  """All values that are not contained in given list."""
-  name_not_in: [String!]
-
-  """All values less than the given value."""
-  name_lt: String
-
-  """All values less than or equal the given value."""
-  name_lte: String
-
-  """All values greater than the given value."""
-  name_gt: String
-
-  """All values greater than or equal the given value."""
-  name_gte: String
-
-  """All values containing the given string."""
-  name_contains: String
-
-  """All values not containing the given string."""
-  name_not_contains: String
-
-  """All values starting with the given string."""
-  name_starts_with: String
-
-  """All values not starting with the given string."""
-  name_not_starts_with: String
-
-  """All values ending with the given string."""
-  name_ends_with: String
-
-  """All values not ending with the given string."""
-  name_not_ends_with: String
-  secret: String
-
-  """All values that are not equal to given value."""
-  secret_not: String
-
-  """All values that are contained in given list."""
-  secret_in: [String!]
-
-  """All values that are not contained in given list."""
-  secret_not_in: [String!]
-
-  """All values less than the given value."""
-  secret_lt: String
-
-  """All values less than or equal the given value."""
-  secret_lte: String
-
-  """All values greater than the given value."""
-  secret_gt: String
-
-  """All values greater than or equal the given value."""
-  secret_gte: String
-
-  """All values containing the given string."""
-  secret_contains: String
-
-  """All values not containing the given string."""
-  secret_not_contains: String
-
-  """All values starting with the given string."""
-  secret_starts_with: String
-
-  """All values not starting with the given string."""
-  secret_not_starts_with: String
-
-  """All values ending with the given string."""
-  secret_ends_with: String
-
-  """All values not ending with the given string."""
-  secret_not_ends_with: String
-  size: Int
-
-  """All values that are not equal to given value."""
-  size_not: Int
-
-  """All values that are contained in given list."""
-  size_in: [Int!]
-
-  """All values that are not contained in given list."""
-  size_not_in: [Int!]
-
-  """All values less than the given value."""
-  size_lt: Int
-
-  """All values less than or equal the given value."""
-  size_lte: Int
-
-  """All values greater than the given value."""
-  size_gt: Int
-
-  """All values greater than or equal the given value."""
-  size_gte: Int
-  updatedAt: DateTime
-
-  """All values that are not equal to given value."""
-  updatedAt_not: DateTime
-
-  """All values that are contained in given list."""
-  updatedAt_in: [DateTime!]
-
-  """All values that are not contained in given list."""
-  updatedAt_not_in: [DateTime!]
-
-  """All values less than the given value."""
-  updatedAt_lt: DateTime
-
-  """All values less than or equal the given value."""
-  updatedAt_lte: DateTime
-
-  """All values greater than the given value."""
-  updatedAt_gt: DateTime
-
-  """All values greater than or equal the given value."""
-  updatedAt_gte: DateTime
-  url: String
-
-  """All values that are not equal to given value."""
-  url_not: String
-
-  """All values that are contained in given list."""
-  url_in: [String!]
-
-  """All values that are not contained in given list."""
-  url_not_in: [String!]
-
-  """All values less than the given value."""
-  url_lt: String
-
-  """All values less than or equal the given value."""
-  url_lte: String
-
-  """All values greater than the given value."""
-  url_gt: String
-
-  """All values greater than or equal the given value."""
-  url_gte: String
-
-  """All values containing the given string."""
-  url_contains: String
-
-  """All values not containing the given string."""
-  url_not_contains: String
-
-  """All values starting with the given string."""
-  url_starts_with: String
-
-  """All values not starting with the given string."""
-  url_not_starts_with: String
-
-  """All values ending with the given string."""
-  url_ends_with: String
-
-  """All values not ending with the given string."""
-  url_not_ends_with: String
-}
-
-enum FileOrderBy {
-  contentType_ASC
-  contentType_DESC
-  createdAt_ASC
-  createdAt_DESC
-  id_ASC
-  id_DESC
-  name_ASC
-  name_DESC
-  secret_ASC
-  secret_DESC
-  size_ASC
-  size_DESC
-  updatedAt_ASC
-  updatedAt_DESC
-  url_ASC
-  url_DESC
-}
-
-type FilePreviousValues {
-  contentType: String!
-  createdAt: DateTime!
-  id: ID!
-  name: String!
-  secret: String!
-  size: Int!
-  updatedAt: DateTime!
-  url: String!
-}
-
-input FileSubscriptionFilter {
-  """Logical AND on all given filters."""
-  AND: [FileSubscriptionFilter!]
-
-  """Logical OR on all given filters."""
-  OR: [FileSubscriptionFilter!]
-
-  """
-  The subscription event gets dispatched when it's listed in mutation_in
-  """
-  mutation_in: [_ModelMutationType!]
-
-  """
-  The subscription event gets only dispatched when one of the updated fields names is included in this list
-  """
-  updatedFields_contains: String
-
-  """
-  The subscription event gets only dispatched when all of the field names included in this list have been updated
-  """
-  updatedFields_contains_every: [String!]
-
-  """
-  The subscription event gets only dispatched when some of the field names included in this list have been updated
-  """
-  updatedFields_contains_some: [String!]
-  node: FileSubscriptionFilterNode
-}
-
-input FileSubscriptionFilterNode {
-  contentType: String
-
-  """All values that are not equal to given value."""
-  contentType_not: String
-
-  """All values that are contained in given list."""
-  contentType_in: [String!]
-
-  """All values that are not contained in given list."""
-  contentType_not_in: [String!]
-
-  """All values less than the given value."""
-  contentType_lt: String
-
-  """All values less than or equal the given value."""
-  contentType_lte: String
-
-  """All values greater than the given value."""
-  contentType_gt: String
-
-  """All values greater than or equal the given value."""
-  contentType_gte: String
-
-  """All values containing the given string."""
-  contentType_contains: String
-
-  """All values not containing the given string."""
-  contentType_not_contains: String
-
-  """All values starting with the given string."""
-  contentType_starts_with: String
-
-  """All values not starting with the given string."""
-  contentType_not_starts_with: String
-
-  """All values ending with the given string."""
-  contentType_ends_with: String
-
-  """All values not ending with the given string."""
-  contentType_not_ends_with: String
-  createdAt: DateTime
-
-  """All values that are not equal to given value."""
-  createdAt_not: DateTime
-
-  """All values that are contained in given list."""
-  createdAt_in: [DateTime!]
-
-  """All values that are not contained in given list."""
-  createdAt_not_in: [DateTime!]
-
-  """All values less than the given value."""
-  createdAt_lt: DateTime
-
-  """All values less than or equal the given value."""
-  createdAt_lte: DateTime
-
-  """All values greater than the given value."""
-  createdAt_gt: DateTime
-
-  """All values greater than or equal the given value."""
-  createdAt_gte: DateTime
-  id: ID
-
-  """All values that are not equal to given value."""
-  id_not: ID
-
-  """All values that are contained in given list."""
-  id_in: [ID!]
-
-  """All values that are not contained in given list."""
-  id_not_in: [ID!]
-
-  """All values less than the given value."""
-  id_lt: ID
-
-  """All values less than or equal the given value."""
-  id_lte: ID
-
-  """All values greater than the given value."""
-  id_gt: ID
-
-  """All values greater than or equal the given value."""
-  id_gte: ID
-
-  """All values containing the given string."""
-  id_contains: ID
-
-  """All values not containing the given string."""
-  id_not_contains: ID
-
-  """All values starting with the given string."""
-  id_starts_with: ID
-
-  """All values not starting with the given string."""
-  id_not_starts_with: ID
-
-  """All values ending with the given string."""
-  id_ends_with: ID
-
-  """All values not ending with the given string."""
-  id_not_ends_with: ID
-  name: String
-
-  """All values that are not equal to given value."""
-  name_not: String
-
-  """All values that are contained in given list."""
-  name_in: [String!]
-
-  """All values that are not contained in given list."""
-  name_not_in: [String!]
-
-  """All values less than the given value."""
-  name_lt: String
-
-  """All values less than or equal the given value."""
-  name_lte: String
-
-  """All values greater than the given value."""
-  name_gt: String
-
-  """All values greater than or equal the given value."""
-  name_gte: String
-
-  """All values containing the given string."""
-  name_contains: String
-
-  """All values not containing the given string."""
-  name_not_contains: String
-
-  """All values starting with the given string."""
-  name_starts_with: String
-
-  """All values not starting with the given string."""
-  name_not_starts_with: String
-
-  """All values ending with the given string."""
-  name_ends_with: String
-
-  """All values not ending with the given string."""
-  name_not_ends_with: String
-  secret: String
-
-  """All values that are not equal to given value."""
-  secret_not: String
-
-  """All values that are contained in given list."""
-  secret_in: [String!]
-
-  """All values that are not contained in given list."""
-  secret_not_in: [String!]
-
-  """All values less than the given value."""
-  secret_lt: String
-
-  """All values less than or equal the given value."""
-  secret_lte: String
-
-  """All values greater than the given value."""
-  secret_gt: String
-
-  """All values greater than or equal the given value."""
-  secret_gte: String
-
-  """All values containing the given string."""
-  secret_contains: String
-
-  """All values not containing the given string."""
-  secret_not_contains: String
-
-  """All values starting with the given string."""
-  secret_starts_with: String
-
-  """All values not starting with the given string."""
-  secret_not_starts_with: String
-
-  """All values ending with the given string."""
-  secret_ends_with: String
-
-  """All values not ending with the given string."""
-  secret_not_ends_with: String
-  size: Int
-
-  """All values that are not equal to given value."""
-  size_not: Int
-
-  """All values that are contained in given list."""
-  size_in: [Int!]
-
-  """All values that are not contained in given list."""
-  size_not_in: [Int!]
-
-  """All values less than the given value."""
-  size_lt: Int
-
-  """All values less than or equal the given value."""
-  size_lte: Int
-
-  """All values greater than the given value."""
-  size_gt: Int
-
-  """All values greater than or equal the given value."""
-  size_gte: Int
-  updatedAt: DateTime
-
-  """All values that are not equal to given value."""
-  updatedAt_not: DateTime
-
-  """All values that are contained in given list."""
-  updatedAt_in: [DateTime!]
-
-  """All values that are not contained in given list."""
-  updatedAt_not_in: [DateTime!]
-
-  """All values less than the given value."""
-  updatedAt_lt: DateTime
-
-  """All values less than or equal the given value."""
-  updatedAt_lte: DateTime
-
-  """All values greater than the given value."""
-  updatedAt_gt: DateTime
-
-  """All values greater than or equal the given value."""
-  updatedAt_gte: DateTime
-  url: String
-
-  """All values that are not equal to given value."""
-  url_not: String
-
-  """All values that are contained in given list."""
-  url_in: [String!]
-
-  """All values that are not contained in given list."""
-  url_not_in: [String!]
-
-  """All values less than the given value."""
-  url_lt: String
-
-  """All values less than or equal the given value."""
-  url_lte: String
-
-  """All values greater than the given value."""
-  url_gt: String
-
-  """All values greater than or equal the given value."""
-  url_gte: String
-
-  """All values containing the given string."""
-  url_contains: String
-
-  """All values not containing the given string."""
-  url_not_contains: String
-
-  """All values starting with the given string."""
-  url_starts_with: String
-
-  """All values not starting with the given string."""
-  url_not_starts_with: String
-
-  """All values ending with the given string."""
-  url_ends_with: String
-
-  """All values not ending with the given string."""
-  url_not_ends_with: String
-}
-
-type FileSubscriptionPayload {
-  mutation: _ModelMutationType!
-  node: File
-  updatedFields: [String!]
-  previousValues: FilePreviousValues
-}
-
-type Mutation {
-  createFile(name: String!): File
-  createPost(title: String!, url: String!, votes: Int): Post
-  updateFile(id: ID!, name: String): File
-  updatePost(id: ID!, title: String, url: String, votes: Int): Post
-  updateUser(firstName: String, id: ID!, lastName: String): User
-  updateOrCreateFile(update: UpdateFile!, create: CreateFile!): File
-  updateOrCreatePost(update: UpdatePost!, create: CreatePost!): Post
-  updateOrCreateUser(update: UpdateUser!, create: CreateUser!): User
-  deleteFile(id: ID!): File
-  deletePost(id: ID!): Post
-  deleteUser(id: ID!): User
-  signinUser(email: AUTH_PROVIDER_EMAIL): SigninPayload!
-  createUser(firstName: String!, lastName: String!, authProvider: AuthProviderSignupData!): User
-}
-
-"""An object with an ID"""
-interface Node {
-  """The id of the object."""
-  id: ID!
-}
-
-type Post implements Node {
-  createdAt: DateTime!
-  id: ID!
-  title: String!
-  updatedAt: DateTime!
-  url: String!
-  votes: Int
-}
-
-input PostFilter {
-  """Logical AND on all given filters."""
-  AND: [PostFilter!]
-
-  """Logical OR on all given filters."""
-  OR: [PostFilter!]
-  createdAt: DateTime
-
-  """All values that are not equal to given value."""
-  createdAt_not: DateTime
-
-  """All values that are contained in given list."""
-  createdAt_in: [DateTime!]
-
-  """All values that are not contained in given list."""
-  createdAt_not_in: [DateTime!]
-
-  """All values less than the given value."""
-  createdAt_lt: DateTime
-
-  """All values less than or equal the given value."""
-  createdAt_lte: DateTime
-
-  """All values greater than the given value."""
-  createdAt_gt: DateTime
-
-  """All values greater than or equal the given value."""
-  createdAt_gte: DateTime
-  id: ID
-
-  """All values that are not equal to given value."""
-  id_not: ID
-
-  """All values that are contained in given list."""
-  id_in: [ID!]
-
-  """All values that are not contained in given list."""
-  id_not_in: [ID!]
-
-  """All values less than the given value."""
-  id_lt: ID
-
-  """All values less than or equal the given value."""
-  id_lte: ID
-
-  """All values greater than the given value."""
-  id_gt: ID
-
-  """All values greater than or equal the given value."""
-  id_gte: ID
-
-  """All values containing the given string."""
-  id_contains: ID
-
-  """All values not containing the given string."""
-  id_not_contains: ID
-
-  """All values starting with the given string."""
-  id_starts_with: ID
-
-  """All values not starting with the given string."""
-  id_not_starts_with: ID
-
-  """All values ending with the given string."""
-  id_ends_with: ID
-
-  """All values not ending with the given string."""
-  id_not_ends_with: ID
-  title: String
-
-  """All values that are not equal to given value."""
-  title_not: String
-
-  """All values that are contained in given list."""
-  title_in: [String!]
-
-  """All values that are not contained in given list."""
-  title_not_in: [String!]
-
-  """All values less than the given value."""
-  title_lt: String
-
-  """All values less than or equal the given value."""
-  title_lte: String
-
-  """All values greater than the given value."""
-  title_gt: String
-
-  """All values greater than or equal the given value."""
-  title_gte: String
-
-  """All values containing the given string."""
-  title_contains: String
-
-  """All values not containing the given string."""
-  title_not_contains: String
-
-  """All values starting with the given string."""
-  title_starts_with: String
-
-  """All values not starting with the given string."""
-  title_not_starts_with: String
-
-  """All values ending with the given string."""
-  title_ends_with: String
-
-  """All values not ending with the given string."""
-  title_not_ends_with: String
-  updatedAt: DateTime
-
-  """All values that are not equal to given value."""
-  updatedAt_not: DateTime
-
-  """All values that are contained in given list."""
-  updatedAt_in: [DateTime!]
-
-  """All values that are not contained in given list."""
-  updatedAt_not_in: [DateTime!]
-
-  """All values less than the given value."""
-  updatedAt_lt: DateTime
-
-  """All values less than or equal the given value."""
-  updatedAt_lte: DateTime
-
-  """All values greater than the given value."""
-  updatedAt_gt: DateTime
-
-  """All values greater than or equal the given value."""
-  updatedAt_gte: DateTime
-  url: String
-
-  """All values that are not equal to given value."""
-  url_not: String
-
-  """All values that are contained in given list."""
-  url_in: [String!]
-
-  """All values that are not contained in given list."""
-  url_not_in: [String!]
-
-  """All values less than the given value."""
-  url_lt: String
-
-  """All values less than or equal the given value."""
-  url_lte: String
-
-  """All values greater than the given value."""
-  url_gt: String
-
-  """All values greater than or equal the given value."""
-  url_gte: String
-
-  """All values containing the given string."""
-  url_contains: String
-
-  """All values not containing the given string."""
-  url_not_contains: String
-
-  """All values starting with the given string."""
-  url_starts_with: String
-
-  """All values not starting with the given string."""
-  url_not_starts_with: String
-
-  """All values ending with the given string."""
-  url_ends_with: String
-
-  """All values not ending with the given string."""
-  url_not_ends_with: String
-  votes: Int
-
-  """All values that are not equal to given value."""
-  votes_not: Int
-
-  """All values that are contained in given list."""
-  votes_in: [Int!]
-
-  """All values that are not contained in given list."""
-  votes_not_in: [Int!]
-
-  """All values less than the given value."""
-  votes_lt: Int
-
-  """All values less than or equal the given value."""
-  votes_lte: Int
-
-  """All values greater than the given value."""
-  votes_gt: Int
-
-  """All values greater than or equal the given value."""
-  votes_gte: Int
-}
-
-enum PostOrderBy {
-  createdAt_ASC
-  createdAt_DESC
-  id_ASC
-  id_DESC
-  title_ASC
-  title_DESC
-  updatedAt_ASC
-  updatedAt_DESC
-  url_ASC
-  url_DESC
-  votes_ASC
-  votes_DESC
-}
-
-type PostPreviousValues {
-  createdAt: DateTime!
-  id: ID!
-  title: String!
-  updatedAt: DateTime!
-  url: String!
-  votes: Int
-}
-
-input PostSubscriptionFilter {
-  """Logical AND on all given filters."""
-  AND: [PostSubscriptionFilter!]
-
-  """Logical OR on all given filters."""
-  OR: [PostSubscriptionFilter!]
-
-  """
-  The subscription event gets dispatched when it's listed in mutation_in
-  """
-  mutation_in: [_ModelMutationType!]
-
-  """
-  The subscription event gets only dispatched when one of the updated fields names is included in this list
-  """
-  updatedFields_contains: String
-
-  """
-  The subscription event gets only dispatched when all of the field names included in this list have been updated
-  """
-  updatedFields_contains_every: [String!]
-
-  """
-  The subscription event gets only dispatched when some of the field names included in this list have been updated
-  """
-  updatedFields_contains_some: [String!]
-  node: PostSubscriptionFilterNode
-}
-
-input PostSubscriptionFilterNode {
-  createdAt: DateTime
-
-  """All values that are not equal to given value."""
-  createdAt_not: DateTime
-
-  """All values that are contained in given list."""
-  createdAt_in: [DateTime!]
-
-  """All values that are not contained in given list."""
-  createdAt_not_in: [DateTime!]
-
-  """All values less than the given value."""
-  createdAt_lt: DateTime
-
-  """All values less than or equal the given value."""
-  createdAt_lte: DateTime
-
-  """All values greater than the given value."""
-  createdAt_gt: DateTime
-
-  """All values greater than or equal the given value."""
-  createdAt_gte: DateTime
-  id: ID
-
-  """All values that are not equal to given value."""
-  id_not: ID
-
-  """All values that are contained in given list."""
-  id_in: [ID!]
-
-  """All values that are not contained in given list."""
-  id_not_in: [ID!]
-
-  """All values less than the given value."""
-  id_lt: ID
-
-  """All values less than or equal the given value."""
-  id_lte: ID
-
-  """All values greater than the given value."""
-  id_gt: ID
-
-  """All values greater than or equal the given value."""
-  id_gte: ID
-
-  """All values containing the given string."""
-  id_contains: ID
-
-  """All values not containing the given string."""
-  id_not_contains: ID
-
-  """All values starting with the given string."""
-  id_starts_with: ID
-
-  """All values not starting with the given string."""
-  id_not_starts_with: ID
-
-  """All values ending with the given string."""
-  id_ends_with: ID
-
-  """All values not ending with the given string."""
-  id_not_ends_with: ID
-  title: String
-
-  """All values that are not equal to given value."""
-  title_not: String
-
-  """All values that are contained in given list."""
-  title_in: [String!]
-
-  """All values that are not contained in given list."""
-  title_not_in: [String!]
-
-  """All values less than the given value."""
-  title_lt: String
-
-  """All values less than or equal the given value."""
-  title_lte: String
-
-  """All values greater than the given value."""
-  title_gt: String
-
-  """All values greater than or equal the given value."""
-  title_gte: String
-
-  """All values containing the given string."""
-  title_contains: String
-
-  """All values not containing the given string."""
-  title_not_contains: String
-
-  """All values starting with the given string."""
-  title_starts_with: String
-
-  """All values not starting with the given string."""
-  title_not_starts_with: String
-
-  """All values ending with the given string."""
-  title_ends_with: String
-
-  """All values not ending with the given string."""
-  title_not_ends_with: String
-  updatedAt: DateTime
-
-  """All values that are not equal to given value."""
-  updatedAt_not: DateTime
-
-  """All values that are contained in given list."""
-  updatedAt_in: [DateTime!]
-
-  """All values that are not contained in given list."""
-  updatedAt_not_in: [DateTime!]
-
-  """All values less than the given value."""
-  updatedAt_lt: DateTime
-
-  """All values less than or equal the given value."""
-  updatedAt_lte: DateTime
-
-  """All values greater than the given value."""
-  updatedAt_gt: DateTime
-
-  """All values greater than or equal the given value."""
-  updatedAt_gte: DateTime
-  url: String
-
-  """All values that are not equal to given value."""
-  url_not: String
-
-  """All values that are contained in given list."""
-  url_in: [String!]
-
-  """All values that are not contained in given list."""
-  url_not_in: [String!]
-
-  """All values less than the given value."""
-  url_lt: String
-
-  """All values less than or equal the given value."""
-  url_lte: String
-
-  """All values greater than the given value."""
-  url_gt: String
-
-  """All values greater than or equal the given value."""
-  url_gte: String
-
-  """All values containing the given string."""
-  url_contains: String
-
-  """All values not containing the given string."""
-  url_not_contains: String
-
-  """All values starting with the given string."""
-  url_starts_with: String
-
-  """All values not starting with the given string."""
-  url_not_starts_with: String
-
-  """All values ending with the given string."""
-  url_ends_with: String
-
-  """All values not ending with the given string."""
-  url_not_ends_with: String
-  votes: Int
-
-  """All values that are not equal to given value."""
-  votes_not: Int
-
-  """All values that are contained in given list."""
-  votes_in: [Int!]
-
-  """All values that are not contained in given list."""
-  votes_not_in: [Int!]
-
-  """All values less than the given value."""
-  votes_lt: Int
-
-  """All values less than or equal the given value."""
-  votes_lte: Int
-
-  """All values greater than the given value."""
-  votes_gt: Int
-
-  """All values greater than or equal the given value."""
-  votes_gte: Int
-}
-
-type PostSubscriptionPayload {
-  mutation: _ModelMutationType!
-  node: Post
-  updatedFields: [String!]
-  previousValues: PostPreviousValues
-}
-
-type Query {
-  allFiles(filter: FileFilter, orderBy: FileOrderBy, skip: Int, after: String, before: String, first: Int, last: Int): [File!]!
-  allPosts(filter: PostFilter, orderBy: PostOrderBy, skip: Int, after: String, before: String, first: Int, last: Int): [Post!]!
-  allUsers(filter: UserFilter, orderBy: UserOrderBy, skip: Int, after: String, before: String, first: Int, last: Int): [User!]!
-  _allFilesMeta(filter: FileFilter, orderBy: FileOrderBy, skip: Int, after: String, before: String, first: Int, last: Int): _QueryMeta!
-  _allPostsMeta(filter: PostFilter, orderBy: PostOrderBy, skip: Int, after: String, before: String, first: Int, last: Int): _QueryMeta!
-  _allUsersMeta(filter: UserFilter, orderBy: UserOrderBy, skip: Int, after: String, before: String, first: Int, last: Int): _QueryMeta!
-  File(id: ID, secret: String, url: String): File
-  Post(id: ID): Post
-  User(email: String, id: ID): User
-  user: User
-
-  """Fetches an object given its ID"""
-  node(
-    """The ID of an object"""
-    id: ID!
-  ): Node
+"""conflict action"""
+enum conflict_action {
+  """ignore the insert on this row"""
+  ignore
+
+  """update the row with the given values"""
+  update
 }
 
 """
-If authentication was successful the payload contains the user and a token. If unsuccessful this payload is null.
+expression to compare columns of type integer. All fields are combined with logical 'AND'.
 """
-type SigninPayload {
-  token: String
-  user: User
+input integer_comparison_exp {
+  _eq: Int
+  _gt: Int
+  _gte: Int
+  _in: [Int]
+  _is_null: Boolean
+  _lt: Int
+  _lte: Int
+  _neq: Int
+  _nin: [Int]
 }
 
-type Subscription {
-  File(filter: FileSubscriptionFilter): FileSubscriptionPayload
-  Post(filter: PostSubscriptionFilter): PostSubscriptionPayload
-  User(filter: UserSubscriptionFilter): UserSubscriptionPayload
+"""
+columns and relationships of "meeting"
+"""
+type meeting {
+  id: Int!
+  text_field: String!
 }
 
-input UpdateFile {
-  id: ID!
+"""
+aggregated selection of "meeting"
+"""
+type meeting_aggregate {
+  aggregate: meeting_aggregate_fields
+  nodes: [meeting!]!
+}
+
+"""
+aggregate fields of "meeting"
+"""
+type meeting_aggregate_fields {
+  avg: meeting_avg_fields
+  count(columns: [meeting_select_column!], distinct: Boolean): Int
+  max: meeting_max_fields
+  min: meeting_min_fields
+  stddev: meeting_stddev_fields
+  stddev_pop: meeting_stddev_pop_fields
+  stddev_samp: meeting_stddev_samp_fields
+  sum: meeting_sum_fields
+  var_pop: meeting_var_pop_fields
+  var_samp: meeting_var_samp_fields
+  variance: meeting_variance_fields
+}
+
+"""
+order by aggregate values of table "meeting"
+"""
+input meeting_aggregate_order_by {
+  avg: meeting_avg_order_by
+  count: order_by
+  max: meeting_max_order_by
+  min: meeting_min_order_by
+  stddev: meeting_stddev_order_by
+  stddev_pop: meeting_stddev_pop_order_by
+  stddev_samp: meeting_stddev_samp_order_by
+  sum: meeting_sum_order_by
+  var_pop: meeting_var_pop_order_by
+  var_samp: meeting_var_samp_order_by
+  variance: meeting_variance_order_by
+}
+
+"""
+input type for inserting array relation for remote table "meeting"
+"""
+input meeting_arr_rel_insert_input {
+  data: [meeting_insert_input!]!
+  on_conflict: meeting_on_conflict
+}
+
+"""aggregate avg on columns"""
+type meeting_avg_fields {
+  id: Float
+}
+
+"""
+order by avg() on columns of table "meeting"
+"""
+input meeting_avg_order_by {
+  id: order_by
+}
+
+"""
+Boolean expression to filter rows from the table "meeting". All fields are combined with a logical 'AND'.
+"""
+input meeting_bool_exp {
+  _and: [meeting_bool_exp]
+  _not: meeting_bool_exp
+  _or: [meeting_bool_exp]
+  id: integer_comparison_exp
+  text_field: text_comparison_exp
+}
+
+"""
+unique or primary key constraints on table "meeting"
+"""
+enum meeting_constraint {
+  """unique or primary key constraint"""
+  meeting_pkey
+}
+
+"""
+input type for incrementing integer columne in table "meeting"
+"""
+input meeting_inc_input {
+  id: Int
+}
+
+"""
+input type for inserting data into table "meeting"
+"""
+input meeting_insert_input {
+  id: Int
+  text_field: String
+}
+
+"""aggregate max on columns"""
+type meeting_max_fields {
+  id: Int
+  text_field: String
+}
+
+"""
+order by max() on columns of table "meeting"
+"""
+input meeting_max_order_by {
+  id: order_by
+  text_field: order_by
+}
+
+"""aggregate min on columns"""
+type meeting_min_fields {
+  id: Int
+  text_field: String
+}
+
+"""
+order by min() on columns of table "meeting"
+"""
+input meeting_min_order_by {
+  id: order_by
+  text_field: order_by
+}
+
+"""
+response of any mutation on the table "meeting"
+"""
+type meeting_mutation_response {
+  """number of affected rows by the mutation"""
+  affected_rows: Int!
+
+  """data of the affected rows by the mutation"""
+  returning: [meeting!]!
+}
+
+"""
+input type for inserting object relation for remote table "meeting"
+"""
+input meeting_obj_rel_insert_input {
+  data: meeting_insert_input!
+  on_conflict: meeting_on_conflict
+}
+
+"""
+on conflict condition type for table "meeting"
+"""
+input meeting_on_conflict {
+  constraint: meeting_constraint!
+  update_columns: [meeting_update_column!]!
+}
+
+"""
+ordering options when selecting data from "meeting"
+"""
+input meeting_order_by {
+  id: order_by
+  text_field: order_by
+}
+
+"""
+select columns of table "meeting"
+"""
+enum meeting_select_column {
+  """column name"""
+  id
+
+  """column name"""
+  text_field
+}
+
+"""
+input type for updating data in table "meeting"
+"""
+input meeting_set_input {
+  id: Int
+  text_field: String
+}
+
+"""aggregate stddev on columns"""
+type meeting_stddev_fields {
+  id: Float
+}
+
+"""
+order by stddev() on columns of table "meeting"
+"""
+input meeting_stddev_order_by {
+  id: order_by
+}
+
+"""aggregate stddev_pop on columns"""
+type meeting_stddev_pop_fields {
+  id: Float
+}
+
+"""
+order by stddev_pop() on columns of table "meeting"
+"""
+input meeting_stddev_pop_order_by {
+  id: order_by
+}
+
+"""aggregate stddev_samp on columns"""
+type meeting_stddev_samp_fields {
+  id: Float
+}
+
+"""
+order by stddev_samp() on columns of table "meeting"
+"""
+input meeting_stddev_samp_order_by {
+  id: order_by
+}
+
+"""aggregate sum on columns"""
+type meeting_sum_fields {
+  id: Int
+}
+
+"""
+order by sum() on columns of table "meeting"
+"""
+input meeting_sum_order_by {
+  id: order_by
+}
+
+"""
+update columns of table "meeting"
+"""
+enum meeting_update_column {
+  """column name"""
+  id
+
+  """column name"""
+  text_field
+}
+
+"""aggregate var_pop on columns"""
+type meeting_var_pop_fields {
+  id: Float
+}
+
+"""
+order by var_pop() on columns of table "meeting"
+"""
+input meeting_var_pop_order_by {
+  id: order_by
+}
+
+"""aggregate var_samp on columns"""
+type meeting_var_samp_fields {
+  id: Float
+}
+
+"""
+order by var_samp() on columns of table "meeting"
+"""
+input meeting_var_samp_order_by {
+  id: order_by
+}
+
+"""aggregate variance on columns"""
+type meeting_variance_fields {
+  id: Float
+}
+
+"""
+order by variance() on columns of table "meeting"
+"""
+input meeting_variance_order_by {
+  id: order_by
+}
+
+"""mutation root"""
+type mutation_root {
+  """
+  delete data from the table: "meeting"
+  """
+  delete_meeting(
+    """filter the rows which have to be deleted"""
+    where: meeting_bool_exp!
+  ): meeting_mutation_response
+
+  """
+  delete data from the table: "profile"
+  """
+  delete_profile(
+    """filter the rows which have to be deleted"""
+    where: profile_bool_exp!
+  ): profile_mutation_response
+
+  """
+  insert data into the table: "meeting"
+  """
+  insert_meeting(
+    """the rows to be inserted"""
+    objects: [meeting_insert_input!]!
+
+    """on conflict condition"""
+    on_conflict: meeting_on_conflict
+  ): meeting_mutation_response
+
+  """
+  insert data into the table: "profile"
+  """
+  insert_profile(
+    """the rows to be inserted"""
+    objects: [profile_insert_input!]!
+
+    """on conflict condition"""
+    on_conflict: profile_on_conflict
+  ): profile_mutation_response
+
+  """
+  update data of the table: "meeting"
+  """
+  update_meeting(
+    """increments the integer columns with given value of the filtered values"""
+    _inc: meeting_inc_input
+
+    """sets the columns of the filtered rows to the given values"""
+    _set: meeting_set_input
+
+    """filter the rows which have to be updated"""
+    where: meeting_bool_exp!
+  ): meeting_mutation_response
+
+  """
+  update data of the table: "profile"
+  """
+  update_profile(
+    """increments the integer columns with given value of the filtered values"""
+    _inc: profile_inc_input
+
+    """sets the columns of the filtered rows to the given values"""
+    _set: profile_set_input
+
+    """filter the rows which have to be updated"""
+    where: profile_bool_exp!
+  ): profile_mutation_response
+}
+
+"""column ordering options"""
+enum order_by {
+  """in the ascending order, nulls last"""
+  asc
+
+  """in the ascending order, nulls first"""
+  asc_nulls_first
+
+  """in the ascending order, nulls last"""
+  asc_nulls_last
+
+  """in the descending order, nulls first"""
+  desc
+
+  """in the descending order, nulls first"""
+  desc_nulls_first
+
+  """in the descending order, nulls last"""
+  desc_nulls_last
+}
+
+"""
+columns and relationships of "profile"
+"""
+type profile {
+  id: Int!
+  name: String!
+}
+
+"""
+aggregated selection of "profile"
+"""
+type profile_aggregate {
+  aggregate: profile_aggregate_fields
+  nodes: [profile!]!
+}
+
+"""
+aggregate fields of "profile"
+"""
+type profile_aggregate_fields {
+  avg: profile_avg_fields
+  count(columns: [profile_select_column!], distinct: Boolean): Int
+  max: profile_max_fields
+  min: profile_min_fields
+  stddev: profile_stddev_fields
+  stddev_pop: profile_stddev_pop_fields
+  stddev_samp: profile_stddev_samp_fields
+  sum: profile_sum_fields
+  var_pop: profile_var_pop_fields
+  var_samp: profile_var_samp_fields
+  variance: profile_variance_fields
+}
+
+"""
+order by aggregate values of table "profile"
+"""
+input profile_aggregate_order_by {
+  avg: profile_avg_order_by
+  count: order_by
+  max: profile_max_order_by
+  min: profile_min_order_by
+  stddev: profile_stddev_order_by
+  stddev_pop: profile_stddev_pop_order_by
+  stddev_samp: profile_stddev_samp_order_by
+  sum: profile_sum_order_by
+  var_pop: profile_var_pop_order_by
+  var_samp: profile_var_samp_order_by
+  variance: profile_variance_order_by
+}
+
+"""
+input type for inserting array relation for remote table "profile"
+"""
+input profile_arr_rel_insert_input {
+  data: [profile_insert_input!]!
+  on_conflict: profile_on_conflict
+}
+
+"""aggregate avg on columns"""
+type profile_avg_fields {
+  id: Float
+}
+
+"""
+order by avg() on columns of table "profile"
+"""
+input profile_avg_order_by {
+  id: order_by
+}
+
+"""
+Boolean expression to filter rows from the table "profile". All fields are combined with a logical 'AND'.
+"""
+input profile_bool_exp {
+  _and: [profile_bool_exp]
+  _not: profile_bool_exp
+  _or: [profile_bool_exp]
+  id: integer_comparison_exp
+  name: text_comparison_exp
+}
+
+"""
+unique or primary key constraints on table "profile"
+"""
+enum profile_constraint {
+  """unique or primary key constraint"""
+  profile_pkey
+}
+
+"""
+input type for incrementing integer columne in table "profile"
+"""
+input profile_inc_input {
+  id: Int
+}
+
+"""
+input type for inserting data into table "profile"
+"""
+input profile_insert_input {
+  id: Int
   name: String
 }
 
-input UpdatePost {
-  id: ID!
-  title: String
-  url: String
-  votes: Int
+"""aggregate max on columns"""
+type profile_max_fields {
+  id: Int
+  name: String
 }
 
-input UpdateUser {
-  firstName: String
-  id: ID!
-  lastName: String
+"""
+order by max() on columns of table "profile"
+"""
+input profile_max_order_by {
+  id: order_by
+  name: order_by
 }
 
-type User implements Node {
-  createdAt: DateTime!
-  email: String
-  firstName: String!
-  id: ID!
-  lastName: String!
-  password: String
-  updatedAt: DateTime!
+"""aggregate min on columns"""
+type profile_min_fields {
+  id: Int
+  name: String
 }
 
-input UserFilter {
-  """Logical AND on all given filters."""
-  AND: [UserFilter!]
-
-  """Logical OR on all given filters."""
-  OR: [UserFilter!]
-  createdAt: DateTime
-
-  """All values that are not equal to given value."""
-  createdAt_not: DateTime
-
-  """All values that are contained in given list."""
-  createdAt_in: [DateTime!]
-
-  """All values that are not contained in given list."""
-  createdAt_not_in: [DateTime!]
-
-  """All values less than the given value."""
-  createdAt_lt: DateTime
-
-  """All values less than or equal the given value."""
-  createdAt_lte: DateTime
-
-  """All values greater than the given value."""
-  createdAt_gt: DateTime
-
-  """All values greater than or equal the given value."""
-  createdAt_gte: DateTime
-  email: String
-
-  """All values that are not equal to given value."""
-  email_not: String
-
-  """All values that are contained in given list."""
-  email_in: [String!]
-
-  """All values that are not contained in given list."""
-  email_not_in: [String!]
-
-  """All values less than the given value."""
-  email_lt: String
-
-  """All values less than or equal the given value."""
-  email_lte: String
-
-  """All values greater than the given value."""
-  email_gt: String
-
-  """All values greater than or equal the given value."""
-  email_gte: String
-
-  """All values containing the given string."""
-  email_contains: String
-
-  """All values not containing the given string."""
-  email_not_contains: String
-
-  """All values starting with the given string."""
-  email_starts_with: String
-
-  """All values not starting with the given string."""
-  email_not_starts_with: String
-
-  """All values ending with the given string."""
-  email_ends_with: String
-
-  """All values not ending with the given string."""
-  email_not_ends_with: String
-  firstName: String
-
-  """All values that are not equal to given value."""
-  firstName_not: String
-
-  """All values that are contained in given list."""
-  firstName_in: [String!]
-
-  """All values that are not contained in given list."""
-  firstName_not_in: [String!]
-
-  """All values less than the given value."""
-  firstName_lt: String
-
-  """All values less than or equal the given value."""
-  firstName_lte: String
-
-  """All values greater than the given value."""
-  firstName_gt: String
-
-  """All values greater than or equal the given value."""
-  firstName_gte: String
-
-  """All values containing the given string."""
-  firstName_contains: String
-
-  """All values not containing the given string."""
-  firstName_not_contains: String
-
-  """All values starting with the given string."""
-  firstName_starts_with: String
-
-  """All values not starting with the given string."""
-  firstName_not_starts_with: String
-
-  """All values ending with the given string."""
-  firstName_ends_with: String
-
-  """All values not ending with the given string."""
-  firstName_not_ends_with: String
-  id: ID
-
-  """All values that are not equal to given value."""
-  id_not: ID
-
-  """All values that are contained in given list."""
-  id_in: [ID!]
-
-  """All values that are not contained in given list."""
-  id_not_in: [ID!]
-
-  """All values less than the given value."""
-  id_lt: ID
-
-  """All values less than or equal the given value."""
-  id_lte: ID
-
-  """All values greater than the given value."""
-  id_gt: ID
-
-  """All values greater than or equal the given value."""
-  id_gte: ID
-
-  """All values containing the given string."""
-  id_contains: ID
-
-  """All values not containing the given string."""
-  id_not_contains: ID
-
-  """All values starting with the given string."""
-  id_starts_with: ID
-
-  """All values not starting with the given string."""
-  id_not_starts_with: ID
-
-  """All values ending with the given string."""
-  id_ends_with: ID
-
-  """All values not ending with the given string."""
-  id_not_ends_with: ID
-  lastName: String
-
-  """All values that are not equal to given value."""
-  lastName_not: String
-
-  """All values that are contained in given list."""
-  lastName_in: [String!]
-
-  """All values that are not contained in given list."""
-  lastName_not_in: [String!]
-
-  """All values less than the given value."""
-  lastName_lt: String
-
-  """All values less than or equal the given value."""
-  lastName_lte: String
-
-  """All values greater than the given value."""
-  lastName_gt: String
-
-  """All values greater than or equal the given value."""
-  lastName_gte: String
-
-  """All values containing the given string."""
-  lastName_contains: String
-
-  """All values not containing the given string."""
-  lastName_not_contains: String
-
-  """All values starting with the given string."""
-  lastName_starts_with: String
-
-  """All values not starting with the given string."""
-  lastName_not_starts_with: String
-
-  """All values ending with the given string."""
-  lastName_ends_with: String
-
-  """All values not ending with the given string."""
-  lastName_not_ends_with: String
-  password: String
-
-  """All values that are not equal to given value."""
-  password_not: String
-
-  """All values that are contained in given list."""
-  password_in: [String!]
-
-  """All values that are not contained in given list."""
-  password_not_in: [String!]
-
-  """All values less than the given value."""
-  password_lt: String
-
-  """All values less than or equal the given value."""
-  password_lte: String
-
-  """All values greater than the given value."""
-  password_gt: String
-
-  """All values greater than or equal the given value."""
-  password_gte: String
-
-  """All values containing the given string."""
-  password_contains: String
-
-  """All values not containing the given string."""
-  password_not_contains: String
-
-  """All values starting with the given string."""
-  password_starts_with: String
-
-  """All values not starting with the given string."""
-  password_not_starts_with: String
-
-  """All values ending with the given string."""
-  password_ends_with: String
-
-  """All values not ending with the given string."""
-  password_not_ends_with: String
-  updatedAt: DateTime
-
-  """All values that are not equal to given value."""
-  updatedAt_not: DateTime
-
-  """All values that are contained in given list."""
-  updatedAt_in: [DateTime!]
-
-  """All values that are not contained in given list."""
-  updatedAt_not_in: [DateTime!]
-
-  """All values less than the given value."""
-  updatedAt_lt: DateTime
-
-  """All values less than or equal the given value."""
-  updatedAt_lte: DateTime
-
-  """All values greater than the given value."""
-  updatedAt_gt: DateTime
-
-  """All values greater than or equal the given value."""
-  updatedAt_gte: DateTime
+"""
+order by min() on columns of table "profile"
+"""
+input profile_min_order_by {
+  id: order_by
+  name: order_by
 }
 
-enum UserOrderBy {
-  createdAt_ASC
-  createdAt_DESC
-  email_ASC
-  email_DESC
-  firstName_ASC
-  firstName_DESC
-  id_ASC
-  id_DESC
-  lastName_ASC
-  lastName_DESC
-  password_ASC
-  password_DESC
-  updatedAt_ASC
-  updatedAt_DESC
+"""
+response of any mutation on the table "profile"
+"""
+type profile_mutation_response {
+  """number of affected rows by the mutation"""
+  affected_rows: Int!
+
+  """data of the affected rows by the mutation"""
+  returning: [profile!]!
 }
 
-type UserPreviousValues {
-  createdAt: DateTime!
-  email: String
-  firstName: String!
-  id: ID!
-  lastName: String!
-  password: String
-  updatedAt: DateTime!
+"""
+input type for inserting object relation for remote table "profile"
+"""
+input profile_obj_rel_insert_input {
+  data: profile_insert_input!
+  on_conflict: profile_on_conflict
 }
 
-input UserSubscriptionFilter {
-  """Logical AND on all given filters."""
-  AND: [UserSubscriptionFilter!]
-
-  """Logical OR on all given filters."""
-  OR: [UserSubscriptionFilter!]
-
-  """
-  The subscription event gets dispatched when it's listed in mutation_in
-  """
-  mutation_in: [_ModelMutationType!]
-
-  """
-  The subscription event gets only dispatched when one of the updated fields names is included in this list
-  """
-  updatedFields_contains: String
-
-  """
-  The subscription event gets only dispatched when all of the field names included in this list have been updated
-  """
-  updatedFields_contains_every: [String!]
-
-  """
-  The subscription event gets only dispatched when some of the field names included in this list have been updated
-  """
-  updatedFields_contains_some: [String!]
-  node: UserSubscriptionFilterNode
+"""
+on conflict condition type for table "profile"
+"""
+input profile_on_conflict {
+  constraint: profile_constraint!
+  update_columns: [profile_update_column!]!
 }
 
-input UserSubscriptionFilterNode {
-  createdAt: DateTime
-
-  """All values that are not equal to given value."""
-  createdAt_not: DateTime
-
-  """All values that are contained in given list."""
-  createdAt_in: [DateTime!]
-
-  """All values that are not contained in given list."""
-  createdAt_not_in: [DateTime!]
-
-  """All values less than the given value."""
-  createdAt_lt: DateTime
-
-  """All values less than or equal the given value."""
-  createdAt_lte: DateTime
-
-  """All values greater than the given value."""
-  createdAt_gt: DateTime
-
-  """All values greater than or equal the given value."""
-  createdAt_gte: DateTime
-  email: String
-
-  """All values that are not equal to given value."""
-  email_not: String
-
-  """All values that are contained in given list."""
-  email_in: [String!]
-
-  """All values that are not contained in given list."""
-  email_not_in: [String!]
-
-  """All values less than the given value."""
-  email_lt: String
-
-  """All values less than or equal the given value."""
-  email_lte: String
-
-  """All values greater than the given value."""
-  email_gt: String
-
-  """All values greater than or equal the given value."""
-  email_gte: String
-
-  """All values containing the given string."""
-  email_contains: String
-
-  """All values not containing the given string."""
-  email_not_contains: String
-
-  """All values starting with the given string."""
-  email_starts_with: String
-
-  """All values not starting with the given string."""
-  email_not_starts_with: String
-
-  """All values ending with the given string."""
-  email_ends_with: String
-
-  """All values not ending with the given string."""
-  email_not_ends_with: String
-  firstName: String
-
-  """All values that are not equal to given value."""
-  firstName_not: String
-
-  """All values that are contained in given list."""
-  firstName_in: [String!]
-
-  """All values that are not contained in given list."""
-  firstName_not_in: [String!]
-
-  """All values less than the given value."""
-  firstName_lt: String
-
-  """All values less than or equal the given value."""
-  firstName_lte: String
-
-  """All values greater than the given value."""
-  firstName_gt: String
-
-  """All values greater than or equal the given value."""
-  firstName_gte: String
-
-  """All values containing the given string."""
-  firstName_contains: String
-
-  """All values not containing the given string."""
-  firstName_not_contains: String
-
-  """All values starting with the given string."""
-  firstName_starts_with: String
-
-  """All values not starting with the given string."""
-  firstName_not_starts_with: String
-
-  """All values ending with the given string."""
-  firstName_ends_with: String
-
-  """All values not ending with the given string."""
-  firstName_not_ends_with: String
-  id: ID
-
-  """All values that are not equal to given value."""
-  id_not: ID
-
-  """All values that are contained in given list."""
-  id_in: [ID!]
-
-  """All values that are not contained in given list."""
-  id_not_in: [ID!]
-
-  """All values less than the given value."""
-  id_lt: ID
-
-  """All values less than or equal the given value."""
-  id_lte: ID
-
-  """All values greater than the given value."""
-  id_gt: ID
-
-  """All values greater than or equal the given value."""
-  id_gte: ID
-
-  """All values containing the given string."""
-  id_contains: ID
-
-  """All values not containing the given string."""
-  id_not_contains: ID
-
-  """All values starting with the given string."""
-  id_starts_with: ID
-
-  """All values not starting with the given string."""
-  id_not_starts_with: ID
-
-  """All values ending with the given string."""
-  id_ends_with: ID
-
-  """All values not ending with the given string."""
-  id_not_ends_with: ID
-  lastName: String
-
-  """All values that are not equal to given value."""
-  lastName_not: String
-
-  """All values that are contained in given list."""
-  lastName_in: [String!]
-
-  """All values that are not contained in given list."""
-  lastName_not_in: [String!]
-
-  """All values less than the given value."""
-  lastName_lt: String
-
-  """All values less than or equal the given value."""
-  lastName_lte: String
-
-  """All values greater than the given value."""
-  lastName_gt: String
-
-  """All values greater than or equal the given value."""
-  lastName_gte: String
-
-  """All values containing the given string."""
-  lastName_contains: String
-
-  """All values not containing the given string."""
-  lastName_not_contains: String
-
-  """All values starting with the given string."""
-  lastName_starts_with: String
-
-  """All values not starting with the given string."""
-  lastName_not_starts_with: String
-
-  """All values ending with the given string."""
-  lastName_ends_with: String
-
-  """All values not ending with the given string."""
-  lastName_not_ends_with: String
-  password: String
-
-  """All values that are not equal to given value."""
-  password_not: String
-
-  """All values that are contained in given list."""
-  password_in: [String!]
-
-  """All values that are not contained in given list."""
-  password_not_in: [String!]
-
-  """All values less than the given value."""
-  password_lt: String
-
-  """All values less than or equal the given value."""
-  password_lte: String
-
-  """All values greater than the given value."""
-  password_gt: String
-
-  """All values greater than or equal the given value."""
-  password_gte: String
-
-  """All values containing the given string."""
-  password_contains: String
-
-  """All values not containing the given string."""
-  password_not_contains: String
-
-  """All values starting with the given string."""
-  password_starts_with: String
-
-  """All values not starting with the given string."""
-  password_not_starts_with: String
-
-  """All values ending with the given string."""
-  password_ends_with: String
-
-  """All values not ending with the given string."""
-  password_not_ends_with: String
-  updatedAt: DateTime
-
-  """All values that are not equal to given value."""
-  updatedAt_not: DateTime
-
-  """All values that are contained in given list."""
-  updatedAt_in: [DateTime!]
-
-  """All values that are not contained in given list."""
-  updatedAt_not_in: [DateTime!]
-
-  """All values less than the given value."""
-  updatedAt_lt: DateTime
-
-  """All values less than or equal the given value."""
-  updatedAt_lte: DateTime
-
-  """All values greater than the given value."""
-  updatedAt_gt: DateTime
-
-  """All values greater than or equal the given value."""
-  updatedAt_gte: DateTime
+"""
+ordering options when selecting data from "profile"
+"""
+input profile_order_by {
+  id: order_by
+  name: order_by
 }
 
-type UserSubscriptionPayload {
-  mutation: _ModelMutationType!
-  node: User
-  updatedFields: [String!]
-  previousValues: UserPreviousValues
+"""
+select columns of table "profile"
+"""
+enum profile_select_column {
+  """column name"""
+  id
+
+  """column name"""
+  name
+}
+
+"""
+input type for updating data in table "profile"
+"""
+input profile_set_input {
+  id: Int
+  name: String
+}
+
+"""aggregate stddev on columns"""
+type profile_stddev_fields {
+  id: Float
+}
+
+"""
+order by stddev() on columns of table "profile"
+"""
+input profile_stddev_order_by {
+  id: order_by
+}
+
+"""aggregate stddev_pop on columns"""
+type profile_stddev_pop_fields {
+  id: Float
+}
+
+"""
+order by stddev_pop() on columns of table "profile"
+"""
+input profile_stddev_pop_order_by {
+  id: order_by
+}
+
+"""aggregate stddev_samp on columns"""
+type profile_stddev_samp_fields {
+  id: Float
+}
+
+"""
+order by stddev_samp() on columns of table "profile"
+"""
+input profile_stddev_samp_order_by {
+  id: order_by
+}
+
+"""aggregate sum on columns"""
+type profile_sum_fields {
+  id: Int
+}
+
+"""
+order by sum() on columns of table "profile"
+"""
+input profile_sum_order_by {
+  id: order_by
+}
+
+"""
+update columns of table "profile"
+"""
+enum profile_update_column {
+  """column name"""
+  id
+
+  """column name"""
+  name
+}
+
+"""aggregate var_pop on columns"""
+type profile_var_pop_fields {
+  id: Float
+}
+
+"""
+order by var_pop() on columns of table "profile"
+"""
+input profile_var_pop_order_by {
+  id: order_by
+}
+
+"""aggregate var_samp on columns"""
+type profile_var_samp_fields {
+  id: Float
+}
+
+"""
+order by var_samp() on columns of table "profile"
+"""
+input profile_var_samp_order_by {
+  id: order_by
+}
+
+"""aggregate variance on columns"""
+type profile_variance_fields {
+  id: Float
+}
+
+"""
+order by variance() on columns of table "profile"
+"""
+input profile_variance_order_by {
+  id: order_by
+}
+
+"""query root"""
+type query_root {
+  """
+  fetch data from the table: "meeting"
+  """
+  meeting(
+    """distinct select on columns"""
+    distinct_on: [meeting_select_column!]
+
+    """limit the nuber of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [meeting_order_by!]
+
+    """filter the rows returned"""
+    where: meeting_bool_exp
+  ): [meeting!]!
+
+  """
+  fetch aggregated fields from the table: "meeting"
+  """
+  meeting_aggregate(
+    """distinct select on columns"""
+    distinct_on: [meeting_select_column!]
+
+    """limit the nuber of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [meeting_order_by!]
+
+    """filter the rows returned"""
+    where: meeting_bool_exp
+  ): meeting_aggregate!
+
+  """fetch data from the table: "meeting" using primary key columns"""
+  meeting_by_pk(id: Int!): meeting
+
+  """
+  fetch data from the table: "profile"
+  """
+  profile(
+    """distinct select on columns"""
+    distinct_on: [profile_select_column!]
+
+    """limit the nuber of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [profile_order_by!]
+
+    """filter the rows returned"""
+    where: profile_bool_exp
+  ): [profile!]!
+
+  """
+  fetch aggregated fields from the table: "profile"
+  """
+  profile_aggregate(
+    """distinct select on columns"""
+    distinct_on: [profile_select_column!]
+
+    """limit the nuber of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [profile_order_by!]
+
+    """filter the rows returned"""
+    where: profile_bool_exp
+  ): profile_aggregate!
+
+  """fetch data from the table: "profile" using primary key columns"""
+  profile_by_pk(id: Int!): profile
+}
+
+"""subscription root"""
+type subscription_root {
+  """
+  fetch data from the table: "meeting"
+  """
+  meeting(
+    """distinct select on columns"""
+    distinct_on: [meeting_select_column!]
+
+    """limit the nuber of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [meeting_order_by!]
+
+    """filter the rows returned"""
+    where: meeting_bool_exp
+  ): [meeting!]!
+
+  """
+  fetch aggregated fields from the table: "meeting"
+  """
+  meeting_aggregate(
+    """distinct select on columns"""
+    distinct_on: [meeting_select_column!]
+
+    """limit the nuber of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [meeting_order_by!]
+
+    """filter the rows returned"""
+    where: meeting_bool_exp
+  ): meeting_aggregate!
+
+  """fetch data from the table: "meeting" using primary key columns"""
+  meeting_by_pk(id: Int!): meeting
+
+  """
+  fetch data from the table: "profile"
+  """
+  profile(
+    """distinct select on columns"""
+    distinct_on: [profile_select_column!]
+
+    """limit the nuber of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [profile_order_by!]
+
+    """filter the rows returned"""
+    where: profile_bool_exp
+  ): [profile!]!
+
+  """
+  fetch aggregated fields from the table: "profile"
+  """
+  profile_aggregate(
+    """distinct select on columns"""
+    distinct_on: [profile_select_column!]
+
+    """limit the nuber of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [profile_order_by!]
+
+    """filter the rows returned"""
+    where: profile_bool_exp
+  ): profile_aggregate!
+
+  """fetch data from the table: "profile" using primary key columns"""
+  profile_by_pk(id: Int!): profile
+}
+
+"""
+expression to compare columns of type text. All fields are combined with logical 'AND'.
+"""
+input text_comparison_exp {
+  _eq: String
+  _gt: String
+  _gte: String
+  _ilike: String
+  _in: [String]
+  _is_null: Boolean
+  _like: String
+  _lt: String
+  _lte: String
+  _neq: String
+  _nilike: String
+  _nin: [String]
+  _nlike: String
+  _nsimilar: String
+  _similar: String
 }
