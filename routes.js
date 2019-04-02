@@ -14,8 +14,7 @@ const routes = require('next-routes')();
 // ------------ ROUTES ---------------
 // @RANStartRoutes
 
-
-
+routes.add('meeting', '/meeting/:meetingId');
 
 // @RANEndRoutes
 // ------------ ROUTES ---------------

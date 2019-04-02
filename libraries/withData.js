@@ -1,6 +1,7 @@
 // @flow
 import * as React from 'react';
 import { ApolloProvider, getDataFromTree } from 'react-apollo';
+import { ApolloProvider as ApolloHooksProvider } from 'react-apollo-hooks';
 import { Provider as ReduxProvider } from 'react-redux';
 import PropTypes from 'prop-types';
 import 'isomorphic-fetch';
@@ -73,9 +74,11 @@ export default (
         try {
           const app = (
             <ApolloProvider client={client}>
-              <ReduxProvider store={store}>
-                <Component {...props} />
-              </ReduxProvider>
+              <ApolloHooksProvider client={client}>
+                <ReduxProvider store={store}>
+                  <Component {...props} />
+                </ReduxProvider>
+              </ApolloHooksProvider>
             </ApolloProvider>
           );
           await getDataFromTree(app);
@@ -105,9 +108,11 @@ export default (
     render() {
       return (
         <ApolloProvider client={this.apolloClient}>
-          <ReduxProvider store={this.reduxStore}>
-            <Component {...this.props} />
-          </ReduxProvider>
+          <ApolloHooksProvider client={this.apolloClient}>
+            <ReduxProvider store={this.reduxStore}>
+              <Component {...this.props} />
+            </ReduxProvider>
+          </ApolloHooksProvider>
         </ApolloProvider>
       );
     }
