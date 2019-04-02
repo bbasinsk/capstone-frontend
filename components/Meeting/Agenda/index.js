@@ -7,6 +7,7 @@ const GET_AGENDA = gql`
   query getMeeting($meetingId: uuid!) {
     meeting(where: { meeting_id: { _eq: $meetingId } }) {
       agenda_items {
+        id
         title
         desc
         duration
@@ -32,9 +33,9 @@ function Agenda({ meetingId }) {
   return (
     <div>
       <h2>Agenda</h2>
-      {agendaItems.map(item => (
-        <ul>
-          <li>{item.title}</li>
+      {agendaItems.map(({ id, title }) => (
+        <ul key={id}>
+          <li>{title}</li>
         </ul>
       ))}
     </div>

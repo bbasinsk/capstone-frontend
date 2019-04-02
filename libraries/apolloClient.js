@@ -55,7 +55,8 @@ function createClient(headers, token, initialState) {
     link,
     connectToDevTools: process.browser,
     ssrMode: !process.browser,
-    cache: new InMemoryCache().restore(initialState || {})
+    cache: new InMemoryCache().restore(initialState || {}),
+    shouldBatch: true
   });
 }
 

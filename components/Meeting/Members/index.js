@@ -8,6 +8,7 @@ const GET_MEMBERS = gql`
     meeting(where: { meeting_id: { _eq: $meetingId } }) {
       members {
         member {
+          id
           name
           email
         }
@@ -30,8 +31,8 @@ function Members({ meetingId }) {
   return (
     <div>
       <h2>Members</h2>
-      {members.map(({ member }) => (
-        <div>{member.name}</div>
+      {members.map(({ member: { name, id } }) => (
+        <div key={id}>{name}</div>
       ))}
     </div>
   );
