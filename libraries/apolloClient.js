@@ -32,9 +32,14 @@ function createClient(headers, token, initialState) {
   })();
 
   const authLink = new ApolloLink((operation, forward) => {
+    const adminHeaders = process.env.HASURA_ADMIN_SECRET && {
+      'x-hasura-admin-secret': process.env.HASURA_ADMIN_SECRET
+    };
+
     operation.setContext({
       headers: {
-        authorization: accessToken
+        authorization: accessToken,
+        ...adminHeaders
       }
     });
     return forward(operation);
