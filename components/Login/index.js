@@ -1,12 +1,14 @@
 import React from 'react';
-import { login } from '../../libraries/auth0';
+import { login, logout } from '../../libraries/auth';
 
 export default function LoginButton() {
-  const onClick = () => login();
   return (
     <div>
-      <button type="button" onClick={onClick}>
+      <button type="button" onClick={() => login()}>
         Login
+      </button>
+      <button type="button" onClick={() => logout()}>
+        Logout
       </button>
     </div>
   );
