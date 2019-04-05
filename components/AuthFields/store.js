@@ -1,4 +1,4 @@
-import persist from '../../libraries/persist';
+// import persist from '../../libraries/persist';
 
 // Constants
 export const AUTH_SIGNIN = 'AUTH/SIGNIN';
@@ -40,14 +40,12 @@ actionCreators.signOut = () => ({ type: AUTH_SIGNOUT });
 // Discpatchers
 const dispatchers = {};
 
-dispatchers.signIn = token => {
-  persist.willSetAccessToken(token);
-  return actionCreators.signIn(token);
-};
+dispatchers.signIn = token =>
+  // persist.willSetAccessToken(token);
+  actionCreators.signIn(token);
 
-dispatchers.signOut = () => {
-  persist.willRemoveAccessToken();
-  return actionCreators.signOut();
-};
+dispatchers.signOut = () =>
+  // persist.willRemoveAccessToken();
+  actionCreators.signOut();
 
 export { actionCreators, reducer, dispatchers };

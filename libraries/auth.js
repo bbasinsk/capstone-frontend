@@ -13,13 +13,12 @@ import { login as loginAuth0, logout as logoutAuth0 } from './auth0';
 //   return params;
 // };
 
-export const setToken = (idToken, accessToken) => {
+export const setToken = accessToken => {
   if (!process.browser) {
     return;
   }
 
-  persist.willSetUser(jwtDecode(idToken));
-  persist.willSetIdToken(idToken);
+  persist.willSetUser(jwtDecode(accessToken));
   persist.willSetAccessToken(accessToken);
 };
 
@@ -29,7 +28,6 @@ export const unsetToken = () => {
   }
 
   persist.willRemoveUser();
-  persist.willRemoveIdToken();
   persist.willRemoveAccessToken();
 
   // to support logging out from all windows
@@ -42,7 +40,7 @@ export const getUserFromServerCookie = req => {
   }
   const jwtCookie = req.headers.cookie
     .split(';')
-    .find(c => c.trim().startsWith('idToken='));
+    .find(c => c.trim().startsWith('accessToken='));
   if (!jwtCookie) {
     return undefined;
   }

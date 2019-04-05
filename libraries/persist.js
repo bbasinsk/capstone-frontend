@@ -37,22 +37,4 @@ export default class persist {
   static async willRemoveUser() {
     return cookies.remove(persist.USER_KEY);
   }
-
-  // idToken ================
-
-  static get ID_TOKEN(): string {
-    return 'idToken';
-  }
-
-  static async willGetIdToken() {
-    return cookies.get(persist.ID_TOKEN);
-  }
-
-  static async willSetIdToken(value: any) {
-    return cookies.set(persist.ID_TOKEN, value);
-  }
-
-  static async willRemoveIdToken() {
-    return cookies.remove(persist.ID_TOKEN);
-  }
 }
