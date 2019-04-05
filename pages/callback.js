@@ -1,7 +1,7 @@
 import React from 'react';
 import Router, { withRouter } from 'next/router';
 
-import { setToken } from '../libraries/auth';
+import { setToken, createUser } from '../libraries/auth';
 import { parseHash } from '../libraries/auth0';
 
 class AuthCallback extends React.Component {
@@ -14,6 +14,7 @@ class AuthCallback extends React.Component {
       }
 
       setToken(result.idToken, result.accessToken);
+      createUser(result.idToken, 'Name not implemented');
       Router.push('/');
     });
   }

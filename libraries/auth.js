@@ -1,17 +1,23 @@
 import jwtDecode from 'jwt-decode';
+import gql from 'graphql-tag';
 import persist from './persist';
 import { login as loginAuth0, logout as logoutAuth0 } from './auth0';
+import apolloClient from './apolloClient';
 
-// const getQueryParams = () => {
-//   const params = {};
-//   window.location.href.replace(
-//     /([^(?|#)=&]+)(=([^&]*))?/g,
-//     ($0, $1, $2, $3) => {
-//       params[$1] = $3;
-//     }
-//   );
-//   return params;
-// };
+export const createUser = (accessToken, name) => {
+  const mutation = gql`
+    mutation insertUser($name: String!) {
+      insert_user(objects: [{ name: $name }]) {
+        returning {
+          email
+        }
+      }
+    }
+  `;
+
+  const client = apolloClient({}, accessToken, {});
+  client.mutate({ mutation, variables: { name } });
+};
 
 export const setToken = accessToken => {
   if (!process.browser) {
