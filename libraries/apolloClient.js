@@ -38,7 +38,7 @@ function createClient(headers, token, initialState) {
 
     operation.setContext({
       headers: {
-        authorization: `Bearer ${accessToken}`,
+        ...(accessToken && { authorization: `Bearer ${accessToken}` }),
         ...adminHeaders
       }
     });
