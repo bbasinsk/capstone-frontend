@@ -16,7 +16,7 @@ export const createUser = (accessToken, name) => {
   `;
 
   const client = apolloClient({}, accessToken, {});
-  client.mutate({ mutation, variables: { name } });
+  client.mutate({ mutation, variables: { name }, errorPolicy: 'ignore' });
 };
 
 export const setToken = accessToken => {

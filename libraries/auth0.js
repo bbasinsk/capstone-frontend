@@ -8,7 +8,7 @@ const getAuth0 = () =>
     clientID: 'XCKhjoq3Mp2QFBb5d6VX9YvzHtv89X90',
     redirectUri: `${getBaseUrl()}/callback`,
     responseType: 'token id_token',
-    scope: 'openid'
+    scope: 'openid profile email'
   });
 
 export const login = () =>
@@ -17,3 +17,5 @@ export const login = () =>
   });
 export const logout = () => getAuth0().logout({ returnTo: getBaseUrl() });
 export const parseHash = callback => getAuth0().parseHash(callback);
+export const userInfo = (accessToken, callback) =>
+  getAuth0().client.userInfo(accessToken, callback);

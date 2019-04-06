@@ -2,7 +2,7 @@ import React from 'react';
 import Router, { withRouter } from 'next/router';
 
 import { setToken, createUser } from '../libraries/auth';
-import { parseHash } from '../libraries/auth0';
+import { parseHash, userInfo } from '../libraries/auth0';
 
 class AuthCallback extends React.Component {
   componentDidMount() {
@@ -13,8 +13,14 @@ class AuthCallback extends React.Component {
         return;
       }
 
+      // store the auth tokens in local storage
       setToken(result.idToken, result.accessToken);
-      createUser(result.idToken, 'Name not implemented');
+
+      // get the user info and store in in the database
+      userInfo(result.accessToken, (error, user) => {
+        createUser(result.idToken, user.name);
+      });
+
       Router.push('/');
     });
   }
