@@ -8,11 +8,14 @@ const fs = require('fs');
 const cors = require('cors');
 const helmet = require('helmet');
 const dotenv = require('dotenv');
+const ShareDB = require('sharedb');
+const richText = require('rich-text');
 const WebSocket = require('ws');
 const WebSocketJSONStream = require('websocket-json-stream');
 
 dotenv.config();
 
+ShareDB.types.register(richText.type);
 const db = require('sharedb-postgres')({
   user: process.env.PGUSER,
   host: process.env.PGHOST,
@@ -198,11 +201,11 @@ startNextServer().then(nextServer => {
 
   // Create initial document then fire callback
   const connection = shareDbBackend.connect();
-  const doc = connection.get('examples', 'textarea');
+  const doc = connection.get('examples', 'richtext');
   doc.fetch(err => {
     if (err) throw err;
     if (doc.type === null) {
-      doc.create({ content: '' }, startWebSocketServer);
+      doc.create([], 'rich-text', startWebSocketServer);
       return;
     }
     startWebSocketServer();

@@ -1,7 +1,16 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+import sharedb from 'sharedb/lib/client';
+import richText from 'rich-text';
 import 'react-quill/dist/quill.snow.css';
 
+sharedb.types.register(richText.type);
+
 class Quill extends React.Component {
+  static propTypes = {
+    agendaItemId: PropTypes.number.isRequired
+  };
+
   constructor(props) {
     super(props);
     if (typeof window !== 'undefined') {
@@ -9,16 +18,32 @@ class Quill extends React.Component {
       this.ReactQuill = require('react-quill');
     }
 
-    this.state = {
-      text: [{ insert: 'Hello world!' }]
-    };
-
     this.quillRef = null; // Quill instance
     this.reactQuillRef = null; // ReactQuill component
   }
 
   componentDidMount() {
     this.attachQuillRefs();
+    const socket = new WebSocket(
+      (window.location.protocol === 'http:' ? 'ws://' : 'wss://') +
+        window.location.host
+    );
+    const connection = new sharedb.Connection(socket);
+
+    // Create local Doc instance mapped to 'examples' collection document with id 'richtext'
+    const doc = connection.get('examples', 'richtext');
+    doc.subscribe(err => {
+      if (err) throw err;
+      this.quillRef.setContents(doc.data);
+      this.quillRef.on('text-change', (delta, oldDelta, source) => {
+        if (source !== 'user') return;
+        doc.submitOp(delta, { source: this.quillRef });
+      });
+      doc.on('op', (op, source) => {
+        if (source === this.quillRef) return;
+        this.quillRef.updateContents(op);
+      });
+    });
   }
 
   componentDidUpdate() {
@@ -30,26 +55,17 @@ class Quill extends React.Component {
     this.quillRef = this.reactQuillRef.getEditor();
   };
 
-  handleChange() {
-    if (typeof this.quillRef.getEditor !== 'function') {
-      return;
-    }
-    console.log(this.quillRef.getEditor().getContents());
-    // this.setState({ text: e.target.value });
-  }
-
   render() {
     const { ReactQuill } = this;
 
     return (
       <div>
-        Quill
+        agendaItemId :{this.props.agendaItemId}
         {ReactQuill && (
           <ReactQuill
             ref={el => {
               this.reactQuillRef = el;
             }}
-            value={this.state.text}
           />
         )}
       </div>
