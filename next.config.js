@@ -2,6 +2,7 @@
 const { IgnorePlugin } = require('webpack');
 const OfflinePlugin = require('offline-plugin');
 const Dotenv = require('dotenv-webpack');
+const withCSS = require('@zeit/next-css');
 const router = require('./routes');
 
 const initExport = {
@@ -100,4 +101,4 @@ if (process.env.STATIC_EXPORT) {
 }
 
 /* eslint-enable global-require */
-module.exports = initExport;
+module.exports = withCSS(initExport);

@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import gql from 'graphql-tag';
 import { useQuery } from 'react-apollo-hooks';
+import Quill from '../../Quill';
 
 const GET_AGENDA = gql`
   query getMeeting($meetingId: uuid!) {
@@ -11,9 +12,6 @@ const GET_AGENDA = gql`
         title
         desc
         duration
-        owner {
-          name
-        }
       }
     }
   }
@@ -38,6 +36,7 @@ function Agenda({ meetingId }) {
           <li>{title}</li>
         </ul>
       ))}
+      <Quill />
     </div>
   );
 }
