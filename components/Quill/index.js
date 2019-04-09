@@ -25,25 +25,39 @@ class Quill extends React.Component {
 
   componentDidMount() {
     this.attachQuillRefs();
+
     const socket = new ReconnectingWebSocket(
       (window.location.protocol === 'http:' ? 'ws://' : 'wss://') +
         window.location.host
     );
     const connection = new sharedb.Connection(socket);
 
-    // Create local Doc instance mapped to 'examples' collection document with id 'richtext'
-    const doc = connection.get('examples', 'richtext');
+    // Create local doc instance for the agenda item
+    const doc = connection.get('agenda_notes', `${this.props.agendaItemId}`);
+
+    // subscribe to changes
     doc.subscribe(err => {
       if (err) throw err;
+
+      // create a document if it doesn't exist
+      if (doc.type === null) {
+        doc.create([], 'rich-text', () => {});
+      }
+
+      // set quill to current data
       this.quillRef.setContents(doc.data);
-      this.quillRef.on('text-change', (delta, oldDelta, source) => {
-        if (source !== 'user') return;
-        doc.submitOp(delta, { source: this.quillRef });
-      });
+
+      // set up new updates
       doc.on('op', (op, source) => {
         if (source === this.quillRef) return;
         this.quillRef.updateContents(op);
       });
+    });
+
+    // submit local changes to the database
+    this.quillRef.on('text-change', (delta, oldDelta, source) => {
+      if (source !== 'user') return;
+      doc.submitOp(delta, { source: this.quillRef });
     });
   }
 

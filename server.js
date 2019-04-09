@@ -185,29 +185,14 @@ const startNextServer = () =>
 
 // ShareDB connection ============================================================
 // TODO:
-// - convert to rich text format
 // - figure out how to have a connection for each textbox in the meeting
 
 startNextServer().then(nextServer => {
   // Start the web socket server on the same port as the nextjs server
-  function startWebSocketServer() {
-    // Connect any incoming WebSocket connection to ShareDB
-    const wss = new WebSocket.Server({ server: nextServer });
-    wss.on('connection', ws => {
-      const stream = new WebSocketJSONStream(ws);
-      shareDbBackend.listen(stream);
-    });
-  }
+  const wss = new WebSocket.Server({ server: nextServer });
 
-  // Create initial document then fire callback
-  const connection = shareDbBackend.connect();
-  const doc = connection.get('examples', 'richtext');
-  doc.fetch(err => {
-    if (err) throw err;
-    if (doc.type === null) {
-      doc.create([], 'rich-text', startWebSocketServer);
-      return;
-    }
-    startWebSocketServer();
+  wss.on('connection', ws => {
+    const stream = new WebSocketJSONStream(ws);
+    shareDbBackend.listen(stream);
   });
 });
