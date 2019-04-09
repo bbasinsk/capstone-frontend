@@ -1,15 +1,14 @@
 import React from 'react';
+import { Button } from 'antd';
 import { login, logout } from '../../libraries/auth';
 
 export default function LoginButton() {
   return (
     <div>
-      <button type="button" onClick={() => login()}>
+      <Button type="primary" onClick={() => login()}>
         Login
-      </button>
-      <button type="button" onClick={() => logout()}>
-        Logout
-      </button>
+      </Button>
+      <Button onClick={() => logout()}>Logout</Button>
     </div>
   );
 }
