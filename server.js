@@ -33,9 +33,9 @@ const router = require('./routes');
 const logger = require('./server/logger');
 
 const customHost = process.env.HOST;
-const host = customHost || null;
+const host = customHost || '0.0.0.0';
 const prettyHost = customHost || 'localhost';
-const port = parseInt(process.env.PORT, 10) || 3000;
+const port = process.env.PORT || 3000;
 const publicEnvFilename = 'public.env';
 
 const nextApp = next({ dev: isDev });
