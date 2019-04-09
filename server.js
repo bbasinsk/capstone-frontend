@@ -196,7 +196,6 @@ startNextServer().then(nextServer => {
     wss.on('connection', ws => {
       const stream = new WebSocketJSONStream(ws);
       shareDbBackend.listen(stream);
-      wss.on('close', () => console.log('WS Disconnected'));
     });
   }
 

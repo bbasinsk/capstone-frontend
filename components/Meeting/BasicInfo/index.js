@@ -1,11 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import gql from 'graphql-tag';
-import { useQuery } from 'react-apollo-hooks';
+import { useSubscription } from 'react-apollo-hooks';
 import moment from 'moment';
 
 const GET_MEETING = gql`
-  query getMeeting($meetingId: uuid!) {
+  subscription getMeeting($meetingId: uuid!) {
     meeting(where: { meeting_id: { _eq: $meetingId } }) {
       name
       location
@@ -16,11 +16,13 @@ const GET_MEETING = gql`
 `;
 
 function BasicInfo({ meetingId }) {
-  const {
-    data: { meeting: meetings },
-    loading,
-    error
-  } = useQuery(GET_MEETING, { variables: { meetingId } });
+  const { data: { meeting: meetings } = {}, loading, error } = useSubscription(
+    GET_MEETING,
+    {
+      variables: { meetingId }
+    }
+  );
+
   if (error) return <div>Error! {error.message}</div>;
   if (loading) return <div>Loading...</div>;
   const meeting = meetings[0];
