@@ -1,12 +1,11 @@
 import { Helmet } from 'react-helmet';
-import App from '../components/App';
 import withData from '../libraries/withData';
 import withAuth from '../libraries/withAuth';
 import { dump } from '../libraries/helpers';
 
 export default withData(
   withAuth(props => (
-    <App>
+    <div>
       <Helmet>
         <title>Create a meeting</title>
       </Helmet>
@@ -20,6 +19,6 @@ export default withData(
         <hr />
         <pre>{dump(props)}</pre>
       </div>
-    </App>
+    </div>
   ))
 );

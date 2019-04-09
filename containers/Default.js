@@ -1,14 +1,13 @@
 import { Helmet } from 'react-helmet';
 import PropTypes from 'prop-types';
-import App from '../components/App';
 
 const Default = props => (
-  <App>
+  <div>
     <Helmet>
       <title>{props.title !== '' ? props.title : ''}</title>
     </Helmet>
     {props.children}
-  </App>
+  </div>
 );
 
 Default.propTypes = {

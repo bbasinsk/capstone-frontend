@@ -1,16 +1,14 @@
 import { Helmet } from 'react-helmet';
 import Link from 'next/link';
-import App from '../components/App';
 import withData from '../libraries/withData';
 import withAuth from '../libraries/withAuth';
 import { dump } from '../libraries/helpers';
-import Share from '../components/ShareJS';
 import Login from '../components/Login';
 
 export default withData(
   withAuth(
     withAuth(props => (
-      <App>
+      <div>
         <Helmet>
           <title>Meeting Magic</title>
         </Helmet>
@@ -21,10 +19,9 @@ export default withData(
             <a>Create</a>
           </Link>
           <hr />
-          <Share />
           <pre>{dump(props)}</pre>
         </div>
-      </App>
+      </div>
     ))
   )
 );
