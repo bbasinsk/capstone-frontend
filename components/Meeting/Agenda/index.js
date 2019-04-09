@@ -32,11 +32,9 @@ function Agenda({ meetingId }) {
     <div>
       <h2>Agenda</h2>
       {agendaItems.map(({ id, title }) => (
-        <div>
+        <div key={id}>
           <Quill agendaItemId={id} />
-          <ul key={id}>
-            <li>{title}</li>
-          </ul>
+          <div>{title}</div>
         </div>
       ))}
     </div>
