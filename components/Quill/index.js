@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import sharedb from 'sharedb/lib/client';
 import richText from 'rich-text';
+import ReconnectingWebSocket from 'reconnecting-websocket';
 import 'react-quill/dist/quill.snow.css';
 
 sharedb.types.register(richText.type);
@@ -24,7 +25,7 @@ class Quill extends React.Component {
 
   componentDidMount() {
     this.attachQuillRefs();
-    const socket = new WebSocket(
+    const socket = new ReconnectingWebSocket(
       (window.location.protocol === 'http:' ? 'ws://' : 'wss://') +
         window.location.host
     );
