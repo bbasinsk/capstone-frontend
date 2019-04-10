@@ -2,11 +2,10 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import gql from 'graphql-tag';
 import { useSubscription } from 'react-apollo-hooks';
-import moment from 'moment';
 
 const GET_MEETING = gql`
   subscription getMeeting($meetingId: uuid!) {
-    meeting(where: { meeting_id: { _eq: $meetingId } }) {
+    meeting(where: { id: { _eq: $meetingId } }) {
       name
       location
       start_dtm
@@ -15,7 +14,7 @@ const GET_MEETING = gql`
   }
 `;
 
-function BasicInfo({ meetingId }) {
+const BasicInfoHOC = ({ meetingId }) => {
   const { data: { meeting: meetings } = {}, loading, error } = useSubscription(
     GET_MEETING,
     {
@@ -29,24 +28,18 @@ function BasicInfo({ meetingId }) {
 
   const { name, location, start_dtm: startDtm, end_dtm: endDtm } = meeting;
 
-  const startDate = moment(startDtm).format('dddd, MMM Do');
-  const start = moment(startDtm).format('h:mm a');
-  const end = moment(endDtm).format('h:mm a');
-
   return (
     <div>
-      <h1>{name}</h1>
-      <div>{startDate}</div>
-      <div>
-        {start} to {end}
-      </div>
-      <div>{location}</div>
+      {name}
+      {location}
+      {startDtm}
+      {endDtm}
     </div>
   );
-}
+};
 
-BasicInfo.propTypes = {
+BasicInfoHOC.propTypes = {
   meetingId: PropTypes.string.isRequired
 };
 
-export default BasicInfo;
+export default BasicInfoHOC;
