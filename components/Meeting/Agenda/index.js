@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import gql from 'graphql-tag';
 import { useQuery } from 'react-apollo-hooks';
-import Quill from '../../Quill';
+import Quill from '../../quill';
 
 const GET_AGENDA = gql`
   query getMeeting($meetingId: uuid!) {

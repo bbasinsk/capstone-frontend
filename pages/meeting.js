@@ -1,10 +1,10 @@
 import { Helmet } from 'react-helmet';
+import { dump } from '../libraries/helpers';
 import withData from '../libraries/withData';
 import withAuth from '../libraries/withAuth';
-import { dump } from '../libraries/helpers';
-import BasicInfo from '../components/Meeting/BasicInfo';
-import Agenda from '../components/Meeting/Agenda';
-import Members from '../components/Meeting/Members';
+import BasicInfo from '../components/meeting/basic-info';
+import Agenda from '../components/meeting/agenda';
+import Members from '../components/meeting/members';
 
 export default withData(
   withAuth(props => (

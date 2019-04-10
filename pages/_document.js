@@ -2,7 +2,7 @@ import Document, { Head, Main, NextScript } from 'next/document';
 import Helmet from 'react-helmet';
 import { ServerStyleSheet } from 'styled-components';
 import { omit } from 'lodash';
-import AppIcons from '../components/AppIcons';
+import AppIcons from '../components/app-icons';
 
 export default class MyDocument extends Document {
   static async getInitialProps({ renderPage }) {

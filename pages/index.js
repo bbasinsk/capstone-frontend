@@ -3,7 +3,7 @@ import Link from 'next/link';
 import withData from '../libraries/withData';
 import withAuth from '../libraries/withAuth';
 import { dump } from '../libraries/helpers';
-import Login from '../components/Login';
+import Login from '../components/login';
 
 export default withData(
   withAuth(props => (
