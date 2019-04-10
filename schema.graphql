@@ -1,4 +1,4 @@
-# source: http://meeting-magic.herokuapp.com/v1alpha1/graphql
+# source: http://meeting-magic-backend.herokuapp.com/v1alpha1/graphql
 # timestamp: Sun Mar 31 2019 21:47:05 GMT-0700 (Pacific Daylight Time)
 
 schema {

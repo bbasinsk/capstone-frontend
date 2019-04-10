@@ -11,12 +11,12 @@ import persist from './persist';
 let apolloClient = null;
 
 const httpLink = createHttpLink({
-  uri: 'https://meeting-magic.herokuapp.com/v1alpha1/graphql',
+  uri: 'https://meeting-magic-backend.herokuapp.com/v1alpha1/graphql',
   credentials: 'include'
 });
 
 const wsLink = new WebSocketLink({
-  uri: 'wss://meeting-magic.herokuapp.com/v1alpha1/graphql',
+  uri: 'wss://meeting-magic-backend.herokuapp.com/v1alpha1/graphql',
   options: {
     reconnect: true
   },
