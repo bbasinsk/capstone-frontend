@@ -5,8 +5,8 @@
       "extensions": {
         "endpoints": {
           "default": {
-            "url": "http://meeting-magic.herokuapp.com/v1alpha1/graphql",
-            "subscription": "wss://meeting-magic.herokuapp.com/v1alpha1/graphql"
+            "url": "http://meeting-magic-backend.herokuapp.com/v1alpha1/graphql",
+            "subscription": "wss://meeting-magic-backend.herokuapp.com/v1alpha1/graphql"
           }
         }
       }
