@@ -6,7 +6,7 @@ import Quill from '../../quill';
 
 const GET_AGENDA = gql`
   query getMeeting($meetingId: uuid!) {
-    meeting(where: { meeting_id: { _eq: $meetingId } }) {
+    meeting(where: { id: { _eq: $meetingId } }) {
       agenda_items {
         id
         title
