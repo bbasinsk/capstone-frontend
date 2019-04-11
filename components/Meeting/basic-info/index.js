@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import gql from 'graphql-tag';
 import { useSubscription } from 'react-apollo-hooks';
+import Component from './component';
 
 const GET_MEETING = gql`
   subscription getMeeting($meetingId: uuid!) {
@@ -30,10 +31,12 @@ const BasicInfoHOC = ({ meetingId }) => {
 
   return (
     <div>
-      {name}
-      {location}
-      {startDtm}
-      {endDtm}
+      <Component
+        name={name}
+        location={location}
+        startDtm={startDtm}
+        endDtm={endDtm}
+      />
     </div>
   );
 };
