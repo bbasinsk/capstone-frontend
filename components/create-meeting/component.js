@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import {
   Form,
   Input,
   Button,
-  Checkbox,
+  // Checkbox,
   TimePicker,
   DatePicker,
   Row,
@@ -24,8 +24,6 @@ const CreateMeeting = ({
   },
   createMeeting
 }) => {
-  const [sendAgenda, setSendAgenda] = useState(true);
-
   // validate fields when form is mounted
   useEffect(() => {
     validateFields();
@@ -65,7 +63,7 @@ const CreateMeeting = ({
           <Form.Item
             validateStatus={getError('name') ? 'error' : ''}
             help={getError('name') || ''}
-            label="Meeting Name"
+            label="What is your meeting for?"
             colon={false}
           >
             {getFieldDecorator('name', {
@@ -76,7 +74,7 @@ const CreateMeeting = ({
           </Form.Item>
 
           <Form.Item
-            label="Time"
+            label="When do you want to meet?"
             required
             colon={false}
             style={{ marginBottom: 0 }}
@@ -144,21 +142,25 @@ const CreateMeeting = ({
           <Form.Item
             validateStatus={getError('location') ? 'error' : ''}
             help={getError('location') || ''}
-            label="Location"
+            label="Where are you meeting?"
             colon={false}
           >
             {getFieldDecorator('location', {
               rules: []
             })(<Input placeholder="Enter a meeting location" />)}
           </Form.Item>
+
           {/* <h2>Members</h2> */}
-          <h2>Agenda</h2>
-          <Checkbox
+
+          {/* <h2>Agenda</h2> */}
+
+          {/* <Checkbox
             checked={sendAgenda}
             onChange={e => setSendAgenda(e.target.checked)}
           >
             Send agenda to members
-          </Checkbox>
+          </Checkbox> */}
+
           <Button
             type="primary"
             htmlType="submit"
