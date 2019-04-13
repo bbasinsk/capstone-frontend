@@ -13,7 +13,8 @@ const CreateAgendaItem = ({
     getFieldsError,
     getFieldError,
     isFieldTouched,
-    validateFields
+    validateFields,
+    resetFields
   },
   createAgendaItem
 }) => {
@@ -29,7 +30,10 @@ const CreateAgendaItem = ({
     validateFields((err, values) => {
       if (!err) {
         const { title, desc } = values;
-        createAgendaItem({ title, desc });
+        createAgendaItem({ title, desc }).then(() => {
+          resetFields();
+          setOpen(false);
+        });
       }
     });
   };
