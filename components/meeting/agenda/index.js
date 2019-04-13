@@ -1,11 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import gql from 'graphql-tag';
-import { useQuery } from 'react-apollo-hooks';
+import { useSubscription } from 'react-apollo-hooks';
 import AgendaItem from './agenda-item';
+import CreateAgendaItem from '../create-agenda-item';
 
 const GET_AGENDA = gql`
-  query getMeeting($meetingId: uuid!) {
+  subscription getMeeting($meetingId: uuid!) {
     meeting(where: { id: { _eq: $meetingId } }) {
       agenda_items {
         id
@@ -18,11 +19,12 @@ const GET_AGENDA = gql`
 `;
 
 function Agenda({ meetingId }) {
-  const {
-    data: { meeting: meetings },
-    loading,
-    error
-  } = useQuery(GET_AGENDA, { variables: { meetingId } });
+  const { data: { meeting: meetings } = {}, loading, error } = useSubscription(
+    GET_AGENDA,
+    {
+      variables: { meetingId }
+    }
+  );
   if (error) return <div>Error! {error.message}</div>;
   if (loading) return <div>Loading...</div>;
 
@@ -36,6 +38,7 @@ function Agenda({ meetingId }) {
           <AgendaItem id={id} title={`${index + 1}. ${title}`} desc={desc} />
         </div>
       ))}
+      <CreateAgendaItem meetingId={meetingId} />
     </div>
   );
 }
