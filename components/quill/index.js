@@ -74,15 +74,35 @@ class Quill extends React.Component {
     const { ReactQuill } = this;
 
     return (
-      <div>
-        agendaItemId :{this.props.agendaItemId}
+      <div className="react-quill--wrapper">
         {ReactQuill && (
           <ReactQuill
+            className="react-quill"
+            theme="snow"
             ref={el => {
               this.reactQuillRef = el;
             }}
           />
         )}
+        <style jsx global>{`
+          .react-quill--wrapper {
+            height: 100%;
+            border-left: 1px solid #e8e8e8;
+          }
+
+          .react-quill {
+            height: 100%;
+          }
+
+          .ql-toolbar.ql-snow {
+            border: none;
+            border-bottom: 1px solid #e8e8e8;
+          }
+
+          .ql-container.ql-snow {
+            border: none;
+          }
+        `}</style>
       </div>
     );
   }

@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import gql from 'graphql-tag';
 import { useQuery } from 'react-apollo-hooks';
-import Quill from '../../quill';
+import AgendaItem from './agenda-item';
 
 const GET_AGENDA = gql`
   query getMeeting($meetingId: uuid!) {
@@ -31,10 +31,9 @@ function Agenda({ meetingId }) {
   return (
     <div>
       <h2>Agenda</h2>
-      {agendaItems.map(({ id, title }) => (
+      {agendaItems.map(({ id, title, desc }, index) => (
         <div key={id}>
-          <Quill agendaItemId={id} />
-          <div>{title}</div>
+          <AgendaItem id={id} title={`${index + 1}. ${title}`} desc={desc} />
         </div>
       ))}
     </div>

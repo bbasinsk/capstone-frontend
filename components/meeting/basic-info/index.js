@@ -1,4 +1,5 @@
 import React from 'react';
+import { Helmet } from 'react-helmet';
 import PropTypes from 'prop-types';
 import gql from 'graphql-tag';
 import { useSubscription } from 'react-apollo-hooks';
@@ -31,6 +32,9 @@ const BasicInfoHOC = ({ meetingId }) => {
 
   return (
     <div>
+      <Helmet>
+        <title>Meeting: {name}</title>
+      </Helmet>
       <Component
         name={name}
         location={location}
