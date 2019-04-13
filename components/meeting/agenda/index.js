@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import gql from 'graphql-tag';
 import { useSubscription } from 'react-apollo-hooks';
-import AgendaItem from './agenda-item';
+import AgendaItem from '../agenda-item';
 import CreateAgendaItem from '../create-agenda-item';
 
 const GET_AGENDA = gql`

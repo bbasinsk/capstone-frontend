@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { Card } from 'antd';
+import { Card, Popconfirm, Icon } from 'antd';
 import Quill from '../../quill';
 
-const AgendaItem = ({ id, title, desc }) => {
+const AgendaItem = ({ id, title, desc, deleteAgendaItem }) => {
   const [open, setOpen] = useState(true);
 
   return (
@@ -11,9 +11,25 @@ const AgendaItem = ({ id, title, desc }) => {
       <Card
         title={title}
         extra={
-          <a href="#" onClick={() => setOpen(!open)}>
-            {open ? 'Hide' : 'Show'}
-          </a>
+          <div>
+            <a
+              href="#"
+              onClick={() => setOpen(!open)}
+              style={{ marginRight: '20px' }}
+            >
+              {open ? 'Hide' : 'Show'}
+            </a>
+            <Popconfirm
+              placement="topRight"
+              icon={<Icon type="question-circle" />}
+              title="Are you sure you want to delete this agenda item?"
+              onConfirm={deleteAgendaItem}
+              okText="Delete"
+              cancelText="Cancel"
+            >
+              <Icon type="delete" />
+            </Popconfirm>
+          </div>
         }
         bodyStyle={{ display: open ? 'block' : 'none', padding: 0 }}
       >
@@ -46,7 +62,8 @@ const AgendaItem = ({ id, title, desc }) => {
 AgendaItem.propTypes = {
   id: PropTypes.number.isRequired,
   title: PropTypes.string.isRequired,
-  desc: PropTypes.string
+  desc: PropTypes.string,
+  deleteAgendaItem: PropTypes.func.isRequired
 };
 AgendaItem.defaultProps = {
   desc: ''
