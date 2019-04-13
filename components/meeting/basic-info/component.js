@@ -22,8 +22,6 @@ const BasicInfo = ({ name, location, startDtm, endDtm }) => {
 
       <style jsx>{`
         .meeting-info {
-          background: white;
-          padding: 24px;
           margin-bottom: 40px;
         }
 

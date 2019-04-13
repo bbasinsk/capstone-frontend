@@ -31,7 +31,7 @@ function Agenda({ meetingId }) {
   const { agenda_items: agendaItems } = meetings[0];
 
   return (
-    <div>
+    <div className="agenda">
       <h2>Agenda</h2>
       {agendaItems.map(({ id, title, desc }, index) => (
         <div key={id}>
@@ -39,6 +39,11 @@ function Agenda({ meetingId }) {
         </div>
       ))}
       <CreateAgendaItem meetingId={meetingId} />
+      <style jsx>{`
+        .agenda {
+          margin-bottom: 40px;
+        }
+      `}</style>
     </div>
   );
 }
