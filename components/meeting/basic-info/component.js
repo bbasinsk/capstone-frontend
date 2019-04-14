@@ -1,7 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
-import { Button } from 'antd';
+import { Button, Typography } from 'antd';
+
+const { Title, Text, Paragraph } = Typography;
 
 const BasicInfo = ({ name, location, startDtm, endDtm, openModal }) => {
   const startDate = moment(startDtm).format('dddd, MMM Do');
@@ -10,45 +12,49 @@ const BasicInfo = ({ name, location, startDtm, endDtm, openModal }) => {
 
   return (
     <div className="meeting-info">
-      <div className="meeting-info--left">
-        <h1 className="meeting-info__title">{name}</h1>
+      <div className="meeting-info__wrapper">
+        <div className="meeting-info--left">
+          <Title className="meeting-info__title">{name}</Title>
 
-        <div className="meeting-info__dtm">
-          <span className="meeting-info__date">{startDate},</span>
-          <b className="meeting-info__time">
-            {start} to {end}
-          </b>
+          <div className="meeting-info__dtm">
+            <Paragraph>
+              <Text className="meeting-info__date">{startDate}</Text>
+              <br />
+              <Text strong className="meeting-info__time">
+                {start} to {end}
+              </Text>
+            </Paragraph>
+          </div>
+
+          <Text className="meeting-info__location" style={{ fontSize: '16px' }}>
+            Location: {location}
+          </Text>
         </div>
 
-        <div className="meeting-info__location">{location}</div>
+        <div className="meeting-info--right">
+          <Button size="large" onClick={openModal} type="danger">
+            END
+          </Button>
+        </div>
       </div>
-
-      <div className="meeting-info--right">
-        <Button onClick={openModal} type="danger">
-          END
-        </Button>
-      </div>
-
       <style jsx>{`
         .meeting-info {
-          margin-bottom: 40px;
+          background: white;
+        }
+
+        .meeting-info__wrapper {
           display: flex;
           flex-direction: row;
           justify-content: space-between;
           padding: 32px;
+          max-width: 1200px;
+          margin: auto;
+          margin-bottom: 40px;
         }
 
-        .meeting-info__dtm {
+        .meeting-info--right {
           display: flex;
-          flex-direction: row;
-        }
-
-        .meeting-info__time {
-          margin-left: 8px;
-        }
-
-        .meeting-info__location {
-          font-size: 16px;
+          align-items: center;
         }
       `}</style>
     </div>

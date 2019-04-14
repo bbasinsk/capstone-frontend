@@ -12,22 +12,20 @@ const AgendaItem = ({ id, title, desc, deleteAgendaItem }) => {
         title={title}
         extra={
           <div>
-            <a
-              href="#"
+            <Icon
+              type={open ? 'check' : 'down'}
               onClick={() => setOpen(!open)}
-              style={{ marginRight: '20px' }}
-            >
-              {open ? 'Hide' : 'Show'}
-            </a>
+              style={{ marginRight: '18px', color: '#1890FF' }}
+            />
             <Popconfirm
               placement="topRight"
-              icon={<Icon type="question-circle" />}
+              icon={<Icon type="warning" />}
               title="Are you sure you want to delete this agenda item?"
               onConfirm={deleteAgendaItem}
               okText="Delete"
               cancelText="Cancel"
             >
-              <Icon type="delete" />
+              <Icon type="close" style={{ color: '#f5222d' }} />
             </Popconfirm>
           </div>
         }

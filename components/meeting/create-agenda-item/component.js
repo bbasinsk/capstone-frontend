@@ -42,7 +42,12 @@ const CreateAgendaItem = ({
 
   return !open ? (
     <div style={{ textAlign: 'center' }}>
-      <Button size="large" type="primary" onClick={() => setOpen(true)}>
+      <Button
+        icon="plus-square"
+        size="large"
+        type="primary"
+        onClick={() => setOpen(true)}
+      >
         NEW
       </Button>
     </div>
@@ -79,14 +84,17 @@ const CreateAgendaItem = ({
               })(<TextArea rows={4} placeholder="Enter a description" />)}
             </Form.Item>
 
-            <Button onClick={() => setOpen(false)}>Cancel</Button>
-            <Button
-              type="primary"
-              htmlType="submit"
-              disabled={hasErrors(getFieldsError())}
-            >
-              Create
-            </Button>
+            <div>
+              <Button onClick={() => setOpen(false)}>Cancel</Button>
+              <Button
+                type="primary"
+                htmlType="submit"
+                disabled={hasErrors(getFieldsError())}
+                style={{ marginLeft: '12px' }}
+              >
+                Create
+              </Button>
+            </div>
           </Form>
         </Col>
       </Row>
