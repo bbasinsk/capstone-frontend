@@ -8,8 +8,6 @@ import AgendaFooter from '../agenda-footer';
 const Meeting = ({ meetingId }) => {
   const [modalOpen, setModalOpen] = useState(false);
 
-  console.log({ modalOpen });
-
   return (
     <div>
       <BasicInfo meetingId={meetingId} openModal={() => setModalOpen(true)} />

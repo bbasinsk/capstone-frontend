@@ -1,11 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Modal } from 'antd';
+import { Router } from '../../../routes';
 
 const EndModal = ({ visible, closeModal }) => {
   const onOk = () => {
-    console.log('done');
-    closeModal();
+    Router.pushRoute('/complete');
   };
 
   return (
