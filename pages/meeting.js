@@ -3,10 +3,7 @@ import { Layout } from 'antd';
 import Link from 'next/link';
 import withData from '../libraries/withData';
 import withAuth from '../libraries/withAuth';
-import BasicInfo from '../components/meeting/basic-info';
-import Agenda from '../components/meeting/agenda';
-
-const { Content } = Layout;
+import Meeting from '../components/meeting/meeting';
 
 export default withData(
   withAuth(props => (
@@ -18,10 +15,7 @@ export default withData(
         <Link href="/">
           <a>Home</a>
         </Link>
-        <Content style={{ margin: 'auto' }}>
-          <BasicInfo meetingId={props.router.url.query.meetingId} />
-          <Agenda meetingId={props.router.url.query.meetingId} />
-        </Content>
+        <Meeting meetingId={props.router.url.query.meetingId} />
       </Layout>
     </div>
   ))

@@ -41,7 +41,7 @@ function Agenda({ meetingId }) {
       <CreateAgendaItem meetingId={meetingId} />
       <style jsx>{`
         .agenda {
-          margin-bottom: 40px;
+          margin-bottom: 192px;
         }
       `}</style>
     </div>

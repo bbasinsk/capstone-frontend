@@ -16,7 +16,7 @@ const GET_MEETING = gql`
   }
 `;
 
-const BasicInfoHOC = ({ meetingId }) => {
+const BasicInfoHOC = ({ meetingId, openModal }) => {
   const { data: { meeting: meetings } = {}, loading, error } = useSubscription(
     GET_MEETING,
     {
@@ -32,21 +32,21 @@ const BasicInfoHOC = ({ meetingId }) => {
 
   return (
     <div>
-      <Helmet>
-        <title>Meeting: {name}</title>
-      </Helmet>
+      <Helmet title={`Meeting: ${name}`} />
       <Component
         name={name}
         location={location}
         startDtm={startDtm}
         endDtm={endDtm}
+        openModal={openModal}
       />
     </div>
   );
 };
 
 BasicInfoHOC.propTypes = {
-  meetingId: PropTypes.string.isRequired
+  meetingId: PropTypes.string.isRequired,
+  openModal: PropTypes.func.isRequired
 };
 
 export default BasicInfoHOC;
