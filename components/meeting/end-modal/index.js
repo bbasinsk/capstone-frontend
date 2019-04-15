@@ -17,7 +17,7 @@ const EndModal = ({ visible, closeModal }) => {
         onCancel={closeModal}
       >
         <h1>Complete your meeting? </h1>
-        <b>Meeting summaries comming soon!</b>
+        <b>Meeting summaries coming soon!</b>
       </Modal>
     </div>
   );
