@@ -5,7 +5,14 @@ import { Button, Typography } from 'antd';
 
 const { Title, Text, Paragraph } = Typography;
 
-const BasicInfo = ({ name, location, startDtm, endDtm, openModal }) => {
+const BasicInfo = ({
+  name,
+  location,
+  startDtm,
+  endDtm,
+  openModal,
+  updateMeeting
+}) => {
   const startDate = moment(startDtm).format('dddd, MMM Do');
   const start = moment(startDtm).format('h:mm a');
   const end = moment(endDtm).format('h:mm a');
@@ -14,7 +21,12 @@ const BasicInfo = ({ name, location, startDtm, endDtm, openModal }) => {
     <div className="meeting-info">
       <div className="meeting-info__wrapper">
         <div className="meeting-info--left">
-          <Title className="meeting-info__title">{name}</Title>
+          <Title
+            className="meeting-info__title"
+            editable={{ onChange: newName => updateMeeting({ newName }) }}
+          >
+            {name}
+          </Title>
 
           <div className="meeting-info__dtm">
             <Paragraph>
@@ -26,9 +38,22 @@ const BasicInfo = ({ name, location, startDtm, endDtm, openModal }) => {
             </Paragraph>
           </div>
 
-          <Text className="meeting-info__location" style={{ fontSize: '16px' }}>
-            Location: {location}
-          </Text>
+          <Paragraph
+            className="meeting-info__location"
+            style={{ fontSize: '16px' }}
+          >
+            <Text style={{ display: 'inline-block', marginBottom: '10px' }}>
+              Location:
+            </Text>
+            <Text
+              style={{ marginLeft: '6px' }}
+              editable={{
+                onChange: newLocation => updateMeeting({ newLocation })
+              }}
+            >
+              {location}
+            </Text>
+          </Paragraph>
         </div>
 
         <div className="meeting-info--right">
@@ -73,7 +98,8 @@ BasicInfo.propTypes = {
   location: PropTypes.string,
   startDtm: PropTypes.string,
   endDtm: PropTypes.string,
-  openModal: PropTypes.func.isRequired
+  openModal: PropTypes.func.isRequired,
+  updateMeeting: PropTypes.func.isRequired
 };
 
 export default BasicInfo;
