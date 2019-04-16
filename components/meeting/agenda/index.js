@@ -2,8 +2,12 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import gql from 'graphql-tag';
 import { useSubscription } from 'react-apollo-hooks';
+import { Typography } from 'antd';
 import AgendaItem from '../agenda-item';
+
 import CreateAgendaItem from '../create-agenda-item';
+
+const { Title } = Typography;
 
 const GET_AGENDA = gql`
   subscription getMeeting($meetingId: uuid!) {
@@ -32,7 +36,7 @@ function Agenda({ meetingId }) {
 
   return (
     <div className="agenda">
-      <h2>Agenda</h2>
+      <Title level={2}>Agenda</Title>
       {agendaItems.map(({ id, title, desc }, index) => (
         <div key={id}>
           <AgendaItem id={id} title={`${index + 1}. ${title}`} desc={desc} />
