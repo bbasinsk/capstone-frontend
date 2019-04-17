@@ -17,6 +17,7 @@ const GET_AGENDA = gql`
         title
         desc
         duration
+        completed
       }
     }
   }
@@ -37,11 +38,19 @@ function Agenda({ meetingId }) {
   return (
     <div className="agenda">
       <Title level={2}>Agenda</Title>
-      {agendaItems.map(({ id, title, desc }, index) => (
-        <div key={id}>
-          <AgendaItem id={id} title={`${index + 1}. ${title}`} desc={desc} />
-        </div>
-      ))}
+      {agendaItems
+        .sort(({ id: idA }, { id: idB }) => idB - idA)
+        .map(({ id, title, desc, duration, completed }, index) => (
+          <div key={id}>
+            <AgendaItem
+              id={id}
+              title={`${index + 1}. ${title}`}
+              desc={desc}
+              duration={duration}
+              completed={completed}
+            />
+          </div>
+        ))}
       <CreateAgendaItem meetingId={meetingId} />
       <style jsx>{`
         .agenda {

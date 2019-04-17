@@ -1,70 +1,88 @@
-import React, { useState } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { Card, Popconfirm, Icon } from 'antd';
 import Quill from '../../quill';
 
-const AgendaItem = ({ id, title, desc, deleteAgendaItem }) => {
-  const [open, setOpen] = useState(true);
-
-  return (
-    <div style={{ marginBottom: '36px' }}>
-      <Card
-        title={title}
-        extra={
-          <div>
-            <Icon
-              type={open ? 'check' : 'down'}
-              onClick={() => setOpen(!open)}
-              style={{ marginRight: '18px', color: '#1890FF' }}
-            />
-            <Popconfirm
-              placement="topRight"
-              icon={<Icon type="warning" />}
-              title="Are you sure you want to delete this agenda item?"
-              onConfirm={deleteAgendaItem}
-              okText="Delete"
-              cancelText="Cancel"
-            >
-              <Icon type="close" style={{ color: '#f5222d' }} />
-            </Popconfirm>
-          </div>
-        }
-        bodyStyle={{ display: open ? 'block' : 'none', padding: 0 }}
-      >
-        <div className="agenda-item__body">
-          <div className="agenda-item__desc">
-            <h3>{desc && 'Description'}</h3>
-            {desc || 'No description'}
-          </div>
-
-          <div className="agenda-item__editor">
-            <Quill agendaItemId={id} />
-          </div>
+const AgendaItem = ({
+  id,
+  title,
+  desc,
+  duration,
+  deleteAgendaItem,
+  completed,
+  setCompleted
+}) => (
+  <div style={{ marginBottom: '36px' }}>
+    <Card
+      title={title}
+      extra={
+        <div>
+          {duration && (
+            <span className="agenda-item__duration">
+              <Icon type="clock-circle" />
+              {` ${duration} min`}
+            </span>
+          )}
+          <Icon
+            type={completed ? 'down' : 'check'}
+            onClick={() => setCompleted(!completed)}
+            style={{ marginRight: '18px', color: '#1890FF' }}
+          />
+          <Popconfirm
+            placement="topRight"
+            icon={<Icon type="warning" />}
+            title="Are you sure you want to delete this agenda item?"
+            onConfirm={deleteAgendaItem}
+            okText="Delete"
+            cancelText="Cancel"
+          >
+            <Icon type="close" style={{ color: '#f5222d' }} />
+          </Popconfirm>
         </div>
-      </Card>
+      }
+      bodyStyle={{ display: completed ? 'none' : 'block', padding: 0 }}
+    >
+      <div className="agenda-item__body">
+        <div className="agenda-item__desc">
+          <h3>{desc && 'Description'}</h3>
+          {desc || 'No description'}
+        </div>
 
-      <style jsx>{`
-        .agenda-item__body {
-          display: grid;
-          grid-template-columns: 1fr 1fr;
-          grid-template-rows: auto;
-        }
+        <div className="agenda-item__editor">
+          <Quill agendaItemId={id} />
+        </div>
+      </div>
+    </Card>
 
-        .agenda-item__desc {
-          padding: 24px;
-        }
-      `}</style>
-    </div>
-  );
-};
+    <style jsx>{`
+      .agenda-item__body {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: auto;
+      }
+
+      .agenda-item__desc {
+        padding: 24px;
+      }
+
+      .agenda-item__duration {
+        margin-right: 16px;
+      }
+    `}</style>
+  </div>
+);
 AgendaItem.propTypes = {
   id: PropTypes.number.isRequired,
   title: PropTypes.string.isRequired,
   desc: PropTypes.string,
-  deleteAgendaItem: PropTypes.func.isRequired
+  duration: PropTypes.number,
+  deleteAgendaItem: PropTypes.func.isRequired,
+  completed: PropTypes.bool.isRequired,
+  setCompleted: PropTypes.func.isRequired
 };
 AgendaItem.defaultProps = {
-  desc: ''
+  desc: '',
+  duration: null
 };
 
 export default AgendaItem;

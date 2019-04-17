@@ -12,31 +12,51 @@ const DELETE_AGENDA_ITEM = gql`
   }
 `;
 
-const AgendaItem = ({ id, title, desc }) => {
-  const deleteAgendaItemMutation = useMutation(DELETE_AGENDA_ITEM);
+const SET_ITEM_COMPLETE = gql`
+  mutation setItemComplete($id: Int!, $completed: Boolean!) {
+    update_agenda_item(
+      where: { id: { _eq: $id } }
+      _set: { completed: $completed }
+    ) {
+      affected_rows
+    }
+  }
+`;
 
-  const deleteAgendaItem = async () => {
-    await deleteAgendaItemMutation({
-      variables: { id }
-    });
-  };
+const AgendaItem = ({ id, title, desc, duration, completed }) => {
+  const deleteAgendaItem = useMutation(DELETE_AGENDA_ITEM);
+  const setCompleted = useMutation(SET_ITEM_COMPLETE);
 
   return (
     <Component
       id={id}
       title={title}
       desc={desc}
-      deleteAgendaItem={deleteAgendaItem}
+      duration={duration}
+      deleteAgendaItem={() =>
+        deleteAgendaItem({
+          variables: { id }
+        })
+      }
+      completed={completed}
+      setCompleted={isCompleted =>
+        setCompleted({
+          variables: { id, completed: isCompleted }
+        })
+      }
     />
   );
 };
 AgendaItem.propTypes = {
   id: PropTypes.number.isRequired,
   title: PropTypes.string.isRequired,
-  desc: PropTypes.string
+  desc: PropTypes.string,
+  duration: PropTypes.number,
+  completed: PropTypes.bool.isRequired
 };
 AgendaItem.defaultProps = {
-  desc: ''
+  desc: '',
+  duration: undefined
 };
 
 export default AgendaItem;
