@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { Form, Input, Icon, Button } from 'antd';
 import PropTypes from 'prop-types';
 
+const { TextArea } = Input;
+
 const AgendaItems = ({
   getFieldDecorator,
   getFieldValue,
@@ -45,7 +47,7 @@ const AgendaItems = ({
           ]
         })(
           <Input
-            placeholder="Agenda item title"
+            placeholder="Enter an agenda item title"
             style={{ width: '90%', marginRight: 8 }}
           />
         )}
@@ -59,10 +61,7 @@ const AgendaItems = ({
       </Form.Item>
       <Form.Item>
         {getFieldDecorator(`agendaItems[${k}].desc`)(
-          <Input
-            placeholder="Agenda item description"
-            style={{ width: '90%', marginRight: 8 }}
-          />
+          <TextArea rows={4} placeholder="Enter an agenda item description" />
         )}
       </Form.Item>
     </div>
@@ -75,7 +74,7 @@ const AgendaItems = ({
         <Button
           type="dashed"
           onClick={add}
-          style={{ width: '100%', padding: '54px' }}
+          style={{ width: '100%', height: '100px' }}
         >
           <Icon type="plus" /> Add Agenda Item
         </Button>
