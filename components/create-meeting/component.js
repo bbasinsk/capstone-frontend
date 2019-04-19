@@ -51,6 +51,9 @@ const CreateMeeting = ({
         const [date] = values.date.toISOString().split('T');
         const [, startTime] = values.startTime.toISOString().split('T');
         const [, endTime] = values.endTime.toISOString().split('T');
+        const agendaItems = getFieldValue('keys').map(
+          k => values.agendaItems[k]
+        );
 
         // build the object to create the meeting
         const meeting = {
@@ -59,7 +62,7 @@ const CreateMeeting = ({
           startDtm: `${date}T${startTime}`,
           endDtm: `${date}T${endTime}`,
           agendaItems: {
-            data: values.agendaItems
+            data: agendaItems
           }
         };
 
