@@ -11,6 +11,7 @@ const CREATE_MEETING = gql`
     $location: String
     $startDtm: timestamptz
     $endDtm: timestamptz
+    $agendaItems: agenda_item_arr_rel_insert_input
   ) {
     insert_meeting(
       objects: [
@@ -19,6 +20,7 @@ const CREATE_MEETING = gql`
           location: $location
           start_dtm: $startDtm
           end_dtm: $endDtm
+          agenda_items: $agendaItems
         }
       ]
     ) {
@@ -32,21 +34,25 @@ const CREATE_MEETING = gql`
 export default function hoc() {
   const createMeetingMutation = useMutation(CREATE_MEETING);
 
-  const createMeeting = async ({ name, location, startDtm, endDtm }) => {
+  const createMeeting = async ({
+    name,
+    location,
+    startDtm,
+    endDtm,
+    agendaItems
+  }) => {
     // create meeting in db
     const { data } = await createMeetingMutation({
-      variables: { name, location, startDtm, endDtm }
+      variables: { name, location, startDtm, endDtm, agendaItems }
     });
-
     // get meeting id
     const meetingId = get(data, 'insert_meeting.returning[0].id');
-
     // go to the meeting page
     Router.pushRoute('meeting', { meetingId });
   };
 
   return (
-    <div>
+    <div style={{ maxWidth: '1200px', margin: 'auto', padding: '32px' }}>
       <Component createMeeting={createMeeting} />
     </div>
   );

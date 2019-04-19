@@ -2,23 +2,37 @@ import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import {
   Form,
-  Input,
   Button,
   // Checkbox,
-  TimePicker,
-  DatePicker,
   Row,
   Col
 } from 'antd';
+import lodash from 'lodash';
+import BasicInfo from './basic-info';
+import AgendaItems from './agenda-items';
 
-const hasErrors = fieldsError =>
-  Object.keys(fieldsError).some(field => fieldsError[field]);
+const formHasErrors = (fieldsError, agendaKeys) => {
+  const withoutAgenda = lodash.omit(fieldsError, ['agendaItems']);
+
+  const agendaErrors = (fieldsError.agendaItems || [])
+    .filter((item, idx) => agendaKeys.includes(idx))
+    .map(item => Object.keys(item).some(field => item[field]))
+    .some(item => item);
+
+  const infoErrors = Object.keys(withoutAgenda).some(
+    field => fieldsError[field]
+  );
+
+  return infoErrors || agendaErrors;
+};
 
 const CreateMeeting = ({
   form: {
     getFieldDecorator,
     getFieldsError,
     getFieldError,
+    getFieldValue,
+    setFieldsValue,
     isFieldTouched,
     validateFields
   },
@@ -39,15 +53,18 @@ const CreateMeeting = ({
         const [, endTime] = values.endTime.toISOString().split('T');
 
         // build the object to create the meeting
-        const basicInfo = {
+        const meeting = {
           name: values.name,
           location: values.location,
           startDtm: `${date}T${startTime}`,
-          endDtm: `${date}T${endTime}`
+          endDtm: `${date}T${endTime}`,
+          agendaItems: {
+            data: values.agendaItems
+          }
         };
 
         // create the meeting
-        createMeeting(basicInfo);
+        createMeeting(meeting);
       }
     });
   };
@@ -59,100 +76,19 @@ const CreateMeeting = ({
       <Col xs={24} sm={18} md={12} lg={8} xl={10}>
         <Form onSubmit={handleSubmit}>
           <h1>Create your meeting</h1>
-          {/* MEETING NAME */}
-          <Form.Item
-            validateStatus={getError('name') ? 'error' : ''}
-            help={getError('name') || ''}
-            label="What is your meeting for?"
-            colon={false}
-          >
-            {getFieldDecorator('name', {
-              rules: [
-                { required: true, message: 'Please enter a meeting name' }
-              ]
-            })(<Input autoFocus placeholder="Enter a meeting name" />)}
-          </Form.Item>
+          <BasicInfo
+            getFieldDecorator={getFieldDecorator}
+            getError={getError}
+          />
 
-          <Form.Item
-            label="When do you want to meet?"
-            required
-            colon={false}
-            style={{ marginBottom: 0 }}
-          >
-            <Row gutter={8}>
-              <Col span={8}>
-                {/* DATE */}
-                <Form.Item
-                  validateStatus={getError('date') ? 'error' : ''}
-                  help={getError('date') || ''}
-                >
-                  {getFieldDecorator('date', {
-                    rules: [{ required: true, message: 'Please enter a date' }]
-                  })(
-                    <DatePicker style={{ width: '100%' }} placeholder="Date" />
-                  )}
-                </Form.Item>
-              </Col>
-              <Col span={8}>
-                {/* START-TIME */}
-                <Form.Item
-                  validateStatus={getError('startTime') ? 'error' : ''}
-                  help={getError('startTime') || ''}
-                >
-                  {getFieldDecorator('startTime', {
-                    rules: [
-                      { required: true, message: 'Please enter a start time' }
-                    ]
-                  })(
-                    <TimePicker
-                      style={{ width: '100%' }}
-                      use12Hours
-                      format="h:mm a"
-                      minuteStep={5}
-                      placeholder="Start time"
-                    />
-                  )}
-                </Form.Item>
-              </Col>
-              <Col span={8}>
-                {/* END-TIME */}
-                <Form.Item
-                  validateStatus={getError('endTime') ? 'error' : ''}
-                  help={getError('endTime') || ''}
-                >
-                  {getFieldDecorator('endTime', {
-                    rules: [
-                      { required: true, message: 'Please enter an end time' }
-                    ]
-                  })(
-                    <TimePicker
-                      style={{ width: '100%' }}
-                      use12Hours
-                      format="h:mm a"
-                      minuteStep={5}
-                      placeholder="End time"
-                    />
-                  )}
-                </Form.Item>
-              </Col>
-            </Row>
-          </Form.Item>
-
-          {/* LOCATION */}
-          <Form.Item
-            validateStatus={getError('location') ? 'error' : ''}
-            help={getError('location') || ''}
-            label="Where are you meeting?"
-            colon={false}
-          >
-            {getFieldDecorator('location', {
-              rules: []
-            })(<Input placeholder="Enter a meeting location" />)}
-          </Form.Item>
-
-          {/* <h2>Members</h2> */}
-
-          {/* <h2>Agenda</h2> */}
+          <h2>Agenda</h2>
+          <AgendaItems
+            getFieldDecorator={getFieldDecorator}
+            getFieldValue={getFieldValue}
+            setFieldsValue={setFieldsValue}
+            validateFields={validateFields}
+            getError={getError}
+          />
 
           {/* <Checkbox
             checked={sendAgenda}
@@ -164,7 +100,7 @@ const CreateMeeting = ({
           <Button
             type="primary"
             htmlType="submit"
-            disabled={hasErrors(getFieldsError())}
+            disabled={formHasErrors(getFieldsError(), getFieldValue('keys'))}
           >
             CREATE
           </Button>
@@ -175,13 +111,15 @@ const CreateMeeting = ({
 };
 CreateMeeting.propTypes = {
   form: PropTypes.shape({
-    getFieldDecorator: PropTypes.func
+    getFieldDecorator: PropTypes.func.isRequired,
+    getFieldValue: PropTypes.func.isRequired,
+    setFieldsValue: PropTypes.func.isRequired
   }).isRequired,
   createMeeting: PropTypes.func.isRequired
 };
 
-const WrappedCreateMeetingForm = Form.create({ name: 'create_meeting' })(
-  CreateMeeting
-);
+const WrappedCreateMeetingForm = Form.create({
+  name: 'create_meeting'
+})(CreateMeeting);
 
 export default WrappedCreateMeetingForm;
