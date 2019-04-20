@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Form, Input, Icon, Button } from 'antd';
+import { Form, Input, Icon, Button, Card } from 'antd';
 import PropTypes from 'prop-types';
 
 const { TextArea } = Input;
@@ -32,39 +32,51 @@ const AgendaItems = ({
 
   getFieldDecorator('keys', { initialValue: [] });
 
-  const formItems = getFieldValue('keys').map(k => (
-    <div key={k}>
-      <Form.Item
-        validateStatus={getError(`agendaItems[${k}].title`) ? 'error' : ''}
-        help={getError(`agendaItems[${k}].title`) || ''}
-      >
-        {getFieldDecorator(`agendaItems[${k}].title`, {
-          rules: [
-            {
-              required: true,
-              message: 'Please input an item title or delete the item.'
-            }
-          ]
-        })(
-          <Input
-            placeholder="Enter an agenda item title"
-            style={{ width: '90%', marginRight: 8 }}
-          />
-        )}
-        {
-          <Icon
-            className="dynamic-delete-button"
-            type="minus-square"
-            onClick={() => remove(k)}
-          />
-        }
-      </Form.Item>
+  const formItems = getFieldValue('keys').map((k, idx) => (
+    <Card
+      key={k}
+      type="inner"
+      className="agenda-item"
+      title={
+        <div className="agenda-item__top">
+          <div className="agenda-item__top__title">
+            <Form.Item
+              validateStatus={
+                getError(`agendaItems[${k}].title`) ? 'error' : ''
+              }
+              help={getError(`agendaItems[${k}].title`) || ''}
+            >
+              {getFieldDecorator(`agendaItems[${k}].title`, {
+                rules: [
+                  {
+                    required: true,
+                    message: 'Please input a title or delete the item.'
+                  }
+                ]
+              })(
+                <div>
+                  <span style={{ marginRight: 12 }}>{`${idx + 1}.`}</span>
+                  <Input placeholder="Enter a title" />
+                </div>
+              )}
+            </Form.Item>
+          </div>
+          <div>
+            <Icon
+              className="dynamic-delete-button"
+              type="close"
+              onClick={() => remove(k)}
+            />
+          </div>
+        </div>
+      }
+    >
       <Form.Item>
         {getFieldDecorator(`agendaItems[${k}].desc`)(
-          <TextArea rows={4} placeholder="Enter an agenda item description" />
+          <TextArea rows={4} placeholder="Enter a description" />
         )}
       </Form.Item>
-    </div>
+    </Card>
   ));
 
   return (
@@ -79,6 +91,22 @@ const AgendaItems = ({
           <Icon type="plus" /> Add Agenda Item
         </Button>
       </Form.Item>
+      <style jsx global>{`
+        .agenda-item {
+          margin-bottom: 32px;
+        }
+
+        .agenda-item__top {
+          display: flex;
+          flex-direction: row;
+          justify-content: space-between;
+          align-items: center;
+        }
+
+        .agenda-item__top__title .ant-form-item {
+          margin-bottom: 0;
+        }
+      `}</style>
     </div>
   );
 };

@@ -1,15 +1,11 @@
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
-import {
-  Form,
-  Button,
-  // Checkbox,
-  Row,
-  Col
-} from 'antd';
+import { Form, Button, Row, Col, Card, Typography } from 'antd';
 import lodash from 'lodash';
 import BasicInfo from './basic-info';
 import AgendaItems from './agenda-items';
+
+const { Title } = Typography;
 
 const formHasErrors = (fieldsError, agendaKeys) => {
   const withoutAgenda = lodash.omit(fieldsError, ['agendaItems']);
@@ -75,41 +71,48 @@ const CreateMeeting = ({
   const getError = field => isFieldTouched(field) && getFieldError(field);
 
   return (
-    <Row>
-      <Col xs={24} sm={18} md={12} lg={8} xl={10}>
-        <Form onSubmit={handleSubmit}>
-          <h1>Create your meeting</h1>
-          <BasicInfo
-            getFieldDecorator={getFieldDecorator}
-            getError={getError}
-          />
+    <div>
+      <Title>Create your meeting</Title>
+      <Card>
+        <Row>
+          <Col xs={24} sm={24} md={18} lg={16} xl={14}>
+            <Form onSubmit={handleSubmit}>
+              <BasicInfo
+                getFieldDecorator={getFieldDecorator}
+                getError={getError}
+              />
 
-          <h2>Agenda</h2>
-          <AgendaItems
-            getFieldDecorator={getFieldDecorator}
-            getFieldValue={getFieldValue}
-            setFieldsValue={setFieldsValue}
-            validateFields={validateFields}
-            getError={getError}
-          />
+              <Title level={2}>Agenda</Title>
+              <AgendaItems
+                getFieldDecorator={getFieldDecorator}
+                getFieldValue={getFieldValue}
+                setFieldsValue={setFieldsValue}
+                validateFields={validateFields}
+                getError={getError}
+              />
 
-          {/* <Checkbox
+              {/* <Checkbox
             checked={sendAgenda}
             onChange={e => setSendAgenda(e.target.checked)}
           >
             Send agenda to members
           </Checkbox> */}
 
-          <Button
-            type="primary"
-            htmlType="submit"
-            disabled={formHasErrors(getFieldsError(), getFieldValue('keys'))}
-          >
-            CREATE
-          </Button>
-        </Form>
-      </Col>
-    </Row>
+              <Button
+                type="primary"
+                htmlType="submit"
+                disabled={formHasErrors(
+                  getFieldsError(),
+                  getFieldValue('keys')
+                )}
+              >
+                CREATE
+              </Button>
+            </Form>
+          </Col>
+        </Row>
+      </Card>
+    </div>
   );
 };
 CreateMeeting.propTypes = {
