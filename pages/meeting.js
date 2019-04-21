@@ -1,9 +1,12 @@
 import { Helmet } from 'react-helmet';
 import { Layout } from 'antd';
-import Link from 'next/link';
+import moment from 'moment';
 import withData from '../libraries/withData';
 import withAuth from '../libraries/withAuth';
 import Meeting from '../components/meeting/meeting';
+import Header from '../components/header';
+
+const { Content, Footer } = Layout;
 
 export default withData(
   withAuth(props => (
@@ -11,11 +14,16 @@ export default withData(
       <Helmet>
         <title>Meeting</title>
       </Helmet>
-      <Layout>
-        <Link href="/">
-          <a>Home</a>
-        </Link>
-        <Meeting meetingId={props.router.url.query.meetingId} />
+      <Layout className="layout" style={{ minHeight: '100vh' }}>
+        <Header />
+
+        <Content>
+          <Meeting meetingId={props.router.url.query.meetingId} />
+        </Content>
+
+        <Footer style={{ textAlign: 'center' }}>
+          NeatMeet ©{moment().year()}
+        </Footer>
       </Layout>
     </div>
   ))

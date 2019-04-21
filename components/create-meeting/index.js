@@ -52,7 +52,7 @@ export default function hoc() {
   };
 
   return (
-    <div style={{ maxWidth: '1200px', margin: 'auto', padding: '32px' }}>
+    <div style={{ maxWidth: '1200px', margin: 'auto' }}>
       <Component createMeeting={createMeeting} />
     </div>
   );

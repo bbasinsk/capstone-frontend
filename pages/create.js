@@ -1,17 +1,29 @@
 import { Helmet } from 'react-helmet';
+import { Layout } from 'antd';
+import moment from 'moment';
 import withData from '../libraries/withData';
 import withAuth from '../libraries/withAuth';
+import Header from '../components/header';
 import CreateMeeting from '../components/create-meeting';
+
+const { Content, Footer } = Layout;
 
 export default withData(
   withAuth(() => (
     <div>
-      <Helmet>
-        <title>Create a meeting</title>
-      </Helmet>
+      <Helmet title="Create Meeting" />
       <div>
-        <a href="/">Home</a>
-        <CreateMeeting />
+        <Layout className="layout" style={{ minHeight: '100vh' }}>
+          <Header />
+
+          <Content style={{ padding: '16px' }}>
+            <CreateMeeting />
+          </Content>
+
+          <Footer style={{ textAlign: 'center' }}>
+            NeatMeet ©{moment().year()}
+          </Footer>
+        </Layout>
       </div>
     </div>
   ))
