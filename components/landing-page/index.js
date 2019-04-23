@@ -1,13 +1,20 @@
 import React from 'react';
-import Link from 'next/link';
+import moment from 'moment';
+import { Layout } from 'antd';
+import Banner from './banner';
+import Header from '../header';
+import Page1 from './Page1';
+import Page2 from './Page2';
 
 const LandingPage = () => (
-  <div>
-    <h1>NeatMeet</h1>
-    <p>Landing Page</p>
-    <Link href="/create">
-      <a>Create</a>
-    </Link>
+  <div className="home-page">
+    <Header />
+    <Banner />
+    <Page1 />
+    <Page2 />
+    <Layout.Footer style={{ textAlign: 'center' }}>
+      NeatMeet ©{moment().year()}
+    </Layout.Footer>
   </div>
 );
 
