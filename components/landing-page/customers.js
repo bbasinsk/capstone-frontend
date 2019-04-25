@@ -38,7 +38,27 @@ export default function Page4() {
         >
           <h2 key="h2">Trusted by customers</h2>
           <i key="i" className="line" />
-          {children}
+          {/* {children} */}
+          <QueueAnim
+            className="home-user"
+            type="bottom"
+            key="home-func"
+            ease="easeOutQuart"
+            leaveReverse
+          >
+            <div
+              style={{
+                backgroundImage: `url(${customers[0]})`,
+                backgroundSize: 'contain',
+                backgroundRepeat: 'no-repeat',
+                width: '160px',
+                height: '100px',
+                margin: 'auto'
+              }}
+            >
+              {' '}
+            </div>
+          </QueueAnim>
         </QueueAnim>
       </OverPack>
     </div>

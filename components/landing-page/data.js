@@ -247,10 +247,9 @@ export const page3 = [
 
 export const customers = [
   '/static/images/university_of_washington.png',
-  'https://gw.alipayobjects.com/zos/rmsportal/ktLOdfjNyExgKyWjiCvm.svg',
-  'https://gw.alipayobjects.com/zos/rmsportal/gNNxbrNqlHdnRuMjUXrL.svg',
-  'https://gw.alipayobjects.com/zos/rmsportal/qWaneWxxMVpASpiCOcsT.svg',
-  'https://gw.alipayobjects.com/zos/rmsportal/kyCpvqWFloOpAOqzOlBg.svg'
+  '/static/images/university_of_washington.png',
+  '/static/images/university_of_washington.png',
+  '/static/images/university_of_washington.png'
 ];
 
 export const footer = [
