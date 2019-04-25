@@ -28,6 +28,12 @@
         "preprocess": false
       }
     ],
-    "import-graphql"
+    "import-graphql",
+    [
+      "import", {
+        "libraryName": "antd",
+        "style": true
+      },
+    ]
   ]
 }

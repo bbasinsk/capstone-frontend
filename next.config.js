@@ -1,8 +1,13 @@
 /* eslint-disable global-require */
 const { IgnorePlugin } = require('webpack');
+const FilterWarningsPlugin = require('webpack-filter-warnings-plugin');
 const OfflinePlugin = require('offline-plugin');
 const Dotenv = require('dotenv-webpack');
 const withCSS = require('@zeit/next-css');
+const withLess = require('@zeit/next-less');
+const lessToJS = require('less-vars-to-js');
+const path = require('path');
+const fs = require('fs');
 const router = require('./routes');
 
 const initExport = {
@@ -78,7 +83,23 @@ const initExport = {
       );
     }
 
+    config.plugins.push(
+      new FilterWarningsPlugin({
+        exclude: /mini-css-extract-plugin[^]*Conflicting order between:/
+      })
+    );
+
     return config;
+  },
+
+  lessLoaderOptions: {
+    javascriptEnabled: true,
+    modifyVars: lessToJS(
+      fs.readFileSync(
+        path.resolve(__dirname, './static/antd-custom.less'),
+        'utf8'
+      )
+    ) // make your antd custom effective
   }
 };
 
@@ -100,5 +121,10 @@ if (process.env.STATIC_EXPORT) {
   };
 }
 
+// fix: prevents error when .less files are required by node
+if (typeof require !== 'undefined') {
+  require.extensions['.less'] = () => {};
+}
+
 /* eslint-enable global-require */
-module.exports = withCSS(initExport);
+module.exports = withLess(withCSS(initExport));
