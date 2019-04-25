@@ -2,10 +2,10 @@ import React from 'react';
 import QueueAnim from 'rc-queue-anim';
 import OverPack from 'rc-scroll-anim/lib/ScrollOverPack';
 import { Row, Col } from 'antd';
-import { page1 } from './data';
+import { steps } from './data';
 
 export default function Page1() {
-  const children = page1.map((d, i) => (
+  const children = steps.map((d, i) => (
     <QueueAnim
       component={Col}
       // eslint-disable-next-line react/no-array-index-key
@@ -23,6 +23,7 @@ export default function Page1() {
       <p key="p">{d.content}</p>
     </QueueAnim>
   ));
+
   return (
     <div className="home-layout-wrapper home-func-wrapper" id="home-func">
       <h2>How it works</h2>

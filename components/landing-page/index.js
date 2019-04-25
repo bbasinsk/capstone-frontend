@@ -2,16 +2,16 @@ import React from 'react';
 import moment from 'moment';
 import { Layout } from 'antd';
 import Banner from './banner';
-import Header from '../header';
-import Page1 from './Page1';
-import Page2 from './Page2';
+import Steps from './steps';
+import Customers from './customers';
+import TryNow from './try-now';
 
 const LandingPage = () => (
   <div className="home-page">
-    <Header />
     <Banner />
-    <Page1 />
-    <Page2 />
+    <Steps />
+    <Customers />
+    <TryNow />
     <Layout.Footer style={{ textAlign: 'center' }}>
       NeatMeet ©{moment().year()}
     </Layout.Footer>

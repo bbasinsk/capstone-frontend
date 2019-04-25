@@ -4,9 +4,10 @@ import QueueAnim from 'rc-queue-anim';
 import { Button } from 'antd';
 import Link from 'next/link';
 import BannerImage from './banner-image';
+import Header from './header';
 import './static/default.less';
-import './static/custom.less';
 import './static/home.less';
+import './static/custom.less';
 
 class Banner extends React.PureComponent {
   static propTypes = {
@@ -21,6 +22,7 @@ class Banner extends React.PureComponent {
     const { className } = this.props;
     return (
       <div className={`home-layout-wrapper ${className}`}>
+        <Header />
         <div className="home-layout">
           <QueueAnim
             className={`${className}-content-wrapper`}
@@ -35,7 +37,9 @@ class Banner extends React.PureComponent {
             <p key="p2">All for free.</p>
             <span key="button">
               <Link href="/create">
-                <Button type="secondary">Start free</Button>
+                <Button size="large" type="secondary">
+                  Start free
+                </Button>
               </Link>
             </span>
           </QueueAnim>

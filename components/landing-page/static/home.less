@@ -37,10 +37,10 @@
       }
     }
     &:nth-of-type(odd) {
-      background: #fff;
+      background-image: linear-gradient(-45deg, @bgColorStart, @bgColor);
     }
     &:nth-of-type(even) {
-      background-image: linear-gradient(-45deg, @bgColorStart, @bgColor);
+      background: #fff;
     }
   }
   h2,
@@ -64,13 +64,14 @@
     width: 40px;
     height: 2px;
     display: block;
-    background: #FFBF00;
+    background: #B4E654;
     margin: 16px auto 72px;
   }
   /* banner 区域 */
   .home-banner {
-    height: 656px;
+    height: 700px;
     color: #fff;
+    padding-bottom: 100px;
 
     g,
     ellipse {
@@ -108,11 +109,6 @@
     span {
       display: inline-block;
     }
-    button {
-      width: 168px;
-      height: 48px;
-      font-size: 20px;
-    }
     .home-banner-image-wrapper {
       text-align: center;
       margin-top: -120px;
@@ -120,7 +116,7 @@
   }
   /* 功能介绍 */
   .home-func-wrapper {
-    height: 720px;
+    height: 880px;
     text-align: center;
     .image {
       height: 240px;
@@ -135,7 +131,7 @@
     }
     p {
       font-size: 16px;
-      color: @contentColor;
+      color: @darkContentColor;
     }
   }
   .home-hover {
@@ -231,7 +227,7 @@
     }
   }
   .home-user-wrapper {
-    height: 440px;
+    height: 400px;
     h2 {
       margin-top: 64px;
     }
@@ -244,6 +240,26 @@
         background-repeat: no-repeat;
         background-position: center;
         margin: auto;
+      }
+    }
+  }
+  .home-try-wrapper {
+    height: 300px;
+
+    button {
+      margin-top: 120px;
+    }
+  }
+  .home-layout-wrapper {
+    &:nth-of-type(odd) {
+      h2,h3 {
+        color: @titleColor;
+      }
+    }
+
+    &:nth-of-type(even) {
+      h2,h3 {
+      color: @darkTitleColor;
       }
     }
   }

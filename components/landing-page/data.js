@@ -1,19 +1,22 @@
 import React from 'react';
 
-export const page1 = [
+export const steps = [
   {
     title: '1. Create agenda',
-    // content: '支持可视化编辑、自由拖拽排版、实时预览、在线访问加速等功能',
+    content:
+      'Define what needs to be discussed in this meeting, how long it should take, and who the point person is.',
     src: 'https://gw.alipayobjects.com/zos/rmsportal/MmROsqZndrFBrIspzLlL.png'
   },
   {
     title: '2. Conduct meeting',
-    // content: '网站内设有数据监测埋点，助你时刻掌握站点效果，鉴别有效渠道',
+    content:
+      'Collaborate with your team on the meeting document. Check off agenda items as they’re completed to keep a record of your team’s progress.',
     src: 'https://gw.alipayobjects.com/zos/rmsportal/ONvKhpRAmkCfdEhkUZkJ.png'
   },
   {
     title: '3. Send summary',
-    // content: '企业版支持以团队管理的方式，多人协作完成营销站点，共享资源',
+    content:
+      'Once the meeting is over, you’ll receive a summary document that includes what was accomplished. Send this to your team!',
     src: 'https://gw.alipayobjects.com/zos/rmsportal/oxmXLgGjCeXfYPcVSbKg.png'
   }
 ];
