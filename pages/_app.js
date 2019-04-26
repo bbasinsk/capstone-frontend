@@ -1,6 +1,6 @@
 import React from 'react';
 import App, { Container } from 'next/app';
-import 'antd/dist/antd.css';
+import 'antd/dist/antd.less';
 
 class MyApp extends App {
   static async getInitialProps({ Component, ctx }) {
