@@ -86,6 +86,7 @@
     "next-cookies": "^1.1.2",
     "next-routes": "1.4.2",
     "offline-plugin": "5.0.6",
+    "pg-connection-string": "^2.0.0",
     "prop-types": "15.6.2",
     "rc-queue-anim": "^1.6.12",
     "rc-scroll-anim": "^2.5.7",

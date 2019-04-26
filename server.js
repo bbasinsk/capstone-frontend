@@ -12,16 +12,13 @@ const ShareDB = require('sharedb');
 const richText = require('rich-text');
 const WebSocket = require('ws');
 const WebSocketJSONStream = require('websocket-json-stream');
+const { parse } = require('pg-connection-string');
 
 dotenv.config();
 
 ShareDB.types.register(richText.type);
 const db = require('sharedb-postgres')({
-  user: process.env.PGUSER,
-  host: process.env.PGHOST,
-  database: process.env.PGDATABASE,
-  password: process.env.PGPASSWORD,
-  port: process.env.PGPORT,
+  ...parse(process.env.DATABASE_URL),
   ssl: true
 });
 const shareDbBackend = require('sharedb')({ db });
