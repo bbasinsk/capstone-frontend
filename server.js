@@ -16,6 +16,8 @@ const { parse } = require('pg-connection-string');
 
 dotenv.config();
 
+console.log({ ...parse(process.env.DATABASE_URL) });
+
 ShareDB.types.register(richText.type);
 const db = require('sharedb-postgres')({
   ...parse(process.env.DATABASE_URL),
