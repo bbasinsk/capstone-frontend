@@ -8,13 +8,13 @@ export const steps = [
     src: 'https://gw.alipayobjects.com/zos/rmsportal/MmROsqZndrFBrIspzLlL.png'
   },
   {
-    title: '2. Conduct meeting',
+    title: '2. Collaborate on meeting notes',
     content:
       'Collaborate with your team on the meeting document. Check off agenda items as they’re completed to keep a record of your team’s progress.',
     src: 'https://gw.alipayobjects.com/zos/rmsportal/ONvKhpRAmkCfdEhkUZkJ.png'
   },
   {
-    title: '3. Send summary',
+    title: '3. Auto-send meeting summaries',
     content:
       'Once the meeting is over, you’ll receive a summary document that includes what was accomplished. Send this to your team!',
     src: 'https://gw.alipayobjects.com/zos/rmsportal/oxmXLgGjCeXfYPcVSbKg.png'
