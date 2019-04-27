@@ -1,7 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import gql from 'graphql-tag';
-import { useSubscription } from 'react-apollo-hooks';
 import { Typography } from 'antd';
 import AgendaItem from '../agenda-item';
 
@@ -9,32 +7,7 @@ import CreateAgendaItem from '../create-agenda-item';
 
 const { Title } = Typography;
 
-const GET_AGENDA = gql`
-  subscription getMeeting($meetingId: uuid!) {
-    meeting(where: { id: { _eq: $meetingId } }) {
-      agenda_items {
-        id
-        title
-        desc
-        duration
-        completed
-      }
-    }
-  }
-`;
-
-function Agenda({ meetingId }) {
-  const { data: { meeting: meetings } = {}, loading, error } = useSubscription(
-    GET_AGENDA,
-    {
-      variables: { meetingId }
-    }
-  );
-  if (error) return <div>Error! {error.message}</div>;
-  if (loading) return <div>Loading...</div>;
-
-  const { agenda_items: agendaItems } = meetings[0];
-
+function Agenda({ meetingId, agendaItems }) {
   return (
     <div className="agenda">
       <Title level={2}>Agenda</Title>
@@ -65,7 +38,19 @@ function Agenda({ meetingId }) {
 }
 
 Agenda.propTypes = {
-  meetingId: PropTypes.string.isRequired
+  meetingId: PropTypes.string.isRequired,
+  agendaItems: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.number.isRequired,
+      title: PropTypes.string.isRequired,
+      desc: PropTypes.string.isRequired,
+      duration: PropTypes.number,
+      completed: PropTypes.bool.isRequired
+    })
+  )
+};
+Agenda.defaultProps = {
+  agendaItems: []
 };
 
 export default Agenda;

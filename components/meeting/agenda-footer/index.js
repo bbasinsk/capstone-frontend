@@ -1,12 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Button } from 'antd';
+import ProgressBar from './progress-bar';
 
-const AgendaFooter = ({ openModal }) => (
+const AgendaFooter = ({ agendaItems, openModal }) => (
   <div className="agenda-footer">
     <div className="agenda-footer__wrapper">
       <div className="agenda-footer--right">
-        {/* <div className="agenda-footer__progress">Progress: TODO</div> */}
+        <div className="agenda-footer__progress">
+          <ProgressBar agendaItems={agendaItems} />
+        </div>
         <div className="agenda-footer__end">
           <Button onClick={openModal} type="danger">
             END
@@ -44,7 +47,15 @@ const AgendaFooter = ({ openModal }) => (
   </div>
 );
 AgendaFooter.propTypes = {
-  openModal: PropTypes.func.isRequired
+  openModal: PropTypes.func.isRequired,
+  agendaItems: PropTypes.arrayOf(
+    PropTypes.shape({
+      completed: PropTypes.bool.isRequired
+    })
+  )
+};
+AgendaFooter.defaultProps = {
+  agendaItems: []
 };
 
 export default AgendaFooter;
