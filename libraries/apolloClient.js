@@ -55,14 +55,32 @@ function createClient(headers, token, initialState) {
     authLink
   );
 
-  return new ApolloClient({
+  const cache = new InMemoryCache().restore(initialState || {});
+
+  const client = new ApolloClient({
     headers,
     link,
+    cache,
     connectToDevTools: process.browser,
     ssrMode: !process.browser,
-    cache: new InMemoryCache().restore(initialState || {}),
-    shouldBatch: true
+    shouldBatch: true,
+    resolvers: {
+      Mutation: {
+        setWait: (_root, { wait }, { cache: c }) => {
+          c.writeData({ data: { wait } });
+          return null;
+        }
+      }
+    }
   });
+
+  cache.writeData({
+    data: {
+      wait: false
+    }
+  });
+
+  return client;
 }
 
 export default (headers, token, initialState) => {

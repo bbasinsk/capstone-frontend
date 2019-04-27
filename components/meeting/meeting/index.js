@@ -5,7 +5,7 @@ import BasicInfo from '../basic-info';
 import Agenda from '../agenda';
 import EndModal from '../end-modal';
 import AgendaFooter from '../agenda-footer';
-import { GET_AGENDA } from '../queries';
+import { GET_AGENDA } from '../../../queries';
 
 const Meeting = ({ meetingId }) => {
   const [modalOpen, setModalOpen] = useState(false);

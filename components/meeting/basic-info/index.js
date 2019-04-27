@@ -2,11 +2,12 @@ import React from 'react';
 import { Helmet } from 'react-helmet';
 import PropTypes from 'prop-types';
 import { useSubscription, useMutation } from 'react-apollo-hooks';
-import { UPDATE_MEETING, GET_MEETING } from './queries';
+import { UPDATE_MEETING, GET_MEETING, SET_WAIT } from '../../../queries';
 import Component from './component';
 
 const BasicInfoHOC = ({ meetingId, openModal }) => {
   const updateMeetingMutation = useMutation(UPDATE_MEETING);
+  const setWait = useMutation(SET_WAIT);
 
   const { data: { meeting: meetings } = {}, loading, error } = useSubscription(
     GET_MEETING,
@@ -27,18 +28,19 @@ const BasicInfoHOC = ({ meetingId, openModal }) => {
     newLocation,
     newStartDtm,
     newEndDtm
-  }) =>
-    Promise.all([
-      updateMeetingMutation({
-        variables: {
-          meetingId,
-          name: newName || name,
-          location: newLocation || location,
-          startDtm: newStartDtm || startDtm,
-          endDtm: newEndDtm || endDtm
-        }
-      })
-    ]);
+  }) => {
+    await setWait({ variables: { wait: true } });
+    await updateMeetingMutation({
+      variables: {
+        meetingId,
+        name: newName || name,
+        location: newLocation || location,
+        startDtm: newStartDtm || startDtm,
+        endDtm: newEndDtm || endDtm
+      }
+    });
+    return setWait({ variables: { wait: false } });
+  };
 
   return (
     <div>

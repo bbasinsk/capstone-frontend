@@ -1,31 +1,17 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import gql from 'graphql-tag';
 import { useMutation } from 'react-apollo-hooks';
 import Component from './component';
-
-const DELETE_AGENDA_ITEM = gql`
-  mutation deleteItem($id: Int!) {
-    delete_agenda_item(where: { id: { _eq: $id } }) {
-      affected_rows
-    }
-  }
-`;
-
-const SET_ITEM_COMPLETE = gql`
-  mutation setItemComplete($id: Int!, $completed: Boolean!) {
-    update_agenda_item(
-      where: { id: { _eq: $id } }
-      _set: { completed: $completed }
-    ) {
-      affected_rows
-    }
-  }
-`;
+import {
+  SET_WAIT,
+  DELETE_AGENDA_ITEM,
+  SET_ITEM_COMPLETE
+} from '../../../queries';
 
 const AgendaItem = ({ id, title, desc, duration, completed }) => {
   const deleteAgendaItem = useMutation(DELETE_AGENDA_ITEM);
   const setCompleted = useMutation(SET_ITEM_COMPLETE);
+  const setWait = useMutation(SET_WAIT);
 
   return (
     <Component
@@ -33,17 +19,21 @@ const AgendaItem = ({ id, title, desc, duration, completed }) => {
       title={title}
       desc={desc}
       duration={duration}
-      deleteAgendaItem={() =>
-        deleteAgendaItem({
+      deleteAgendaItem={async () => {
+        await setWait({ variables: { wait: true } });
+        await deleteAgendaItem({
           variables: { id }
-        })
-      }
+        });
+        await setWait({ variables: { wait: false } });
+      }}
       completed={completed}
-      setCompleted={isCompleted =>
-        setCompleted({
+      setCompleted={async isCompleted => {
+        await setWait({ variables: { wait: true } });
+        await setCompleted({
           variables: { id, completed: isCompleted }
-        })
-      }
+        });
+        await setWait({ variables: { wait: false } });
+      }}
     />
   );
 };
