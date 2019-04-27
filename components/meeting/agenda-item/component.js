@@ -57,7 +57,7 @@ const AgendaItem = ({
     <style jsx>{`
       .agenda-item__body {
         display: grid;
-        grid-template-columns: 1fr 1fr;
+        grid-template-columns: 1fr 2fr;
         grid-template-rows: auto;
       }
 

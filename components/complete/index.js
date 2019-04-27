@@ -23,6 +23,7 @@ const Complete = () => {
         <Icon
           type="check-circle"
           theme="twoTone"
+          twoToneColor="#4DC8D2"
           style={{ fontSize: '128px', marginBottom: '16px' }}
         />
         <Title>You&#39;re done!</Title>
@@ -50,6 +51,7 @@ const Complete = () => {
         }
 
         .complete--center {
+          margin-top: 25vh;
           text-align: center;
         }
       `}</style>

@@ -79,6 +79,7 @@ class Quill extends React.Component {
           <ReactQuill
             className="react-quill"
             theme="snow"
+            placeholder="Notes..."
             ref={el => {
               this.reactQuillRef = el;
             }}
