@@ -7,7 +7,7 @@ export default withData(
   withAuth(() => (
     <div>
       <Helmet>
-        <title>Meeting Magic</title>
+        <title>NeatMeet</title>
       </Helmet>
       <div>
         <LandingPage />

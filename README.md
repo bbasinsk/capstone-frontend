@@ -1,4 +1,4 @@
-# Meeting Magic: Frontend
+# NeatMeet: Frontend
 
 ## Commands
 
