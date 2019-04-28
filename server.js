@@ -123,6 +123,20 @@ const startNextServer = () =>
       })
     );
     server.use(helmet());
+    server.use(express.json());
+
+    server.post(`/events/email/meeting`, (req, res) => {
+      const meeting = req.body.event.data.new;
+
+      const emailPayload = {
+        name: meeting.name,
+        location: meeting.location,
+        url: `https://www.neatmeet.com/meeting/${meeting.id}`
+      };
+
+      res.json(emailPayload);
+    });
+
     server.use(routerHandler);
 
     server.get(`/favicon.ico`, (req, res) =>
@@ -181,8 +195,6 @@ const startNextServer = () =>
   });
 
 // ShareDB connection ============================================================
-// TODO:
-// - figure out how to have a connection for each textbox in the meeting
 
 startNextServer().then(nextServer => {
   // Start the web socket server on the same port as the nextjs server
