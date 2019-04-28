@@ -14,6 +14,21 @@ const WebSocket = require('ws');
 const WebSocketJSONStream = require('websocket-json-stream');
 const { parse } = require('pg-connection-string');
 
+const { ApolloClient } = require('apollo-client');
+const { InMemoryCache } = require('apollo-cache-inmemory');
+const { HttpLink } = require('apollo-link-http');
+const fetch = require('node-fetch');
+const gql = require('graphql-tag');
+
+const client = new ApolloClient({
+  link: new HttpLink({
+    uri: 'https://meeting-magic-backend.herokuapp.com/v1alpha1/graphql',
+    credentials: 'include',
+    fetch
+  }),
+  cache: new InMemoryCache()
+});
+
 dotenv.config();
 
 ShareDB.types.register(richText.type);
@@ -125,16 +140,35 @@ const startNextServer = () =>
     server.use(helmet());
     server.use(express.json());
 
-    server.post(`/events/email/meeting`, (req, res) => {
+    server.post(`/events/email/agenda`, async (req, res) => {
       const meeting = req.body.event.data.new;
+
+      const { data } = await client.query({
+        query: gql`
+          query getMeeting($meetingId: uuid!) {
+            meeting(where: { id: { _eq: $meetingId } }) {
+              agenda_items {
+                id
+                title
+                desc
+                duration
+              }
+            }
+          }
+        `,
+        variables: { meetingId: meeting.id }
+      });
+
+      const agendaItems = data.meeting[0].agenda_items;
 
       const emailPayload = {
         name: meeting.name,
         location: meeting.location,
-        url: `https://www.neatmeet.com/meeting/${meeting.id}`
+        url: `https://www.neatmeet.com/meeting/${meeting.id}`,
+        agendaItems
       };
 
-      res.json(emailPayload);
+      return res.json(emailPayload);
     });
 
     server.use(routerHandler);
