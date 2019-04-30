@@ -153,6 +153,11 @@ const startNextServer = () =>
                 desc
                 duration
               }
+              meeting_members {
+                member_user {
+                  email
+                }
+              }
             }
           }
         `,
@@ -160,6 +165,9 @@ const startNextServer = () =>
       });
 
       const agendaItems = data.meeting[0].agenda_items;
+      const emails = data.meeting[0].meeting_members.map(
+        member => member.member_user.email
+      );
 
       const emailPayload = {
         Messages: [
@@ -168,11 +176,7 @@ const startNextServer = () =>
               Email: 'noreply@neatmeet.co',
               Name: 'NeatMeet'
             },
-            To: [
-              {
-                Email: 'bbasinsk@uw.edu'
-              }
-            ],
+            To: emails.map(email => ({ Email: email })),
             TemplateID: 780768,
             TemplateLanguage: true,
             Subject: 'Your Meeting Agenda',
