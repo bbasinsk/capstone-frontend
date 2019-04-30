@@ -17,7 +17,7 @@ const { parse } = require('pg-connection-string');
 const { ApolloClient } = require('apollo-client');
 const { InMemoryCache } = require('apollo-cache-inmemory');
 const { HttpLink } = require('apollo-link-http');
-const fetch = require('node-fetch');
+const fetch = require('isomorphic-fetch');
 const gql = require('graphql-tag');
 
 const client = new ApolloClient({
