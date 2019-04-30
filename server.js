@@ -162,11 +162,38 @@ const startNextServer = () =>
       const agendaItems = data.meeting[0].agenda_items;
 
       const emailPayload = {
-        name: meeting.name,
-        location: meeting.location,
-        url: `https://www.neatmeet.com/meeting/${meeting.id}`,
-        agendaItems
+        Messages: [
+          {
+            From: {
+              Email: 'noreply@neatmeet.co',
+              Name: 'NeatMeet'
+            },
+            To: [
+              {
+                Email: 'bbasinsk@uw.edu'
+              }
+            ],
+            TemplateID: 780768,
+            TemplateLanguage: true,
+            Subject: 'Your Meeting Agenda',
+            Variables: {
+              meeting_name: meeting.name,
+              meeting_location: meeting.location,
+              meeting_url: `https://www.neatmeet.com/meeting/${meeting.id}`,
+              agenda_items: agendaItems
+            }
+          }
+        ]
       };
+
+      // await fetch('https://api.mailjet.com/v3.1/send', {
+      //   method: 'POST',
+      //   headers: {
+      //     'Content-Type': 'application/json',
+      //     Authorization: process.env.MAILJET_AUTH
+      //   },
+      //   body: JSON.stringify(emailPayload)
+      // });
 
       return res.json(emailPayload);
     });

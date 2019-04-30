@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useMutation } from 'react-apollo-hooks';
 import gql from 'graphql-tag';
 import { get } from 'lodash';
 import { Router } from '../../routes';
 import Component from './component';
+import EmailModal from './email-modal';
 
 const CREATE_MEETING = gql`
   mutation createMeeting(
@@ -33,6 +34,13 @@ const CREATE_MEETING = gql`
 
 export default function hoc() {
   const createMeetingMutation = useMutation(CREATE_MEETING);
+  const [modalOpen, setModalOpen] = useState(false);
+  const [meeting, setMeeting] = useState();
+
+  const openConfirm = ({ name, location, startDtm, endDtm, agendaItems }) => {
+    setModalOpen(true);
+    setMeeting({ name, location, startDtm, endDtm, agendaItems });
+  };
 
   const createMeeting = async ({
     name,
@@ -53,7 +61,13 @@ export default function hoc() {
 
   return (
     <div style={{ maxWidth: '1200px', margin: 'auto' }}>
-      <Component createMeeting={createMeeting} />
+      <Component createMeeting={openConfirm} />
+      <EmailModal
+        visible={modalOpen}
+        closeModal={() => setModalOpen(false)}
+        meeting={meeting}
+        createMeeting={createMeeting}
+      />
     </div>
   );
 }
