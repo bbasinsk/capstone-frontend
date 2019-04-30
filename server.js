@@ -190,7 +190,7 @@ const startNextServer = () =>
         ]
       };
 
-      await fetch('https://api.mailjet.com/v3.1/send', {
+      const mailjetResponse = await fetch('https://api.mailjet.com/v3.1/send', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -199,7 +199,7 @@ const startNextServer = () =>
         body: JSON.stringify(emailPayload)
       });
 
-      return res.json(emailPayload);
+      return res.json({ emailPayload, mailjetResponse });
     });
 
     server.use(routerHandler);
