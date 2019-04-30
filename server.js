@@ -190,14 +190,14 @@ const startNextServer = () =>
         ]
       };
 
-      // await fetch('https://api.mailjet.com/v3.1/send', {
-      //   method: 'POST',
-      //   headers: {
-      //     'Content-Type': 'application/json',
-      //     Authorization: process.env.MAILJET_AUTH
-      //   },
-      //   body: JSON.stringify(emailPayload)
-      // });
+      await fetch('https://api.mailjet.com/v3.1/send', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: process.env.MAILJET_AUTH
+        },
+        body: JSON.stringify(emailPayload)
+      });
 
       return res.json(emailPayload);
     });
