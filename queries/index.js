@@ -77,3 +77,31 @@ export const SET_ITEM_COMPLETE = gql`
     }
   }
 `;
+
+export const CREATE_MEETING = gql`
+  mutation createMeeting(
+    $name: String
+    $location: String
+    $startDtm: timestamptz
+    $endDtm: timestamptz
+    $meetingMembers: meeting_member_arr_rel_insert_input
+    $agendaItems: agenda_item_arr_rel_insert_input
+  ) {
+    insert_meeting(
+      objects: [
+        {
+          name: $name
+          location: $location
+          start_dtm: $startDtm
+          end_dtm: $endDtm
+          meeting_members: $meetingMembers
+          agenda_items: $agendaItems
+        }
+      ]
+    ) {
+      returning {
+        id
+      }
+    }
+  }
+`;

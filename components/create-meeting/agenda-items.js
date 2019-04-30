@@ -4,6 +4,8 @@ import PropTypes from 'prop-types';
 
 const { TextArea } = Input;
 
+const KEYS = 'agendaKeys';
+
 const AgendaItems = ({
   getFieldDecorator,
   getFieldValue,
@@ -14,25 +16,25 @@ const AgendaItems = ({
   const [nextId, setNextId] = useState(0);
 
   const add = async () => {
-    const keys = getFieldValue('keys');
+    const keys = getFieldValue(KEYS);
 
     setNextId(nextId + 1);
     const nextKeys = keys.concat(nextId);
-    await setFieldsValue({ keys: nextKeys });
+    await setFieldsValue({ [KEYS]: nextKeys });
 
     validateFields();
   };
 
   const remove = k => {
-    const keys = getFieldValue('keys');
+    const keys = getFieldValue(KEYS);
     setFieldsValue({
-      keys: keys.filter(key => key !== k)
+      [KEYS]: keys.filter(key => key !== k)
     });
   };
 
-  getFieldDecorator('keys', { initialValue: [] });
+  getFieldDecorator(KEYS, { initialValue: [] });
 
-  const formItems = getFieldValue('keys').map((k, idx) => (
+  const formItems = getFieldValue(KEYS).map((k, idx) => (
     <Card
       key={k}
       type="inner"

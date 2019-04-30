@@ -26,8 +26,11 @@ const EndModal = ({ visible, closeModal, meeting, createMeeting }) => {
 EndModal.propTypes = {
   visible: PropTypes.bool.isRequired,
   closeModal: PropTypes.func.isRequired,
-  meeting: PropTypes.any.isRequired,
+  meeting: PropTypes.any,
   createMeeting: PropTypes.func.isRequired
+};
+EndModal.defaultProps = {
+  meeting: {}
 };
 
 export default EndModal;

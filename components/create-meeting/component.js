@@ -4,22 +4,27 @@ import { Form, Button, Row, Col, Card, Typography } from 'antd';
 import lodash from 'lodash';
 import BasicInfo from './basic-info';
 import AgendaItems from './agenda-items';
+import Members from './members';
 
 const { Title } = Typography;
 
-const formHasErrors = (fieldsError, agendaKeys) => {
-  const withoutAgenda = lodash.omit(fieldsError, ['agendaItems']);
+const formHasErrors = (fieldsError, agendaKeys, memberKeys) => {
+  const withoutAgenda = lodash.omit(fieldsError, ['agendaItems', 'members']);
 
   const agendaErrors = (fieldsError.agendaItems || [])
     .filter((item, idx) => agendaKeys.includes(idx))
     .map(item => Object.keys(item).some(field => item[field]))
     .some(item => item);
 
+  const memberErrors = (fieldsError.members || [])
+    .filter((item, idx) => memberKeys.includes(idx))
+    .some(item => item);
+
   const infoErrors = Object.keys(withoutAgenda).some(
     field => fieldsError[field]
   );
 
-  return infoErrors || agendaErrors;
+  return infoErrors || agendaErrors || memberErrors;
 };
 
 const CreateMeeting = ({
@@ -47,9 +52,10 @@ const CreateMeeting = ({
         const [date] = values.date.toISOString().split('T');
         const [, startTime] = values.startTime.toISOString().split('T');
         const [, endTime] = values.endTime.toISOString().split('T');
-        const agendaItems = getFieldValue('keys').map(
+        const agendaItems = getFieldValue('agendaKeys').map(
           k => values.agendaItems[k]
         );
+        const emails = getFieldValue('memberKeys').map(k => values.members[k]);
 
         // build the object to create the meeting
         const meeting = {
@@ -57,9 +63,8 @@ const CreateMeeting = ({
           location: values.location,
           startDtm: `${date}T${startTime}`,
           endDtm: `${date}T${endTime}`,
-          agendaItems: {
-            data: agendaItems
-          }
+          emails,
+          agendaItems
         };
 
         // create the meeting
@@ -80,6 +85,13 @@ const CreateMeeting = ({
               <BasicInfo
                 getFieldDecorator={getFieldDecorator}
                 getError={getError}
+              />
+
+              <Title level={2}>Members</Title>
+              <Members
+                getFieldDecorator={getFieldDecorator}
+                getFieldValue={getFieldValue}
+                setFieldsValue={setFieldsValue}
               />
 
               <Title level={2}>Agenda</Title>
@@ -103,7 +115,8 @@ const CreateMeeting = ({
                 htmlType="submit"
                 disabled={formHasErrors(
                   getFieldsError(),
-                  getFieldValue('keys')
+                  getFieldValue('agendaKeys'),
+                  getFieldValue('memberKeys')
                 )}
               >
                 CREATE

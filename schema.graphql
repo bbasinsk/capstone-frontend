@@ -1,10 +1,191 @@
 # source: http://meeting-magic-backend.herokuapp.com/v1alpha1/graphql
-# timestamp: Sun Mar 31 2019 21:47:05 GMT-0700 (Pacific Daylight Time)
+# timestamp: Tue Apr 30 2019 13:59:35 GMT-0700 (Pacific Daylight Time)
 
 schema {
   query: query_root
   mutation: mutation_root
   subscription: subscription_root
+}
+
+"""
+columns and relationships of "agenda_item"
+"""
+type agenda_item {
+  completed: Boolean!
+  desc: String
+  duration: Int
+  id: Int!
+
+  """An object relationship"""
+  meeting: meeting!
+  meeting_id: uuid!
+  title: String!
+}
+
+"""
+input type for inserting array relation for remote table "agenda_item"
+"""
+input agenda_item_arr_rel_insert_input {
+  data: [agenda_item_insert_input!]!
+  on_conflict: agenda_item_on_conflict
+}
+
+"""
+Boolean expression to filter rows from the table "agenda_item". All fields are combined with a logical 'AND'.
+"""
+input agenda_item_bool_exp {
+  _and: [agenda_item_bool_exp]
+  _not: agenda_item_bool_exp
+  _or: [agenda_item_bool_exp]
+  completed: boolean_comparison_exp
+  desc: text_comparison_exp
+  duration: integer_comparison_exp
+  id: integer_comparison_exp
+  meeting: meeting_bool_exp
+  meeting_id: uuid_comparison_exp
+  title: text_comparison_exp
+}
+
+"""
+unique or primary key constraints on table "agenda_item"
+"""
+enum agenda_item_constraint {
+  """unique or primary key constraint"""
+  agenda_item_pkey
+}
+
+"""
+input type for incrementing integer columne in table "agenda_item"
+"""
+input agenda_item_inc_input {
+  duration: Int
+  id: Int
+}
+
+"""
+input type for inserting data into table "agenda_item"
+"""
+input agenda_item_insert_input {
+  completed: Boolean
+  desc: String
+  duration: Int
+  id: Int
+  meeting: meeting_obj_rel_insert_input
+  meeting_id: uuid
+  title: String
+}
+
+"""
+response of any mutation on the table "agenda_item"
+"""
+type agenda_item_mutation_response {
+  """number of affected rows by the mutation"""
+  affected_rows: Int!
+
+  """data of the affected rows by the mutation"""
+  returning: [agenda_item!]!
+}
+
+"""
+input type for inserting object relation for remote table "agenda_item"
+"""
+input agenda_item_obj_rel_insert_input {
+  data: agenda_item_insert_input!
+  on_conflict: agenda_item_on_conflict
+}
+
+"""
+on conflict condition type for table "agenda_item"
+"""
+input agenda_item_on_conflict {
+  constraint: agenda_item_constraint!
+  update_columns: [agenda_item_update_column!]!
+}
+
+"""
+ordering options when selecting data from "agenda_item"
+"""
+input agenda_item_order_by {
+  completed: order_by
+  desc: order_by
+  duration: order_by
+  id: order_by
+  meeting: meeting_order_by
+  meeting_id: order_by
+  title: order_by
+}
+
+"""
+select columns of table "agenda_item"
+"""
+enum agenda_item_select_column {
+  """column name"""
+  completed
+
+  """column name"""
+  desc
+
+  """column name"""
+  duration
+
+  """column name"""
+  id
+
+  """column name"""
+  meeting_id
+
+  """column name"""
+  title
+}
+
+"""
+input type for updating data in table "agenda_item"
+"""
+input agenda_item_set_input {
+  completed: Boolean
+  desc: String
+  duration: Int
+  id: Int
+  meeting_id: uuid
+  title: String
+}
+
+"""
+update columns of table "agenda_item"
+"""
+enum agenda_item_update_column {
+  """column name"""
+  completed
+
+  """column name"""
+  desc
+
+  """column name"""
+  duration
+
+  """column name"""
+  id
+
+  """column name"""
+  meeting_id
+
+  """column name"""
+  title
+}
+
+"""
+expression to compare columns of type boolean. All fields are combined with logical 'AND'.
+"""
+input boolean_comparison_exp {
+  _eq: Boolean
+  _gt: Boolean
+  _gte: Boolean
+  _in: [Boolean]
+  _is_null: Boolean
+  _lt: Boolean
+  _lte: Boolean
+  _neq: Boolean
+  _nin: [Boolean]
 }
 
 """conflict action"""
@@ -35,50 +216,28 @@ input integer_comparison_exp {
 columns and relationships of "meeting"
 """
 type meeting {
-  id: Int!
-  text_field: String!
-}
+  """An array relationship"""
+  agenda_items(
+    """distinct select on columns"""
+    distinct_on: [agenda_item_select_column!]
 
-"""
-aggregated selection of "meeting"
-"""
-type meeting_aggregate {
-  aggregate: meeting_aggregate_fields
-  nodes: [meeting!]!
-}
+    """limit the nuber of rows returned"""
+    limit: Int
 
-"""
-aggregate fields of "meeting"
-"""
-type meeting_aggregate_fields {
-  avg: meeting_avg_fields
-  count(columns: [meeting_select_column!], distinct: Boolean): Int
-  max: meeting_max_fields
-  min: meeting_min_fields
-  stddev: meeting_stddev_fields
-  stddev_pop: meeting_stddev_pop_fields
-  stddev_samp: meeting_stddev_samp_fields
-  sum: meeting_sum_fields
-  var_pop: meeting_var_pop_fields
-  var_samp: meeting_var_samp_fields
-  variance: meeting_variance_fields
-}
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
 
-"""
-order by aggregate values of table "meeting"
-"""
-input meeting_aggregate_order_by {
-  avg: meeting_avg_order_by
-  count: order_by
-  max: meeting_max_order_by
-  min: meeting_min_order_by
-  stddev: meeting_stddev_order_by
-  stddev_pop: meeting_stddev_pop_order_by
-  stddev_samp: meeting_stddev_samp_order_by
-  sum: meeting_sum_order_by
-  var_pop: meeting_var_pop_order_by
-  var_samp: meeting_var_samp_order_by
-  variance: meeting_variance_order_by
+    """sort the rows by one or more columns"""
+    order_by: [agenda_item_order_by!]
+
+    """filter the rows returned"""
+    where: agenda_item_bool_exp
+  ): [agenda_item!]!
+  end_dtm: timestamptz
+  id: uuid!
+  location: String
+  name: String
+  start_dtm: timestamptz
 }
 
 """
@@ -89,18 +248,6 @@ input meeting_arr_rel_insert_input {
   on_conflict: meeting_on_conflict
 }
 
-"""aggregate avg on columns"""
-type meeting_avg_fields {
-  id: Float
-}
-
-"""
-order by avg() on columns of table "meeting"
-"""
-input meeting_avg_order_by {
-  id: order_by
-}
-
 """
 Boolean expression to filter rows from the table "meeting". All fields are combined with a logical 'AND'.
 """
@@ -108,8 +255,12 @@ input meeting_bool_exp {
   _and: [meeting_bool_exp]
   _not: meeting_bool_exp
   _or: [meeting_bool_exp]
-  id: integer_comparison_exp
-  text_field: text_comparison_exp
+  agenda_items: agenda_item_bool_exp
+  end_dtm: timestamptz_comparison_exp
+  id: uuid_comparison_exp
+  location: text_comparison_exp
+  name: text_comparison_exp
+  start_dtm: timestamptz_comparison_exp
 }
 
 """
@@ -121,46 +272,15 @@ enum meeting_constraint {
 }
 
 """
-input type for incrementing integer columne in table "meeting"
-"""
-input meeting_inc_input {
-  id: Int
-}
-
-"""
 input type for inserting data into table "meeting"
 """
 input meeting_insert_input {
-  id: Int
-  text_field: String
-}
-
-"""aggregate max on columns"""
-type meeting_max_fields {
-  id: Int
-  text_field: String
-}
-
-"""
-order by max() on columns of table "meeting"
-"""
-input meeting_max_order_by {
-  id: order_by
-  text_field: order_by
-}
-
-"""aggregate min on columns"""
-type meeting_min_fields {
-  id: Int
-  text_field: String
-}
-
-"""
-order by min() on columns of table "meeting"
-"""
-input meeting_min_order_by {
-  id: order_by
-  text_field: order_by
+  agenda_items: agenda_item_arr_rel_insert_input
+  end_dtm: timestamptz
+  id: uuid
+  location: String
+  name: String
+  start_dtm: timestamptz
 }
 
 """
@@ -194,8 +314,11 @@ input meeting_on_conflict {
 ordering options when selecting data from "meeting"
 """
 input meeting_order_by {
+  end_dtm: order_by
   id: order_by
-  text_field: order_by
+  location: order_by
+  name: order_by
+  start_dtm: order_by
 }
 
 """
@@ -203,66 +326,30 @@ select columns of table "meeting"
 """
 enum meeting_select_column {
   """column name"""
+  end_dtm
+
+  """column name"""
   id
 
   """column name"""
-  text_field
+  location
+
+  """column name"""
+  name
+
+  """column name"""
+  start_dtm
 }
 
 """
 input type for updating data in table "meeting"
 """
 input meeting_set_input {
-  id: Int
-  text_field: String
-}
-
-"""aggregate stddev on columns"""
-type meeting_stddev_fields {
-  id: Float
-}
-
-"""
-order by stddev() on columns of table "meeting"
-"""
-input meeting_stddev_order_by {
-  id: order_by
-}
-
-"""aggregate stddev_pop on columns"""
-type meeting_stddev_pop_fields {
-  id: Float
-}
-
-"""
-order by stddev_pop() on columns of table "meeting"
-"""
-input meeting_stddev_pop_order_by {
-  id: order_by
-}
-
-"""aggregate stddev_samp on columns"""
-type meeting_stddev_samp_fields {
-  id: Float
-}
-
-"""
-order by stddev_samp() on columns of table "meeting"
-"""
-input meeting_stddev_samp_order_by {
-  id: order_by
-}
-
-"""aggregate sum on columns"""
-type meeting_sum_fields {
-  id: Int
-}
-
-"""
-order by sum() on columns of table "meeting"
-"""
-input meeting_sum_order_by {
-  id: order_by
+  end_dtm: timestamptz
+  id: uuid
+  location: String
+  name: String
+  start_dtm: timestamptz
 }
 
 """
@@ -270,65 +357,41 @@ update columns of table "meeting"
 """
 enum meeting_update_column {
   """column name"""
+  end_dtm
+
+  """column name"""
   id
 
   """column name"""
-  text_field
-}
+  location
 
-"""aggregate var_pop on columns"""
-type meeting_var_pop_fields {
-  id: Float
-}
+  """column name"""
+  name
 
-"""
-order by var_pop() on columns of table "meeting"
-"""
-input meeting_var_pop_order_by {
-  id: order_by
-}
-
-"""aggregate var_samp on columns"""
-type meeting_var_samp_fields {
-  id: Float
-}
-
-"""
-order by var_samp() on columns of table "meeting"
-"""
-input meeting_var_samp_order_by {
-  id: order_by
-}
-
-"""aggregate variance on columns"""
-type meeting_variance_fields {
-  id: Float
-}
-
-"""
-order by variance() on columns of table "meeting"
-"""
-input meeting_variance_order_by {
-  id: order_by
+  """column name"""
+  start_dtm
 }
 
 """mutation root"""
 type mutation_root {
   """
-  delete data from the table: "meeting"
+  delete data from the table: "agenda_item"
   """
-  delete_meeting(
+  delete_agenda_item(
     """filter the rows which have to be deleted"""
-    where: meeting_bool_exp!
-  ): meeting_mutation_response
+    where: agenda_item_bool_exp!
+  ): agenda_item_mutation_response
 
   """
-  delete data from the table: "profile"
+  insert data into the table: "agenda_item"
   """
-  delete_profile(
-    """filter the rows which have to be deleted"""
-    where: profile_bool_exp!
-  ): profile_mutation_response
+  insert_agenda_item(
+    """the rows to be inserted"""
+    objects: [agenda_item_insert_input!]!
+
+    """on conflict condition"""
+    on_conflict: agenda_item_on_conflict
+  ): agenda_item_mutation_response
 
   """
   insert data into the table: "meeting"
@@ -342,43 +405,37 @@ type mutation_root {
   ): meeting_mutation_response
 
   """
-  insert data into the table: "profile"
+  insert data into the table: "user"
   """
-  insert_profile(
+  insert_user(
     """the rows to be inserted"""
-    objects: [profile_insert_input!]!
+    objects: [user_insert_input!]!
+  ): user_mutation_response
 
-    """on conflict condition"""
-    on_conflict: profile_on_conflict
-  ): profile_mutation_response
+  """
+  update data of the table: "agenda_item"
+  """
+  update_agenda_item(
+    """increments the integer columns with given value of the filtered values"""
+    _inc: agenda_item_inc_input
+
+    """sets the columns of the filtered rows to the given values"""
+    _set: agenda_item_set_input
+
+    """filter the rows which have to be updated"""
+    where: agenda_item_bool_exp!
+  ): agenda_item_mutation_response
 
   """
   update data of the table: "meeting"
   """
   update_meeting(
-    """increments the integer columns with given value of the filtered values"""
-    _inc: meeting_inc_input
-
     """sets the columns of the filtered rows to the given values"""
     _set: meeting_set_input
 
     """filter the rows which have to be updated"""
     where: meeting_bool_exp!
   ): meeting_mutation_response
-
-  """
-  update data of the table: "profile"
-  """
-  update_profile(
-    """increments the integer columns with given value of the filtered values"""
-    _inc: profile_inc_input
-
-    """sets the columns of the filtered rows to the given values"""
-    _set: profile_set_input
-
-    """filter the rows which have to be updated"""
-    where: profile_bool_exp!
-  ): profile_mutation_response
 }
 
 """column ordering options"""
@@ -402,289 +459,31 @@ enum order_by {
   desc_nulls_last
 }
 
-"""
-columns and relationships of "profile"
-"""
-type profile {
-  id: Int!
-  name: String!
-}
-
-"""
-aggregated selection of "profile"
-"""
-type profile_aggregate {
-  aggregate: profile_aggregate_fields
-  nodes: [profile!]!
-}
-
-"""
-aggregate fields of "profile"
-"""
-type profile_aggregate_fields {
-  avg: profile_avg_fields
-  count(columns: [profile_select_column!], distinct: Boolean): Int
-  max: profile_max_fields
-  min: profile_min_fields
-  stddev: profile_stddev_fields
-  stddev_pop: profile_stddev_pop_fields
-  stddev_samp: profile_stddev_samp_fields
-  sum: profile_sum_fields
-  var_pop: profile_var_pop_fields
-  var_samp: profile_var_samp_fields
-  variance: profile_variance_fields
-}
-
-"""
-order by aggregate values of table "profile"
-"""
-input profile_aggregate_order_by {
-  avg: profile_avg_order_by
-  count: order_by
-  max: profile_max_order_by
-  min: profile_min_order_by
-  stddev: profile_stddev_order_by
-  stddev_pop: profile_stddev_pop_order_by
-  stddev_samp: profile_stddev_samp_order_by
-  sum: profile_sum_order_by
-  var_pop: profile_var_pop_order_by
-  var_samp: profile_var_samp_order_by
-  variance: profile_variance_order_by
-}
-
-"""
-input type for inserting array relation for remote table "profile"
-"""
-input profile_arr_rel_insert_input {
-  data: [profile_insert_input!]!
-  on_conflict: profile_on_conflict
-}
-
-"""aggregate avg on columns"""
-type profile_avg_fields {
-  id: Float
-}
-
-"""
-order by avg() on columns of table "profile"
-"""
-input profile_avg_order_by {
-  id: order_by
-}
-
-"""
-Boolean expression to filter rows from the table "profile". All fields are combined with a logical 'AND'.
-"""
-input profile_bool_exp {
-  _and: [profile_bool_exp]
-  _not: profile_bool_exp
-  _or: [profile_bool_exp]
-  id: integer_comparison_exp
-  name: text_comparison_exp
-}
-
-"""
-unique or primary key constraints on table "profile"
-"""
-enum profile_constraint {
-  """unique or primary key constraint"""
-  profile_pkey
-}
-
-"""
-input type for incrementing integer columne in table "profile"
-"""
-input profile_inc_input {
-  id: Int
-}
-
-"""
-input type for inserting data into table "profile"
-"""
-input profile_insert_input {
-  id: Int
-  name: String
-}
-
-"""aggregate max on columns"""
-type profile_max_fields {
-  id: Int
-  name: String
-}
-
-"""
-order by max() on columns of table "profile"
-"""
-input profile_max_order_by {
-  id: order_by
-  name: order_by
-}
-
-"""aggregate min on columns"""
-type profile_min_fields {
-  id: Int
-  name: String
-}
-
-"""
-order by min() on columns of table "profile"
-"""
-input profile_min_order_by {
-  id: order_by
-  name: order_by
-}
-
-"""
-response of any mutation on the table "profile"
-"""
-type profile_mutation_response {
-  """number of affected rows by the mutation"""
-  affected_rows: Int!
-
-  """data of the affected rows by the mutation"""
-  returning: [profile!]!
-}
-
-"""
-input type for inserting object relation for remote table "profile"
-"""
-input profile_obj_rel_insert_input {
-  data: profile_insert_input!
-  on_conflict: profile_on_conflict
-}
-
-"""
-on conflict condition type for table "profile"
-"""
-input profile_on_conflict {
-  constraint: profile_constraint!
-  update_columns: [profile_update_column!]!
-}
-
-"""
-ordering options when selecting data from "profile"
-"""
-input profile_order_by {
-  id: order_by
-  name: order_by
-}
-
-"""
-select columns of table "profile"
-"""
-enum profile_select_column {
-  """column name"""
-  id
-
-  """column name"""
-  name
-}
-
-"""
-input type for updating data in table "profile"
-"""
-input profile_set_input {
-  id: Int
-  name: String
-}
-
-"""aggregate stddev on columns"""
-type profile_stddev_fields {
-  id: Float
-}
-
-"""
-order by stddev() on columns of table "profile"
-"""
-input profile_stddev_order_by {
-  id: order_by
-}
-
-"""aggregate stddev_pop on columns"""
-type profile_stddev_pop_fields {
-  id: Float
-}
-
-"""
-order by stddev_pop() on columns of table "profile"
-"""
-input profile_stddev_pop_order_by {
-  id: order_by
-}
-
-"""aggregate stddev_samp on columns"""
-type profile_stddev_samp_fields {
-  id: Float
-}
-
-"""
-order by stddev_samp() on columns of table "profile"
-"""
-input profile_stddev_samp_order_by {
-  id: order_by
-}
-
-"""aggregate sum on columns"""
-type profile_sum_fields {
-  id: Int
-}
-
-"""
-order by sum() on columns of table "profile"
-"""
-input profile_sum_order_by {
-  id: order_by
-}
-
-"""
-update columns of table "profile"
-"""
-enum profile_update_column {
-  """column name"""
-  id
-
-  """column name"""
-  name
-}
-
-"""aggregate var_pop on columns"""
-type profile_var_pop_fields {
-  id: Float
-}
-
-"""
-order by var_pop() on columns of table "profile"
-"""
-input profile_var_pop_order_by {
-  id: order_by
-}
-
-"""aggregate var_samp on columns"""
-type profile_var_samp_fields {
-  id: Float
-}
-
-"""
-order by var_samp() on columns of table "profile"
-"""
-input profile_var_samp_order_by {
-  id: order_by
-}
-
-"""aggregate variance on columns"""
-type profile_variance_fields {
-  id: Float
-}
-
-"""
-order by variance() on columns of table "profile"
-"""
-input profile_variance_order_by {
-  id: order_by
-}
-
 """query root"""
 type query_root {
+  """
+  fetch data from the table: "agenda_item"
+  """
+  agenda_item(
+    """distinct select on columns"""
+    distinct_on: [agenda_item_select_column!]
+
+    """limit the nuber of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [agenda_item_order_by!]
+
+    """filter the rows returned"""
+    where: agenda_item_bool_exp
+  ): [agenda_item!]!
+
+  """fetch data from the table: "agenda_item" using primary key columns"""
+  agenda_item_by_pk(id: Int!): agenda_item
+
   """
   fetch data from the table: "meeting"
   """
@@ -705,35 +504,15 @@ type query_root {
     where: meeting_bool_exp
   ): [meeting!]!
 
-  """
-  fetch aggregated fields from the table: "meeting"
-  """
-  meeting_aggregate(
-    """distinct select on columns"""
-    distinct_on: [meeting_select_column!]
-
-    """limit the nuber of rows returned"""
-    limit: Int
-
-    """skip the first n rows. Use only with order_by"""
-    offset: Int
-
-    """sort the rows by one or more columns"""
-    order_by: [meeting_order_by!]
-
-    """filter the rows returned"""
-    where: meeting_bool_exp
-  ): meeting_aggregate!
-
   """fetch data from the table: "meeting" using primary key columns"""
-  meeting_by_pk(id: Int!): meeting
+  meeting_by_pk(id: uuid!): meeting
 
   """
-  fetch data from the table: "profile"
+  fetch data from the table: "user"
   """
-  profile(
+  user(
     """distinct select on columns"""
-    distinct_on: [profile_select_column!]
+    distinct_on: [user_select_column!]
 
     """limit the nuber of rows returned"""
     limit: Int
@@ -742,18 +521,18 @@ type query_root {
     offset: Int
 
     """sort the rows by one or more columns"""
-    order_by: [profile_order_by!]
+    order_by: [user_order_by!]
 
     """filter the rows returned"""
-    where: profile_bool_exp
-  ): [profile!]!
+    where: user_bool_exp
+  ): [user!]!
 
   """
-  fetch aggregated fields from the table: "profile"
+  fetch aggregated fields from the table: "user"
   """
-  profile_aggregate(
+  user_aggregate(
     """distinct select on columns"""
-    distinct_on: [profile_select_column!]
+    distinct_on: [user_select_column!]
 
     """limit the nuber of rows returned"""
     limit: Int
@@ -762,19 +541,42 @@ type query_root {
     offset: Int
 
     """sort the rows by one or more columns"""
-    order_by: [profile_order_by!]
+    order_by: [user_order_by!]
 
     """filter the rows returned"""
-    where: profile_bool_exp
-  ): profile_aggregate!
+    where: user_bool_exp
+  ): user_aggregate!
 
-  """fetch data from the table: "profile" using primary key columns"""
-  profile_by_pk(id: Int!): profile
+  """fetch data from the table: "user" using primary key columns"""
+  user_by_pk(id: Int!): user
 }
 
 """subscription root"""
 type subscription_root {
   """
+  fetch data from the table: "agenda_item"
+  """
+  agenda_item(
+    """distinct select on columns"""
+    distinct_on: [agenda_item_select_column!]
+
+    """limit the nuber of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [agenda_item_order_by!]
+
+    """filter the rows returned"""
+    where: agenda_item_bool_exp
+  ): [agenda_item!]!
+
+  """fetch data from the table: "agenda_item" using primary key columns"""
+  agenda_item_by_pk(id: Int!): agenda_item
+
+  """
   fetch data from the table: "meeting"
   """
   meeting(
@@ -794,35 +596,15 @@ type subscription_root {
     where: meeting_bool_exp
   ): [meeting!]!
 
-  """
-  fetch aggregated fields from the table: "meeting"
-  """
-  meeting_aggregate(
-    """distinct select on columns"""
-    distinct_on: [meeting_select_column!]
-
-    """limit the nuber of rows returned"""
-    limit: Int
-
-    """skip the first n rows. Use only with order_by"""
-    offset: Int
-
-    """sort the rows by one or more columns"""
-    order_by: [meeting_order_by!]
-
-    """filter the rows returned"""
-    where: meeting_bool_exp
-  ): meeting_aggregate!
-
   """fetch data from the table: "meeting" using primary key columns"""
-  meeting_by_pk(id: Int!): meeting
+  meeting_by_pk(id: uuid!): meeting
 
   """
-  fetch data from the table: "profile"
+  fetch data from the table: "user"
   """
-  profile(
+  user(
     """distinct select on columns"""
-    distinct_on: [profile_select_column!]
+    distinct_on: [user_select_column!]
 
     """limit the nuber of rows returned"""
     limit: Int
@@ -831,18 +613,18 @@ type subscription_root {
     offset: Int
 
     """sort the rows by one or more columns"""
-    order_by: [profile_order_by!]
+    order_by: [user_order_by!]
 
     """filter the rows returned"""
-    where: profile_bool_exp
-  ): [profile!]!
+    where: user_bool_exp
+  ): [user!]!
 
   """
-  fetch aggregated fields from the table: "profile"
+  fetch aggregated fields from the table: "user"
   """
-  profile_aggregate(
+  user_aggregate(
     """distinct select on columns"""
-    distinct_on: [profile_select_column!]
+    distinct_on: [user_select_column!]
 
     """limit the nuber of rows returned"""
     limit: Int
@@ -851,14 +633,14 @@ type subscription_root {
     offset: Int
 
     """sort the rows by one or more columns"""
-    order_by: [profile_order_by!]
+    order_by: [user_order_by!]
 
     """filter the rows returned"""
-    where: profile_bool_exp
-  ): profile_aggregate!
+    where: user_bool_exp
+  ): user_aggregate!
 
-  """fetch data from the table: "profile" using primary key columns"""
-  profile_by_pk(id: Int!): profile
+  """fetch data from the table: "user" using primary key columns"""
+  user_by_pk(id: Int!): user
 }
 
 """
@@ -880,4 +662,295 @@ input text_comparison_exp {
   _nlike: String
   _nsimilar: String
   _similar: String
+}
+
+scalar timestamptz
+
+"""
+expression to compare columns of type timestamptz. All fields are combined with logical 'AND'.
+"""
+input timestamptz_comparison_exp {
+  _eq: timestamptz
+  _gt: timestamptz
+  _gte: timestamptz
+  _in: [timestamptz]
+  _is_null: Boolean
+  _lt: timestamptz
+  _lte: timestamptz
+  _neq: timestamptz
+  _nin: [timestamptz]
+}
+
+"""
+columns and relationships of "user"
+"""
+type user {
+  auth_id: String
+  email: String
+  id: Int!
+  name: String
+}
+
+"""
+aggregated selection of "user"
+"""
+type user_aggregate {
+  aggregate: user_aggregate_fields
+  nodes: [user!]!
+}
+
+"""
+aggregate fields of "user"
+"""
+type user_aggregate_fields {
+  avg: user_avg_fields
+  count(columns: [user_select_column!], distinct: Boolean): Int
+  max: user_max_fields
+  min: user_min_fields
+  stddev: user_stddev_fields
+  stddev_pop: user_stddev_pop_fields
+  stddev_samp: user_stddev_samp_fields
+  sum: user_sum_fields
+  var_pop: user_var_pop_fields
+  var_samp: user_var_samp_fields
+  variance: user_variance_fields
+}
+
+"""
+order by aggregate values of table "user"
+"""
+input user_aggregate_order_by {
+  avg: user_avg_order_by
+  count: order_by
+  max: user_max_order_by
+  min: user_min_order_by
+  stddev: user_stddev_order_by
+  stddev_pop: user_stddev_pop_order_by
+  stddev_samp: user_stddev_samp_order_by
+  sum: user_sum_order_by
+  var_pop: user_var_pop_order_by
+  var_samp: user_var_samp_order_by
+  variance: user_variance_order_by
+}
+
+"""
+input type for inserting array relation for remote table "user"
+"""
+input user_arr_rel_insert_input {
+  data: [user_insert_input!]!
+}
+
+"""aggregate avg on columns"""
+type user_avg_fields {
+  id: Float
+}
+
+"""
+order by avg() on columns of table "user"
+"""
+input user_avg_order_by {
+  id: order_by
+}
+
+"""
+Boolean expression to filter rows from the table "user". All fields are combined with a logical 'AND'.
+"""
+input user_bool_exp {
+  _and: [user_bool_exp]
+  _not: user_bool_exp
+  _or: [user_bool_exp]
+  auth_id: text_comparison_exp
+  email: text_comparison_exp
+  id: integer_comparison_exp
+  name: text_comparison_exp
+}
+
+"""
+input type for inserting data into table "user"
+"""
+input user_insert_input {
+  id: Int
+  name: String
+}
+
+"""aggregate max on columns"""
+type user_max_fields {
+  auth_id: String
+  email: String
+  id: Int
+  name: String
+}
+
+"""
+order by max() on columns of table "user"
+"""
+input user_max_order_by {
+  auth_id: order_by
+  email: order_by
+  id: order_by
+  name: order_by
+}
+
+"""aggregate min on columns"""
+type user_min_fields {
+  auth_id: String
+  email: String
+  id: Int
+  name: String
+}
+
+"""
+order by min() on columns of table "user"
+"""
+input user_min_order_by {
+  auth_id: order_by
+  email: order_by
+  id: order_by
+  name: order_by
+}
+
+"""
+response of any mutation on the table "user"
+"""
+type user_mutation_response {
+  """number of affected rows by the mutation"""
+  affected_rows: Int!
+
+  """data of the affected rows by the mutation"""
+  returning: [user!]!
+}
+
+"""
+input type for inserting object relation for remote table "user"
+"""
+input user_obj_rel_insert_input {
+  data: user_insert_input!
+}
+
+"""
+ordering options when selecting data from "user"
+"""
+input user_order_by {
+  auth_id: order_by
+  email: order_by
+  id: order_by
+  name: order_by
+}
+
+"""
+select columns of table "user"
+"""
+enum user_select_column {
+  """column name"""
+  auth_id
+
+  """column name"""
+  email
+
+  """column name"""
+  id
+
+  """column name"""
+  name
+}
+
+"""aggregate stddev on columns"""
+type user_stddev_fields {
+  id: Float
+}
+
+"""
+order by stddev() on columns of table "user"
+"""
+input user_stddev_order_by {
+  id: order_by
+}
+
+"""aggregate stddev_pop on columns"""
+type user_stddev_pop_fields {
+  id: Float
+}
+
+"""
+order by stddev_pop() on columns of table "user"
+"""
+input user_stddev_pop_order_by {
+  id: order_by
+}
+
+"""aggregate stddev_samp on columns"""
+type user_stddev_samp_fields {
+  id: Float
+}
+
+"""
+order by stddev_samp() on columns of table "user"
+"""
+input user_stddev_samp_order_by {
+  id: order_by
+}
+
+"""aggregate sum on columns"""
+type user_sum_fields {
+  id: Int
+}
+
+"""
+order by sum() on columns of table "user"
+"""
+input user_sum_order_by {
+  id: order_by
+}
+
+"""aggregate var_pop on columns"""
+type user_var_pop_fields {
+  id: Float
+}
+
+"""
+order by var_pop() on columns of table "user"
+"""
+input user_var_pop_order_by {
+  id: order_by
+}
+
+"""aggregate var_samp on columns"""
+type user_var_samp_fields {
+  id: Float
+}
+
+"""
+order by var_samp() on columns of table "user"
+"""
+input user_var_samp_order_by {
+  id: order_by
+}
+
+"""aggregate variance on columns"""
+type user_variance_fields {
+  id: Float
+}
+
+"""
+order by variance() on columns of table "user"
+"""
+input user_variance_order_by {
+  id: order_by
+}
+
+scalar uuid
+
+"""
+expression to compare columns of type uuid. All fields are combined with logical 'AND'.
+"""
+input uuid_comparison_exp {
+  _eq: uuid
+  _gt: uuid
+  _gte: uuid
+  _in: [uuid]
+  _is_null: Boolean
+  _lt: uuid
+  _lte: uuid
+  _neq: uuid
+  _nin: [uuid]
 }
