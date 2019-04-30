@@ -179,7 +179,7 @@ const startNextServer = () =>
             To: emails.map(email => ({ Email: email })),
             TemplateID: 780768,
             TemplateLanguage: true,
-            Subject: 'Your Meeting Agenda',
+            Subject: `Meeting Agenda: ${meeting.name}`,
             Variables: {
               meeting_name: meeting.name,
               meeting_location: meeting.location,
