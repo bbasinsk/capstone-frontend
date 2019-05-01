@@ -105,3 +105,15 @@ export const CREATE_MEETING = gql`
     }
   }
 `;
+
+export const CREATE_AGENDA_ITEM = gql`
+  mutation createAgenda($meetingId: uuid!, $title: String!, $desc: String) {
+    insert_agenda_item(
+      objects: [{ meeting_id: $meetingId, title: $title, desc: $desc }]
+    ) {
+      returning {
+        id
+      }
+    }
+  }
+`;
