@@ -5,14 +5,7 @@ import { Button, Typography } from 'antd';
 
 const { Title, Text, Paragraph } = Typography;
 
-const BasicInfo = ({
-  name,
-  location,
-  startDtm,
-  endDtm,
-  openModal,
-  updateMeeting
-}) => {
+const BasicInfo = ({ name, location, startDtm, endDtm, openModal }) => {
   const startDate = moment(startDtm).format('dddd, MMM Do');
   const start = moment(startDtm).format('h:mm a');
   const end = moment(endDtm).format('h:mm a');
@@ -21,12 +14,7 @@ const BasicInfo = ({
     <div className="meeting-info">
       <div className="meeting-info__wrapper">
         <div className="meeting-info--left">
-          <Title
-            className="meeting-info__title"
-            editable={{ onChange: newName => updateMeeting({ newName }) }}
-          >
-            {name}
-          </Title>
+          <Title className="meeting-info__title">{name}</Title>
 
           <div className="meeting-info__dtm">
             <Paragraph>
@@ -45,14 +33,7 @@ const BasicInfo = ({
             <Text style={{ display: 'inline-block', marginBottom: '10px' }}>
               Location:
             </Text>
-            <Text
-              style={{ marginLeft: '6px' }}
-              editable={{
-                onChange: newLocation => updateMeeting({ newLocation })
-              }}
-            >
-              {location}
-            </Text>
+            <Text style={{ marginLeft: '6px' }}>{location}</Text>
           </Paragraph>
         </div>
 
@@ -98,8 +79,7 @@ BasicInfo.propTypes = {
   location: PropTypes.string,
   startDtm: PropTypes.string,
   endDtm: PropTypes.string,
-  openModal: PropTypes.func.isRequired,
-  updateMeeting: PropTypes.func.isRequired
+  openModal: PropTypes.func.isRequired
 };
 
 export default BasicInfo;
