@@ -31,6 +31,11 @@ const client = new ApolloClient({
 
 dotenv.config();
 
+const mailjet = require('node-mailjet').connect(
+  process.env.MJ_APIKEY_PUBLIC,
+  process.env.MJ_APIKEY_PRIVATE
+);
+
 ShareDB.types.register(richText.type);
 const db = require('sharedb-postgres')({
   ...parse(process.env.DATABASE_URL),
@@ -169,7 +174,7 @@ const startNextServer = () =>
         member => member.member_user.email
       );
 
-      const emailPayload = {
+      const emailRequest = {
         Messages: [
           {
             From: {
@@ -179,7 +184,7 @@ const startNextServer = () =>
             To: emails.map(email => ({ Email: email })),
             TemplateID: 780768,
             TemplateLanguage: true,
-            Subject: `Meeting Agenda: ${meeting.name}`,
+            Subject: `Meeting Invite & Agenda: ${meeting.name}`,
             Variables: {
               meeting_name: meeting.name,
               meeting_location: meeting.location,
@@ -190,16 +195,11 @@ const startNextServer = () =>
         ]
       };
 
-      const mailjetResponse = await fetch('https://api.mailjet.com/v3.1/send', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: process.env.MAILJET_AUTH
-        },
-        body: JSON.stringify(emailPayload)
-      });
+      const emailResponse = await mailjet
+        .post('send', { version: 'v3.1' })
+        .request(emailRequest);
 
-      return res.json({ emailPayload, mailjetResponse });
+      return res.json({ emailRequest, emailResponse });
     });
 
     server.use(routerHandler);
