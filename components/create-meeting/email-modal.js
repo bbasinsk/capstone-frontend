@@ -4,7 +4,6 @@ import { Modal } from 'antd';
 
 const EndModal = ({ visible, closeModal, meeting, createMeeting }) => {
   const onOk = () => {
-    console.log('complete');
     createMeeting(meeting);
   };
 

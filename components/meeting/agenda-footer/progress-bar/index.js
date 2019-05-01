@@ -43,11 +43,12 @@ const ProgressBar = ({ agendaItems }) => {
         }
         .progress-bar {
             postition: relative;
-            height: 30px;
+            height: 16px;
             width: 200px;
             background: rgb(240, 242, 245);
             box-shadow: 0 0 0 rgba(0, 0, 0, 0.045);
-            border-radius: 4px;
+            border: 1px solid rgba(0, 0, 0, 0.045);
+            border-radius: 2px;
             box-sizing: border-box;
             margin-left: 20px;
         }
