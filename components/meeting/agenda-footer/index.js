@@ -1,14 +1,17 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Button } from 'antd';
-import ProgressBar from './progress-bar';
+// import ProgressBar from './progress-bar';
 
-const AgendaFooter = ({ agendaItems, openModal }) => (
+const AgendaFooter = ({
+  // agendaItems,
+  openModal
+}) => (
   <div className="agenda-footer">
     <div className="agenda-footer__wrapper">
       <div className="agenda-footer--right">
         <div className="agenda-footer__progress">
-          <ProgressBar agendaItems={agendaItems} />
+          {/* <ProgressBar agendaItems={agendaItems} /> */}
         </div>
         <div className="agenda-footer__end">
           <Button onClick={openModal} type="danger">

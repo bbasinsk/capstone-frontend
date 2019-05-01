@@ -9,8 +9,8 @@ const AgendaItem = ({
   desc,
   duration,
   deleteAgendaItem,
-  completed,
-  setCompleted
+  collapsed,
+  toggleCollapsed
 }) => (
   <div style={{ marginBottom: '36px' }}>
     <Card
@@ -24,8 +24,8 @@ const AgendaItem = ({
             </span>
           )}
           <Icon
-            type={completed ? 'down' : 'check'}
-            onClick={() => setCompleted(!completed)}
+            type={collapsed ? 'down' : 'up'}
+            onClick={() => toggleCollapsed()}
             style={{ marginRight: '18px', color: '#1890FF' }}
           />
           <Popconfirm
@@ -40,7 +40,7 @@ const AgendaItem = ({
           </Popconfirm>
         </div>
       }
-      bodyStyle={{ display: completed ? 'none' : 'block', padding: 0 }}
+      bodyStyle={{ display: collapsed ? 'none' : 'block', padding: 0 }}
     >
       <div className="agenda-item__body">
         <div className="agenda-item__desc">
@@ -78,8 +78,8 @@ AgendaItem.propTypes = {
   desc: PropTypes.string,
   duration: PropTypes.number,
   deleteAgendaItem: PropTypes.func.isRequired,
-  completed: PropTypes.bool.isRequired,
-  setCompleted: PropTypes.func.isRequired
+  collapsed: PropTypes.bool.isRequired,
+  toggleCollapsed: PropTypes.func.isRequired
 };
 AgendaItem.defaultProps = {
   desc: '',

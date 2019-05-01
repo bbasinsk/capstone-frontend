@@ -1,17 +1,14 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { useMutation } from 'react-apollo-hooks';
 import Component from './component';
-import {
-  SET_WAIT,
-  DELETE_AGENDA_ITEM,
-  SET_ITEM_COMPLETE
-} from '../../../queries';
+// import { SET_ITEM_COMPLETE } from '../../../queries';
+import { DELETE_AGENDA_ITEM } from '../../../queries';
 
-const AgendaItem = ({ id, title, desc, duration, completed }) => {
+const AgendaItem = ({ id, title, desc, duration }) => {
   const deleteAgendaItem = useMutation(DELETE_AGENDA_ITEM);
-  const setCompleted = useMutation(SET_ITEM_COMPLETE);
-  const setWait = useMutation(SET_WAIT);
+  // const setCompleted = useMutation(SET_ITEM_COMPLETE);
+  const [collapsed, setCollapsed] = useState(false);
 
   return (
     <Component
@@ -20,20 +17,12 @@ const AgendaItem = ({ id, title, desc, duration, completed }) => {
       desc={desc}
       duration={duration}
       deleteAgendaItem={async () => {
-        await setWait({ variables: { wait: true } });
         await deleteAgendaItem({
           variables: { id }
         });
-        await setWait({ variables: { wait: false } });
       }}
-      completed={completed}
-      setCompleted={async isCompleted => {
-        await setWait({ variables: { wait: true } });
-        await setCompleted({
-          variables: { id, completed: isCompleted }
-        });
-        await setWait({ variables: { wait: false } });
-      }}
+      collapsed={collapsed}
+      toggleCollapsed={() => setCollapsed(!collapsed)}
     />
   );
 };
