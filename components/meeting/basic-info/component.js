@@ -1,11 +1,18 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
-import { Button, Typography } from 'antd';
+import { Button, Typography, Icon } from 'antd';
 
 const { Title, Text, Paragraph } = Typography;
 
-const BasicInfo = ({ name, location, startDtm, endDtm, openModal }) => {
+const BasicInfo = ({
+  name,
+  location,
+  startDtm,
+  endDtm,
+  openModal,
+  openShare
+}) => {
   const startDate = moment(startDtm).format('dddd, MMM Do');
   const start = moment(startDtm).format('h:mm a');
   const end = moment(endDtm).format('h:mm a');
@@ -38,6 +45,14 @@ const BasicInfo = ({ name, location, startDtm, endDtm, openModal }) => {
         </div>
 
         <div className="meeting-info--right">
+          <Button
+            size="large"
+            onClick={openShare}
+            type="primary"
+            style={{ marginRight: '16px' }}
+          >
+            <Icon type="user" /> Share
+          </Button>
           <Button size="large" onClick={openModal} type="danger">
             END
           </Button>
@@ -79,7 +94,8 @@ BasicInfo.propTypes = {
   location: PropTypes.string,
   startDtm: PropTypes.string,
   endDtm: PropTypes.string,
-  openModal: PropTypes.func.isRequired
+  openModal: PropTypes.func.isRequired,
+  openShare: PropTypes.func.isRequired
 };
 
 export default BasicInfo;

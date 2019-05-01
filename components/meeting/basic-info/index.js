@@ -1,11 +1,13 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Helmet } from 'react-helmet';
 import PropTypes from 'prop-types';
 import { useSubscription, useMutation } from 'react-apollo-hooks';
 import { UPDATE_MEETING, GET_MEETING, SET_WAIT } from '../../../queries';
 import Component from './component';
+import ShareModal from './share-modal';
 
 const BasicInfoHOC = ({ meetingId, openModal }) => {
+  const [shareOpen, setShareOpen] = useState(false);
   const updateMeetingMutation = useMutation(UPDATE_MEETING);
   const setWait = useMutation(SET_WAIT);
 
@@ -52,7 +54,9 @@ const BasicInfoHOC = ({ meetingId, openModal }) => {
         startDtm={startDtm}
         endDtm={endDtm}
         openModal={openModal}
+        openShare={() => setShareOpen(true)}
       />
+      <ShareModal visible={shareOpen} closeModal={() => setShareOpen(false)} />
     </div>
   );
 };
