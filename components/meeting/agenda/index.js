@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Typography } from 'antd';
+import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import AgendaItem from '../agenda-item';
 
 import CreateAgendaItem from '../create-agenda-item';
@@ -11,19 +12,51 @@ function Agenda({ meetingId, agendaItems }) {
   return (
     <div className="agenda">
       <Title level={2}>Agenda</Title>
-      {agendaItems
-        .sort(({ id: idA }, { id: idB }) => idB - idA)
-        .map(({ id, title, desc, duration, completed }, index) => (
-          <div key={id}>
-            <AgendaItem
-              id={id}
-              title={`${index + 1}. ${title}`}
-              desc={desc}
-              duration={duration}
-              completed={completed}
-            />
-          </div>
-        ))}
+      <DragDropContext
+        onDragEnd={({ destination, source, draggableId }) => {
+          console.log({ destination, source, draggableId });
+
+          if (!destination) {
+            return null;
+          }
+          if (
+            destination.droppableId === source.droppableId &&
+            destination.index === source.index
+          ) {
+            return null;
+          }
+        }}
+      >
+        <Droppable droppableId="droppable">
+          {provided => (
+            <div ref={provided.innerRef} {...provided.droppableProps}>
+              {agendaItems.map(
+                ({ id, title, desc, duration, completed }, index) => (
+                  <Draggable key={id} draggableId={id} index={index}>
+                    {iProvided => (
+                      <div
+                        className="agenda-item--draggable"
+                        {...iProvided.draggableProps}
+                        {...iProvided.dragHandleProps}
+                        ref={iProvided.innerRef}
+                      >
+                        <AgendaItem
+                          id={id}
+                          title={`${index + 1}. ${title}`}
+                          desc={desc}
+                          duration={duration}
+                          completed={completed}
+                        />
+                      </div>
+                    )}
+                  </Draggable>
+                )
+              )}
+              {provided.placeholder}
+            </div>
+          )}
+        </Droppable>
+      </DragDropContext>
       <CreateAgendaItem meetingId={meetingId} />
       <style jsx>{`
         .agenda {
@@ -31,6 +64,10 @@ function Agenda({ meetingId, agendaItems }) {
           max-width: 1200px;
           margin: auto;
           margin-bottom: 192px;
+        }
+
+        .agenda-item--draggable {
+          margin-bottom: 36px;
         }
       `}</style>
     </div>
@@ -43,7 +80,7 @@ Agenda.propTypes = {
     PropTypes.shape({
       id: PropTypes.number.isRequired,
       title: PropTypes.string.isRequired,
-      desc: PropTypes.string.isRequired,
+      desc: PropTypes.string,
       duration: PropTypes.number,
       completed: PropTypes.bool.isRequired
     })

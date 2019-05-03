@@ -12,7 +12,7 @@ const AgendaItem = ({
   collapsed,
   toggleCollapsed
 }) => (
-  <div style={{ marginBottom: '36px' }}>
+  <div>
     <Card
       title={title}
       extra={
