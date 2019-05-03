@@ -8,7 +8,12 @@ const Header = () => (
       <div className="header--left">
         <span className="header__logo">
           <Link href="/">
-            <a style={{ color: 'white' }}>[=] NeatMeet</a>
+            {/* <a style={{ color: 'white' }}>[=] NeatMeet</a> */}
+            <img
+              src="/static/logo/logo_white.svg"
+              alt="NeatMeet"
+              style={{ width: '120px' }}
+            />
           </Link>
         </span>
       </div>
