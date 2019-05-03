@@ -187,9 +187,9 @@ const startNextServer = () =>
             Subject: `Meeting Invite & Agenda: ${meeting.name}`,
             Variables: {
               meeting_name: meeting.name,
-              meeting_location: meeting.location,
+              meeting_location: meeting.location || '',
               meeting_url: `https://www.neatmeet.co/meeting/${meeting.id}`,
-              agenda_items: agendaItems
+              agenda_items: agendaItems || []
             }
           }
         ]
