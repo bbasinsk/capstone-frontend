@@ -8,13 +8,13 @@ export const steps = [
     src: '/static/images/create.svg'
   },
   {
-    title: '2. Collaborate on meeting notes',
+    title: '2. Collaborate in real-time',
     content:
       'Collaborate with your team on the meeting document. Check off agenda items as they’re completed to keep a record of your team’s progress.',
     src: '/static/images/collaborate.svg'
   },
   {
-    title: '3. Auto-send meeting summaries',
+    title: '3. Send auto-generated summaries',
     content:
       'Once the meeting is over, you’ll receive a summary document that includes what was accomplished. Send this to your team!',
     src: '/static/images/summary.svg'
