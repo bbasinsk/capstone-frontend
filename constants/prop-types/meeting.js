@@ -14,3 +14,14 @@ export const MeetingPropType = PropTypes.shape({
     })
   )
 });
+
+export const AgendaItemsPropType = PropTypes.arrayOf(
+  PropTypes.shape({
+    id: PropTypes.number.isRequired,
+    title: PropTypes.string.isRequired,
+    desc: PropTypes.string,
+    duration: PropTypes.number,
+    completed: PropTypes.bool.isRequired,
+    order: PropTypes.number
+  })
+);

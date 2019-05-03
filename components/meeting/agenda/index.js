@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Typography } from 'antd';
 import AgendaItem from '../agenda-item';
+import { AgendaItemsPropType } from '../../../constants/prop-types/meeting';
 
 import CreateAgendaItem from '../create-agenda-item';
 
@@ -12,7 +13,7 @@ function Agenda({ meetingId, agendaItems }) {
     <div className="agenda">
       <Title level={2}>Agenda</Title>
       {agendaItems
-        .sort(({ id: idA }, { id: idB }) => idB - idA)
+        .sort((a, b) => a.order - b.order)
         .map(({ id, title, desc, duration, completed }, index) => (
           <div key={id}>
             <AgendaItem
@@ -24,7 +25,7 @@ function Agenda({ meetingId, agendaItems }) {
             />
           </div>
         ))}
-      <CreateAgendaItem meetingId={meetingId} />
+      <CreateAgendaItem meetingId={meetingId} agendaItems={agendaItems} />
       <style jsx>{`
         .agenda {
           padding: 24px;
@@ -39,15 +40,7 @@ function Agenda({ meetingId, agendaItems }) {
 
 Agenda.propTypes = {
   meetingId: PropTypes.string.isRequired,
-  agendaItems: PropTypes.arrayOf(
-    PropTypes.shape({
-      id: PropTypes.number.isRequired,
-      title: PropTypes.string.isRequired,
-      desc: PropTypes.string.isRequired,
-      duration: PropTypes.number,
-      completed: PropTypes.bool.isRequired
-    })
-  )
+  agendaItems: AgendaItemsPropType
 };
 Agenda.defaultProps = {
   agendaItems: []

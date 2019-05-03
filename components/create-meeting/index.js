@@ -38,7 +38,7 @@ export default function hoc() {
       startDtm,
       endDtm,
       agendaItems: {
-        data: agendaItems
+        data: agendaItems.map((item, idx) => ({ ...item, order: idx + 1 }))
       },
       meetingMembers: {
         data: emails.map(email => ({

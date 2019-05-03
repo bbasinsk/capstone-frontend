@@ -48,6 +48,7 @@ export const GET_AGENDA = gql`
         desc
         duration
         completed
+        order
       }
     }
   }
@@ -107,9 +108,16 @@ export const CREATE_MEETING = gql`
 `;
 
 export const CREATE_AGENDA_ITEM = gql`
-  mutation createAgenda($meetingId: uuid!, $title: String!, $desc: String) {
+  mutation createAgenda(
+    $meetingId: uuid!
+    $title: String!
+    $desc: String
+    $order: Int!
+  ) {
     insert_agenda_item(
-      objects: [{ meeting_id: $meetingId, title: $title, desc: $desc }]
+      objects: [
+        { meeting_id: $meetingId, title: $title, desc: $desc, order: $order }
+      ]
     ) {
       returning {
         id

@@ -16,8 +16,9 @@ const ShareEmail = ({ meeting }) => (
     </div>
 
     <div>
-      {meeting.agendaItems.map(item => (
-        <div>
+      {meeting.agendaItems.map((item, idx) => (
+        // eslint-disable-next-line react/no-array-index-key
+        <div key={idx}>
           <h3>{item.title}</h3>
           <p>{item.desc}</p>
         </div>
