@@ -197,7 +197,8 @@ const startNextServer = () =>
 
       const emailResponse = await mailjet
         .post('send', { version: 'v3.1' })
-        .request(emailRequest);
+        .request(emailRequest)
+        .catch(console.error);
 
       return res.json({ emailRequest, emailResponse });
     });
