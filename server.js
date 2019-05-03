@@ -2,6 +2,7 @@
 const express = require('express');
 const next = require('next');
 const compression = require('compression');
+const sslRedirect = require('heroku-ssl-redirect');
 const LRUCache = require('lru-cache');
 const path = require('path');
 const fs = require('fs');
@@ -143,6 +144,11 @@ const startNextServer = () =>
       })
     );
     server.use(helmet());
+
+    // force https
+    server.use(sslRedirect());
+
+    // allow json for email sending
     server.use(express.json());
 
     server.post(`/events/email/agenda`, async (req, res) => {
