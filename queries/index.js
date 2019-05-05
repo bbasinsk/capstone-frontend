@@ -125,3 +125,13 @@ export const CREATE_AGENDA_ITEM = gql`
     }
   }
 `;
+
+export const UPDATE_AGENDA_ITEM_ORDER = gql`
+  mutation updateAgendaItemOrder($id: Int!, $order: Int!) {
+    update_agenda_item(where: { id: { _eq: $id } }, _set: { order: $order }) {
+      returning {
+        id
+      }
+    }
+  }
+`;
