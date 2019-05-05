@@ -26,7 +26,10 @@ const CreateAgendaItem = ({ meetingId, agendaItems }) => {
 };
 CreateAgendaItem.propTypes = {
   meetingId: PropTypes.string.isRequired,
-  agendaItems: AgendaItemsPropType.isRequired
+  agendaItems: AgendaItemsPropType
+};
+CreateAgendaItem.defaultProps = {
+  agendaItems: []
 };
 
 export default CreateAgendaItem;
