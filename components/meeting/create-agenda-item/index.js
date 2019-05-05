@@ -3,8 +3,9 @@ import PropTypes from 'prop-types';
 import { useMutation } from 'react-apollo-hooks';
 import Component from './component';
 import { CREATE_AGENDA_ITEM, SET_WAIT } from '../../../queries';
+import { AgendaItemsPropType } from '../../../constants/prop-types/meeting';
 
-const CreateAgendaItem = ({ meetingId }) => {
+const CreateAgendaItem = ({ meetingId, agendaItems }) => {
   const createAgendaItemMutation = useMutation(CREATE_AGENDA_ITEM);
   const setWait = useMutation(SET_WAIT);
 
@@ -12,7 +13,7 @@ const CreateAgendaItem = ({ meetingId }) => {
     await setWait({ variables: { wait: true } });
     // create item in db
     await createAgendaItemMutation({
-      variables: { meetingId, title, desc }
+      variables: { meetingId, title, desc, order: agendaItems.length + 1 }
     });
     await setWait({ variables: { wait: false } });
   };
@@ -24,7 +25,8 @@ const CreateAgendaItem = ({ meetingId }) => {
   );
 };
 CreateAgendaItem.propTypes = {
-  meetingId: PropTypes.string.isRequired
+  meetingId: PropTypes.string.isRequired,
+  agendaItems: AgendaItemsPropType.isRequired
 };
 
 export default CreateAgendaItem;

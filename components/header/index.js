@@ -8,7 +8,11 @@ const Header = () => (
       <div className="header--left">
         <span className="header__logo">
           <Link href="/">
-            <a>[=] NeatMeet</a>
+            <img
+              src="/static/logo/logo_color.svg"
+              alt="NeatMeet"
+              style={{ width: '120px', cursor: 'pointer' }}
+            />
           </Link>
         </span>
       </div>
@@ -26,7 +30,7 @@ const Header = () => (
     <style jsx>{`
       .header__wrapper {
         width: 100%;
-        max-width: 1200px;
+        max-width: 1152px;
         margin: auto;
       }
 
@@ -34,7 +38,7 @@ const Header = () => (
         display: flex;
         flex-direction: row;
         justify-content: space-between;
-        padding: 32px 0;
+        padding: 32px 24px;
       }
 
       .header__logo {

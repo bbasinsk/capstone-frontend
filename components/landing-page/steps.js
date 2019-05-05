@@ -17,7 +17,9 @@ export default function Page1() {
       <div
         key="image"
         className="image"
-        style={{ backgroundImage: `url(${d.src})` }}
+        style={{
+          backgroundImage: `url(${d.src})`
+        }}
       />
       <h3 key="h3">{d.title}</h3>
       <p key="p">{d.content}</p>

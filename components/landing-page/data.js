@@ -2,22 +2,22 @@ import React from 'react';
 
 export const steps = [
   {
-    title: '1. Create agenda',
+    title: '1. Create an agenda to structure your meeting',
     content:
       'Define what needs to be discussed in this meeting, how long it should take, and who the point person is.',
-    src: 'https://gw.alipayobjects.com/zos/rmsportal/MmROsqZndrFBrIspzLlL.png'
+    src: '/static/images/create.svg'
   },
   {
-    title: '2. Collaborate on meeting notes',
+    title: '2. Collaborate in real-time with your team',
     content:
       'Collaborate with your team on the meeting document. Check off agenda items as they’re completed to keep a record of your team’s progress.',
-    src: 'https://gw.alipayobjects.com/zos/rmsportal/ONvKhpRAmkCfdEhkUZkJ.png'
+    src: '/static/images/collaborate.svg'
   },
   {
-    title: '3. Auto-send meeting summaries',
+    title: '3. Send auto-generated meeting summaries',
     content:
       'Once the meeting is over, you’ll receive a summary document that includes what was accomplished. Send this to your team!',
-    src: 'https://gw.alipayobjects.com/zos/rmsportal/oxmXLgGjCeXfYPcVSbKg.png'
+    src: '/static/images/summary.svg'
   }
 ];
 

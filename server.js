@@ -2,6 +2,7 @@
 const express = require('express');
 const next = require('next');
 const compression = require('compression');
+const sslRedirect = require('heroku-ssl-redirect');
 const LRUCache = require('lru-cache');
 const path = require('path');
 const fs = require('fs');
@@ -143,6 +144,11 @@ const startNextServer = () =>
       })
     );
     server.use(helmet());
+
+    // force https
+    server.use(sslRedirect());
+
+    // allow json for email sending
     server.use(express.json());
 
     server.post(`/events/email/agenda`, async (req, res) => {
@@ -187,9 +193,9 @@ const startNextServer = () =>
             Subject: `Meeting Invite & Agenda: ${meeting.name}`,
             Variables: {
               meeting_name: meeting.name,
-              meeting_location: meeting.location,
+              meeting_location: meeting.location || '',
               meeting_url: `https://www.neatmeet.co/meeting/${meeting.id}`,
-              agenda_items: agendaItems
+              agenda_items: agendaItems || []
             }
           }
         ]
@@ -197,7 +203,8 @@ const startNextServer = () =>
 
       const emailResponse = await mailjet
         .post('send', { version: 'v3.1' })
-        .request(emailRequest);
+        .request(emailRequest)
+        .catch(console.error);
 
       return res.json({ emailRequest, emailResponse });
     });
