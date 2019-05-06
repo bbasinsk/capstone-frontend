@@ -83,7 +83,7 @@ function Agenda({ meetingId, agendaItems }) {
           )}
         </Droppable>
       </DragDropContext>
-      <CreateAgendaItem meetingId={meetingId} />
+      <CreateAgendaItem meetingId={meetingId} agendaItems={agendaItems} />
       <style jsx>{`
         .agenda {
           padding: 24px;
