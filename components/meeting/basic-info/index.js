@@ -1,29 +1,18 @@
 import React, { useState } from 'react';
 import { Helmet } from 'react-helmet';
 import PropTypes from 'prop-types';
-import { useSubscription, useMutation } from 'react-apollo-hooks';
-import { UPDATE_MEETING, GET_MEETING, SET_WAIT } from '../../../queries';
+import { useMutation } from 'react-apollo-hooks';
+import { UPDATE_MEETING, SET_WAIT } from '../../../queries';
 import Component from './component';
 import ShareModal from './share-modal';
+import { MeetingPropType } from '../../../constants/prop-types/meeting';
 
-const BasicInfoHOC = ({ meetingId, openModal }) => {
+const BasicInfoHOC = ({ meeting, openModal }) => {
   const [shareOpen, setShareOpen] = useState(false);
   const updateMeetingMutation = useMutation(UPDATE_MEETING);
   const setWait = useMutation(SET_WAIT);
 
-  const { data: { meeting: meetings } = {}, loading, error } = useSubscription(
-    GET_MEETING,
-    {
-      variables: { meetingId }
-    }
-  );
-
-  if (error) return <div>Error! {error.message}</div>;
-  if (loading) return <div>Loading...</div>;
-
-  const meeting = meetings[0];
-
-  const { name, location, start_dtm: startDtm, end_dtm: endDtm } = meeting;
+  const { id, name, location, startDtm, endDtm } = meeting;
 
   const updateMeeting = async ({
     newName,
@@ -34,7 +23,7 @@ const BasicInfoHOC = ({ meetingId, openModal }) => {
     await setWait({ variables: { wait: true } });
     await updateMeetingMutation({
       variables: {
-        meetingId,
+        meetingId: id,
         name: newName || name,
         location: newLocation || location,
         startDtm: newStartDtm || startDtm,
@@ -62,7 +51,7 @@ const BasicInfoHOC = ({ meetingId, openModal }) => {
 };
 
 BasicInfoHOC.propTypes = {
-  meetingId: PropTypes.string.isRequired,
+  meeting: MeetingPropType.isRequired,
   openModal: PropTypes.func.isRequired
 };
 

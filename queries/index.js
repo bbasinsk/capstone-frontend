@@ -22,6 +22,12 @@ export const UPDATE_MEETING = gql`
   }
 `;
 
+export const SET_WAIT = gql`
+  mutation setWait($wait: Boolean!) {
+    setWait(wait: $wait) @client
+  }
+`;
+
 export const GET_MEETING = gql`
   subscription getMeeting($meetingId: uuid!) {
     meeting(where: { id: { _eq: $meetingId } }) {
@@ -29,19 +35,6 @@ export const GET_MEETING = gql`
       location
       start_dtm
       end_dtm
-    }
-  }
-`;
-
-export const SET_WAIT = gql`
-  mutation setWait($wait: Boolean!) {
-    setWait(wait: $wait) @client
-  }
-`;
-
-export const GET_AGENDA = gql`
-  subscription getMeeting($meetingId: uuid!) {
-    meeting(where: { id: { _eq: $meetingId } }) {
       agenda_items {
         id
         title

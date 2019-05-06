@@ -5,13 +5,13 @@ import BasicInfo from '../basic-info';
 import Agenda from '../agenda';
 import EndModal from '../end-modal';
 import AgendaFooter from '../agenda-footer';
-import { GET_AGENDA } from '../../../queries';
+import { GET_MEETING } from '../../../queries';
 
 const Meeting = ({ meetingId }) => {
   const [modalOpen, setModalOpen] = useState(false);
 
   const { data: { meeting: meetings } = {}, loading, error } = useSubscription(
-    GET_AGENDA,
+    GET_MEETING,
     {
       variables: { meetingId }
     }
@@ -21,9 +21,17 @@ const Meeting = ({ meetingId }) => {
 
   const { agenda_items: agendaItems } = meetings[0];
 
+  const meeting = {
+    name: meetings[0].name,
+    location: meetings[0].location,
+    startDtm: meetings[0].start_dtm,
+    endDtm: meetings[0].end_dtm,
+    agendaItems
+  };
+
   return (
     <div>
-      <BasicInfo meetingId={meetingId} openModal={() => setModalOpen(true)} />
+      <BasicInfo meeting={meeting} openModal={() => setModalOpen(true)} />
       <Agenda meetingId={meetingId} agendaItems={agendaItems} />
       <AgendaFooter
         agendaItems={agendaItems}
@@ -31,7 +39,11 @@ const Meeting = ({ meetingId }) => {
           setModalOpen(true);
         }}
       />
-      <EndModal visible={modalOpen} closeModal={() => setModalOpen(false)} />
+      <EndModal
+        visible={modalOpen}
+        closeModal={() => setModalOpen(false)}
+        meeting={meeting}
+      />
     </div>
   );
 };
