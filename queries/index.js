@@ -22,6 +22,17 @@ export const UPDATE_MEETING = gql`
   }
 `;
 
+export const UPDATE_MEETING_STATUS = gql`
+  mutation updateMeeting($meetingId: uuid!, $status: String!) {
+    update_meeting(
+      where: { id: { _eq: $meetingId } }
+      _set: { status: $status }
+    ) {
+      affected_rows
+    }
+  }
+`;
+
 export const SET_WAIT = gql`
   mutation setWait($wait: Boolean!) {
     setWait(wait: $wait) @client

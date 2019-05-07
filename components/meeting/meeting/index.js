@@ -22,6 +22,7 @@ const Meeting = ({ meetingId }) => {
   const { agenda_items: agendaItems } = meetings[0];
 
   const meeting = {
+    id: meetingId,
     name: meetings[0].name,
     location: meetings[0].location,
     startDtm: meetings[0].start_dtm,
