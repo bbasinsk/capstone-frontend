@@ -209,6 +209,68 @@ const startNextServer = () =>
       return res.json({ emailRequest, emailResponse });
     });
 
+    server.post(`/events/email/summary`, async (req, res) => {
+      const meeting = req.body.event.data.new;
+
+      if (meeting.status !== 'COMPLETE') {
+        return res.sendStatus(204);
+      }
+
+      const { data } = await client.query({
+        query: gql`
+          query getMeeting($meetingId: uuid!) {
+            meeting(where: { id: { _eq: $meetingId } }) {
+              agenda_items {
+                id
+                title
+                desc
+                duration
+              }
+              meeting_members {
+                member_user {
+                  email
+                }
+              }
+            }
+          }
+        `,
+        variables: { meetingId: meeting.id }
+      });
+
+      const agendaItems = data.meeting[0].agenda_items;
+      const emails = data.meeting[0].meeting_members.map(
+        member => member.member_user.email
+      );
+
+      const emailRequest = {
+        Messages: [
+          {
+            From: {
+              Email: 'noreply@neatmeet.co',
+              Name: 'NeatMeet'
+            },
+            To: emails.map(email => ({ Email: email })),
+            TemplateID: 822585,
+            TemplateLanguage: true,
+            Subject: `Meeting Summary: ${meeting.name}`,
+            Variables: {
+              meeting_name: meeting.name,
+              meeting_location: meeting.location || '',
+              meeting_url: `https://www.neatmeet.co/meeting/${meeting.id}`,
+              agenda_items: agendaItems || []
+            }
+          }
+        ]
+      };
+
+      const emailResponse = await mailjet
+        .post('send', { version: 'v3.1' })
+        .request(emailRequest)
+        .catch(console.error);
+
+      return res.json({ emailRequest, emailResponse });
+    });
+
     server.use(routerHandler);
 
     server.get(`/favicon.ico`, (req, res) =>
