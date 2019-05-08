@@ -35,7 +35,7 @@
     "start:multicore": "cross-env NODE_ENV=production pm2 start server.js -i max --attach",
     "build": "npm run clean-cache && next build",
     "clean-cache": "rimraf -rf ./node_modules/.cache",
-    "dev": "npm run lint && npm run clean-cache && node server.js",
+    "dev": "npm run lint && npm run clean-cache && DATABASE_URL=$(heroku config:get DATABASE_URL -a meeting-magic-frontend) node server.js",
     "lint": "eslint --fix --ext .js pages components containers libraries server helper_scripts",
     "lint:watch": "esw -w --fix components libraries server",
     "analyze": "cross-env ANALYZE_BUILD=true npm run build",
