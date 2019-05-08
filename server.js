@@ -14,6 +14,7 @@ const richText = require('rich-text');
 const WebSocket = require('ws');
 const WebSocketJSONStream = require('websocket-json-stream');
 const { parse } = require('pg-connection-string');
+const moment = require('moment');
 
 const { ApolloClient } = require('apollo-client');
 const { InMemoryCache } = require('apollo-cache-inmemory');
@@ -154,6 +155,13 @@ const startNextServer = () =>
     server.post(`/events/email/agenda`, async (req, res) => {
       const meeting = req.body.event.data.new;
 
+      const startDtm = moment(meeting.start_dtm);
+      const endDtm = moment(meeting.end_dtm);
+
+      const date = startDtm.format('L');
+      const startTime = startDtm.format('LT');
+      const endTime = endDtm.format('LT');
+
       const { data } = await client.query({
         query: gql`
           query getMeeting($meetingId: uuid!) {
@@ -180,10 +188,6 @@ const startNextServer = () =>
         member => member.member_user.email
       );
 
-      const date = data.meeting[0].start_dtm.split('T')[0];
-      const startTime = data.meeting[0].start_dtm.split('T')[1];
-      const endTime = data.meeting[0].end_dtm.split('T')[1];
-
       const emailRequest = {
         Messages: [
           {
@@ -198,7 +202,7 @@ const startNextServer = () =>
             Variables: {
               meeting_name: meeting.name,
               meeting_date: date,
-              meeting_time: `${startTime}-${endTime}`,
+              meeting_time: `${startTime} - ${endTime}`,
               meeting_location: meeting.location || '',
               meeting_url: `https://www.neatmeet.co/meeting/${meeting.id}`,
               agenda_items: agendaItems || []
@@ -222,6 +226,13 @@ const startNextServer = () =>
         return res.sendStatus(204);
       }
 
+      const startDtm = moment(meeting.start_dtm);
+      const endDtm = moment(meeting.end_dtm);
+
+      const date = startDtm.format('L');
+      const startTime = startDtm.format('LT');
+      const endTime = endDtm.format('LT');
+
       const { data } = await client.query({
         query: gql`
           query getMeeting($meetingId: uuid!) {
@@ -248,10 +259,6 @@ const startNextServer = () =>
         member => member.member_user.email
       );
 
-      const date = data.meeting[0].start_dtm.split('T')[0];
-      const startTime = data.meeting[0].start_dtm.split('T')[1];
-      const endTime = data.meeting[0].end_dtm.split('T')[1];
-
       const emailRequest = {
         Messages: [
           {
@@ -266,7 +273,7 @@ const startNextServer = () =>
             Variables: {
               meeting_name: meeting.name,
               meeting_date: date,
-              meeting_time: `${startTime}-${endTime}`,
+              meeting_time: `${startTime} - ${endTime}`,
               meeting_location: meeting.location || '',
               meeting_url: `https://www.neatmeet.co/meeting/${meeting.id}`,
               agenda_items: agendaItems || []
