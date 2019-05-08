@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Form, Button, Row, Col, Card, Typography } from 'antd';
 import lodash from 'lodash';
+import moment from 'moment-timezone';
 import BasicInfo from './basic-info';
 import AgendaItems from './agenda-items';
 import Members from './members';
@@ -63,6 +64,7 @@ const CreateMeeting = ({
           location: values.location,
           startDtm: `${date}T${startTime}`,
           endDtm: `${date}T${endTime}`,
+          timezone: moment.tz.guess(),
           emails,
           agendaItems
         };

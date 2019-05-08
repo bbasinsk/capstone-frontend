@@ -89,6 +89,7 @@ export const CREATE_MEETING = gql`
     $location: String
     $startDtm: timestamptz
     $endDtm: timestamptz
+    $timezone: String
     $meetingMembers: meeting_member_arr_rel_insert_input
     $agendaItems: agenda_item_arr_rel_insert_input
   ) {
@@ -99,6 +100,7 @@ export const CREATE_MEETING = gql`
           location: $location
           start_dtm: $startDtm
           end_dtm: $endDtm
+          timezone: $timezone
           meeting_members: $meetingMembers
           agenda_items: $agendaItems
         }

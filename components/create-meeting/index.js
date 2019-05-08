@@ -28,6 +28,7 @@ export default function hoc() {
     location,
     startDtm,
     endDtm,
+    timezone,
     emails,
     agendaItems
   }) => {
@@ -37,6 +38,7 @@ export default function hoc() {
       location,
       startDtm,
       endDtm,
+      timezone,
       agendaItems: {
         data: agendaItems.map((item, idx) => ({ ...item, order: idx + 1 }))
       },
