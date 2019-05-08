@@ -85,6 +85,7 @@ const CreateMeeting = ({
               <BasicInfo
                 getFieldDecorator={getFieldDecorator}
                 getError={getError}
+                getFieldValue={getFieldValue}
               />
 
               <Title level={2}>Members</Title>
@@ -102,13 +103,6 @@ const CreateMeeting = ({
                 validateFields={validateFields}
                 getError={getError}
               />
-
-              {/* <Checkbox
-            checked={sendAgenda}
-            onChange={e => setSendAgenda(e.target.checked)}
-          >
-            Send agenda to members
-          </Checkbox> */}
 
               <Button
                 type="primary"
