@@ -180,6 +180,10 @@ const startNextServer = () =>
         member => member.member_user.email
       );
 
+      const date = data.meeting[0].start_dtm.split('T')[0];
+      const startTime = data.meeting[0].start_dtm.split('T')[1];
+      const endTime = data.meeting[0].end_dtm.split('T')[1];
+
       const emailRequest = {
         Messages: [
           {
@@ -193,6 +197,8 @@ const startNextServer = () =>
             Subject: `Meeting Invite & Agenda: ${meeting.name}`,
             Variables: {
               meeting_name: meeting.name,
+              meeting_date: date,
+              meeting_time: `${startTime}-${endTime}`,
               meeting_location: meeting.location || '',
               meeting_url: `https://www.neatmeet.co/meeting/${meeting.id}`,
               agenda_items: agendaItems || []
@@ -242,6 +248,10 @@ const startNextServer = () =>
         member => member.member_user.email
       );
 
+      const date = data.meeting[0].start_dtm.split('T')[0];
+      const startTime = data.meeting[0].start_dtm.split('T')[1];
+      const endTime = data.meeting[0].end_dtm.split('T')[1];
+
       const emailRequest = {
         Messages: [
           {
@@ -255,6 +265,8 @@ const startNextServer = () =>
             Subject: `Meeting Summary: ${meeting.name}`,
             Variables: {
               meeting_name: meeting.name,
+              meeting_date: date,
+              meeting_time: `${startTime}-${endTime}`,
               meeting_location: meeting.location || '',
               meeting_url: `https://www.neatmeet.co/meeting/${meeting.id}`,
               agenda_items: agendaItems || []
