@@ -14,7 +14,7 @@ const richText = require('rich-text');
 const WebSocket = require('ws');
 const WebSocketJSONStream = require('websocket-json-stream');
 const { parse } = require('pg-connection-string');
-const moment = require('moment');
+const moment = require('moment-timezone');
 
 const { ApolloClient } = require('apollo-client');
 const { InMemoryCache } = require('apollo-cache-inmemory');
@@ -155,12 +155,13 @@ const startNextServer = () =>
     server.post(`/events/email/agenda`, async (req, res) => {
       const meeting = req.body.event.data.new;
 
-      const startDtm = moment(meeting.start_dtm);
-      const endDtm = moment(meeting.end_dtm);
+      const timezone = 'America/Los_Angeles';
+      const startDtm = moment.tz(meeting.start_dtm, timezone);
+      const endDtm = moment.tz(meeting.end_dtm, timezone);
 
       const date = startDtm.format('L');
       const startTime = startDtm.format('LT');
-      const endTime = endDtm.format('LT');
+      const endTime = endDtm.format('LT z');
 
       const { data } = await client.query({
         query: gql`
@@ -226,12 +227,13 @@ const startNextServer = () =>
         return res.sendStatus(204);
       }
 
-      const startDtm = moment(meeting.start_dtm);
-      const endDtm = moment(meeting.end_dtm);
+      const timezone = 'America/Los_Angeles';
+      const startDtm = moment.tz(meeting.start_dtm, timezone);
+      const endDtm = moment.tz(meeting.end_dtm, timezone);
 
       const date = startDtm.format('L');
       const startTime = startDtm.format('LT');
-      const endTime = endDtm.format('LT');
+      const endTime = endDtm.format('LT z');
 
       const { data } = await client.query({
         query: gql`

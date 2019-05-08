@@ -83,6 +83,7 @@
     "lodash": "^4.17.11",
     "lru-cache": "5.1.1",
     "moment": "^2.23.0",
+    "moment-timezone": "^0.5.25",
     "next": "^8.0.4",
     "next-cookies": "^1.1.2",
     "next-routes": "1.4.2",
