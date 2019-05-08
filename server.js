@@ -155,7 +155,7 @@ const startNextServer = () =>
     server.post(`/events/email/agenda`, async (req, res) => {
       const meeting = req.body.event.data.new;
 
-      const timezone = 'America/Los_Angeles';
+      const timezone = meeting.timezone || 'America/Los_Angeles';
       const startDtm = moment.tz(meeting.start_dtm, timezone);
       const endDtm = moment.tz(meeting.end_dtm, timezone);
 
@@ -227,7 +227,7 @@ const startNextServer = () =>
         return res.sendStatus(204);
       }
 
-      const timezone = 'America/Los_Angeles';
+      const timezone = meeting.timezone || 'America/Los_Angeles';
       const startDtm = moment.tz(meeting.start_dtm, timezone);
       const endDtm = moment.tz(meeting.end_dtm, timezone);
 
