@@ -58,7 +58,7 @@ const AgendaItems = ({
               })(
                 <div>
                   <span style={{ marginRight: 12 }}>{`${idx + 1}.`}</span>
-                  <Input placeholder="Enter a title" />
+                  <Input placeholder="Enter an item title" />
                 </div>
               )}
             </Form.Item>
@@ -75,7 +75,10 @@ const AgendaItems = ({
     >
       <Form.Item>
         {getFieldDecorator(`agendaItems[${k}].desc`)(
-          <TextArea rows={4} placeholder="Enter a description" />
+          <TextArea
+            rows={4}
+            placeholder="Enter an item description (optional)"
+          />
         )}
       </Form.Item>
     </Card>

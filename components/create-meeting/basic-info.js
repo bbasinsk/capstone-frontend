@@ -5,20 +5,20 @@ import moment from 'moment';
 
 const BasicInfo = ({ getError, getFieldDecorator, getFieldValue }) => {
   const invalidDate = () => {
-    const now = moment();
-    const day =
-      getFieldValue('date') &&
-      getFieldValue('date')
-        .format()
-        .split('T')[0];
-    const time =
-      getFieldValue('startTime') &&
-      getFieldValue('startTime')
-        .format()
-        .split('T')[1];
-    const start = moment(`${day}T${time}`);
+    const date = getFieldValue('date');
+    const startTime = getFieldValue('startTime');
 
-    if (now > start.endOf('minute')) {
+    if (!date || !startTime) {
+      return;
+    }
+
+    const day = date.format().split('T')[0];
+    const time = startTime.format().split('T')[1];
+
+    const start = day && time && moment(`${day}T${time}`);
+    const now = moment();
+
+    if (start.endOf('minute') < now) {
       return 'Time must not be in the past';
     }
   };
@@ -126,7 +126,7 @@ const BasicInfo = ({ getError, getFieldDecorator, getFieldValue }) => {
       >
         {getFieldDecorator('location', {
           rules: []
-        })(<Input placeholder="Enter a meeting location" />)}
+        })(<Input placeholder="Enter a meeting location (optional)" />)}
       </Form.Item>
     </div>
   );

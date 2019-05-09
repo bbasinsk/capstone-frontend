@@ -48,7 +48,7 @@ const CreateAgendaItem = ({
         type="primary"
         onClick={() => setOpen(true)}
       >
-        NEW
+        New Agenda Item
       </Button>
     </div>
   ) : (
@@ -62,14 +62,14 @@ const CreateAgendaItem = ({
             <Form.Item
               validateStatus={getError('title') ? 'error' : ''}
               help={getError('title') || ''}
-              label="What is the name of the agenda item?"
+              label="What is the title of the agenda item?"
               colon={false}
             >
               {getFieldDecorator('title', {
                 rules: [
-                  { required: true, message: 'Please enter an item name' }
+                  { required: true, message: 'Please enter an item title' }
                 ]
-              })(<Input autoFocus placeholder="Enter an item name" />)}
+              })(<Input autoFocus placeholder="Enter an item title" />)}
             </Form.Item>
 
             {/* DESCRIPTION */}
@@ -81,7 +81,12 @@ const CreateAgendaItem = ({
             >
               {getFieldDecorator('desc', {
                 rules: []
-              })(<TextArea rows={4} placeholder="Enter a description" />)}
+              })(
+                <TextArea
+                  rows={4}
+                  placeholder="Enter an item description (optional)"
+                />
+              )}
             </Form.Item>
 
             <div>
