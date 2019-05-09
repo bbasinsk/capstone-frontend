@@ -10,11 +10,23 @@ const AgendaItem = ({
   duration,
   deleteAgendaItem,
   collapsed,
-  toggleCollapsed
+  toggleCollapsed,
+  dragHandleProps
 }) => (
   <div>
     <Card
-      title={title}
+      title={
+        <div {...dragHandleProps} style={{ padding: 8 }}>
+          <Icon
+            type="pause"
+            rotate={90}
+            style={{ marginRight: 16, color: 'rgba(0,0,0,0.45)' }}
+          />
+          {title}
+        </div>
+      }
+      type="inner"
+      size="small"
       extra={
         <div>
           {duration && (
@@ -26,7 +38,7 @@ const AgendaItem = ({
           <Icon
             type={collapsed ? 'down' : 'up'}
             onClick={() => toggleCollapsed()}
-            style={{ marginRight: '18px', color: '#1890FF' }}
+            style={{ marginRight: 8, color: '#1890FF', padding: 8 }}
           />
           <Popconfirm
             placement="topRight"
@@ -36,7 +48,7 @@ const AgendaItem = ({
             okText="Delete"
             cancelText="Cancel"
           >
-            <Icon type="close" style={{ color: '#f5222d' }} />
+            <Icon type="close" style={{ color: '#f5222d', padding: 8 }} />
           </Popconfirm>
         </div>
       }
@@ -44,8 +56,10 @@ const AgendaItem = ({
     >
       <div className="agenda-item__body">
         <div className="agenda-item__desc">
-          <h3>{desc && 'Description'}</h3>
-          {desc || 'No description'}
+          <Card.Meta
+            title={desc ? 'Description' : 'No Description'}
+            description={desc}
+          />
         </div>
 
         <div className="agenda-item__editor">
@@ -73,12 +87,13 @@ const AgendaItem = ({
   </div>
 );
 AgendaItem.propTypes = {
+  collapsed: PropTypes.bool.isRequired,
+  deleteAgendaItem: PropTypes.func.isRequired,
+  desc: PropTypes.string,
+  dragHandleProps: PropTypes.any.isRequired,
+  duration: PropTypes.number,
   id: PropTypes.number.isRequired,
   title: PropTypes.string.isRequired,
-  desc: PropTypes.string,
-  duration: PropTypes.number,
-  deleteAgendaItem: PropTypes.func.isRequired,
-  collapsed: PropTypes.bool.isRequired,
   toggleCollapsed: PropTypes.func.isRequired
 };
 AgendaItem.defaultProps = {

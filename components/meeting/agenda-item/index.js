@@ -5,7 +5,7 @@ import Component from './component';
 // import { SET_ITEM_COMPLETE } from '../../../queries';
 import { DELETE_AGENDA_ITEM } from '../../../queries';
 
-const AgendaItem = ({ id, title, desc, duration }) => {
+const AgendaItem = ({ id, title, desc, duration, dragHandleProps }) => {
   const deleteAgendaItem = useMutation(DELETE_AGENDA_ITEM);
   // const setCompleted = useMutation(SET_ITEM_COMPLETE);
   const [collapsed, setCollapsed] = useState(false);
@@ -21,6 +21,7 @@ const AgendaItem = ({ id, title, desc, duration }) => {
           variables: { id }
         });
       }}
+      dragHandleProps={dragHandleProps}
       collapsed={collapsed}
       toggleCollapsed={() => setCollapsed(!collapsed)}
     />
@@ -31,7 +32,8 @@ AgendaItem.propTypes = {
   title: PropTypes.string.isRequired,
   desc: PropTypes.string,
   duration: PropTypes.number,
-  completed: PropTypes.bool.isRequired
+  completed: PropTypes.bool.isRequired,
+  dragHandleProps: PropTypes.any.isRequired
 };
 AgendaItem.defaultProps = {
   desc: '',

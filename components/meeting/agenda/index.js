@@ -64,7 +64,6 @@ function Agenda({ meetingId, agendaItems }) {
                       <div
                         className="agenda-item--draggable"
                         {...iProvided.draggableProps}
-                        {...iProvided.dragHandleProps}
                         ref={iProvided.innerRef}
                       >
                         <AgendaItem
@@ -73,6 +72,7 @@ function Agenda({ meetingId, agendaItems }) {
                           desc={desc}
                           duration={duration}
                           completed={completed}
+                          dragHandleProps={iProvided.dragHandleProps}
                         />
                       </div>
                     )}
