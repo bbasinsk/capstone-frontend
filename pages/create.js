@@ -5,6 +5,7 @@ import withData from '../libraries/withData';
 import withAuth from '../libraries/withAuth';
 import Header from '../components/header';
 import CreateMeeting from '../components/create-meeting';
+import Feedback from '../components/footer/feedback';
 
 const { Content, Footer } = Layout;
 
@@ -21,7 +22,7 @@ export default withData(
           </Content>
 
           <Footer style={{ textAlign: 'center' }}>
-            NeatMeet ©{moment().year()}
+            NeatMeet ©{moment().year()} | <Feedback />
           </Footer>
         </Layout>
       </div>
