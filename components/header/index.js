@@ -1,8 +1,10 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import Link from 'next/link';
 import { Button } from 'antd';
+import { width } from '../../constants/styles';
 
-const Header = () => (
+const Header = ({ background }) => (
   <div className="header__wrapper">
     <div className="header">
       <div className="header--left">
@@ -29,12 +31,13 @@ const Header = () => (
     </div>
     <style jsx>{`
       .header__wrapper {
+        background: ${background};
         width: 100%;
-        max-width: 1152px;
-        margin: auto;
       }
 
       .header {
+        max-width: ${width};
+        margin: auto;
         display: flex;
         flex-direction: row;
         justify-content: space-between;
@@ -47,5 +50,11 @@ const Header = () => (
     `}</style>
   </div>
 );
+Header.propTypes = {
+  background: PropTypes.string
+};
+Header.defaultProps = {
+  background: 'none'
+};
 
 export default Header;

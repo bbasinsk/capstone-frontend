@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import { Button, Typography, Icon } from 'antd';
+import { width } from '../../../constants/styles';
 
 const { Title, Text, Paragraph } = Typography;
 
@@ -67,8 +68,8 @@ const BasicInfo = ({
           display: flex;
           flex-direction: row;
           justify-content: space-between;
-          padding: 32px;
-          max-width: 1200px;
+          padding: 16px;
+          max-width: ${width};
           margin: auto;
           margin-bottom: 40px;
         }

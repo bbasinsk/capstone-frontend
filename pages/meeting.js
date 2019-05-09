@@ -17,7 +17,7 @@ export default withData(
         <title>Meeting</title>
       </Helmet>
       <Layout className="layout" style={{ minHeight: '100vh' }}>
-        <Header />
+        <Header background="white" />
 
         <Content>
           <Meeting meetingId={props.router.url.query.meetingId} />

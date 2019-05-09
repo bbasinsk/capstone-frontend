@@ -8,6 +8,7 @@ import AgendaItem from '../agenda-item';
 import CreateAgendaItem from '../create-agenda-item';
 import { AgendaItemsPropType } from '../../../constants/prop-types/meeting';
 import { UPDATE_AGENDA_ITEM_ORDER } from '../../../queries';
+import { width } from '../../../constants/styles';
 
 const { Title } = Typography;
 
@@ -86,8 +87,7 @@ function Agenda({ meetingId, agendaItems }) {
       <CreateAgendaItem meetingId={meetingId} agendaItems={agendaItems} />
       <style jsx>{`
         .agenda {
-          padding: 24px;
-          max-width: 1200px;
+          max-width: ${width};
           margin: auto;
           margin-bottom: 64px;
         }

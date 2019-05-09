@@ -5,6 +5,7 @@ import { Router } from '../../routes';
 import Component from './component';
 import EmailModal from './email-modal';
 import { CREATE_MEETING } from '../../queries';
+import { width } from '../../constants/styles';
 
 export default function hoc() {
   const createMeetingMutation = useMutation(CREATE_MEETING);
@@ -62,7 +63,7 @@ export default function hoc() {
   };
 
   return (
-    <div style={{ maxWidth: '1200px', margin: 'auto' }}>
+    <div style={{ maxWidth: width, margin: 'auto' }}>
       <Component createMeeting={openConfirm} />
       <EmailModal
         visible={modalOpen}
