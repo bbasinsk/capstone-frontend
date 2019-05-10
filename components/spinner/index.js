@@ -27,6 +27,7 @@ const Spinner = () => {
         .spinner-hide {
           visibility: hidden;
           opacity: 0;
+          display: none;
         }
       `}</style>
     </div>

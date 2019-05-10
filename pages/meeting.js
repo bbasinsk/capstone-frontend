@@ -6,7 +6,6 @@ import withAuth from '../libraries/withAuth';
 import Meeting from '../components/meeting/meeting';
 import Header from '../components/header';
 import Spinner from '../components/spinner';
-import Feedback from '../components/footer/feedback';
 
 const { Content, Footer } = Layout;
 
@@ -23,8 +22,13 @@ export default withData(
           <Meeting meetingId={props.router.url.query.meetingId} />
         </Content>
 
-        <Footer style={{ textAlign: 'center', marginBottom: '40px' }}>
-          NeatMeet ©{moment().year()} | <Feedback />
+        <Footer
+          style={{
+            textAlign: 'center'
+            //  marginBottom: '40px'
+          }}
+        >
+          NeatMeet ©{moment().year()}
         </Footer>
         <Spinner />
       </Layout>

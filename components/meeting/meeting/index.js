@@ -4,7 +4,6 @@ import { useSubscription } from 'react-apollo-hooks';
 import BasicInfo from '../basic-info';
 import Agenda from '../agenda';
 import EndModal from '../end-modal';
-import AgendaFooter from '../agenda-footer';
 import { GET_MEETING } from '../../../queries';
 
 const Meeting = ({ meetingId }) => {
@@ -34,12 +33,12 @@ const Meeting = ({ meetingId }) => {
     <div>
       <BasicInfo meeting={meeting} openModal={() => setModalOpen(true)} />
       <Agenda meetingId={meetingId} agendaItems={agendaItems} />
-      <AgendaFooter
+      {/* <AgendaFooter
         agendaItems={agendaItems}
         openModal={() => {
           setModalOpen(true);
         }}
-      />
+      /> */}
       <EndModal
         visible={modalOpen}
         closeModal={() => setModalOpen(false)}
