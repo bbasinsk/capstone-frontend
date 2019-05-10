@@ -6,6 +6,7 @@ import moment from 'moment-timezone';
 import BasicInfo from './basic-info';
 import AgendaItems from './agenda-items';
 import Members from './members';
+import OrganizerEmail from './organizer-email';
 
 const { Title } = Typography;
 
@@ -56,7 +57,12 @@ const CreateMeeting = ({
         const agendaItems = getFieldValue('agendaKeys').map(
           k => values.agendaItems[k]
         );
-        const emails = getFieldValue('memberKeys').map(k => values.members[k]);
+
+        const memberEmails = getFieldValue('memberKeys').map(
+          k => values.members[k]
+        );
+        const organizerEmail = getFieldValue('email');
+        const emails = [organizerEmail, ...memberEmails];
 
         // build the object to create the meeting
         const meeting = {
@@ -88,6 +94,12 @@ const CreateMeeting = ({
                 getFieldDecorator={getFieldDecorator}
                 getError={getError}
                 getFieldValue={getFieldValue}
+              />
+
+              <Title level={2}>Your Email</Title>
+              <OrganizerEmail
+                getFieldDecorator={getFieldDecorator}
+                getError={getError}
               />
 
               <Title level={2}>Members</Title>
