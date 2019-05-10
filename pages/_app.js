@@ -2,6 +2,7 @@ import React from 'react';
 import App, { Container } from 'next/app';
 import 'antd/dist/antd.less';
 import initializeAnalytics from '../libraries/analytics';
+import faIcons from '../components/_head/fa-icons';
 
 class MyApp extends App {
   static async getInitialProps({ Component, ctx }) {
@@ -16,6 +17,7 @@ class MyApp extends App {
 
   componentDidMount() {
     initializeAnalytics();
+    faIcons();
   }
 
   render() {

@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import { Button, Typography, Icon } from 'antd';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { width } from '../../../constants/styles';
 
 const { Title, Text, Paragraph } = Typography;
@@ -52,10 +53,14 @@ const BasicInfo = ({
             type="primary"
             style={{ marginRight: '16px' }}
           >
-            <Icon type="user" /> Share
+            <Icon type="team" /> Share
           </Button>
-          <Button size="large" onClick={openModal} type="danger">
-            END
+          <Button size="large" onClick={openModal} type="default">
+            <FontAwesomeIcon
+              icon={['far', 'paper-plane']}
+              style={{ marginRight: 8 }}
+            />
+            Send Summary
           </Button>
         </div>
       </div>
