@@ -177,6 +177,7 @@ const startNextServer = () =>
                 member_user {
                   email
                 }
+                send_agenda
               }
             }
           }
@@ -185,9 +186,9 @@ const startNextServer = () =>
       });
 
       const agendaItems = data.meeting[0].agenda_items;
-      const emails = data.meeting[0].meeting_members.map(
-        member => member.member_user.email
-      );
+      const emails = data.meeting[0].meeting_members
+        .filter(member => member.send_agenda)
+        .map(member => member.member_user.email);
 
       const emailRequest = {
         Messages: [
@@ -196,7 +197,7 @@ const startNextServer = () =>
               Email: 'noreply@neatmeet.co',
               Name: 'NeatMeet'
             },
-            To: emails.map(email => ({ Email: email })),
+            To: emails.map(Email => ({ Email })),
             TemplateID: 780768,
             TemplateLanguage: true,
             Subject: `Meeting Invite & Agenda: ${meeting.name}`,
