@@ -30,7 +30,7 @@ export default function hoc() {
     startDtm,
     endDtm,
     timezone,
-    emails,
+    members,
     agendaItems
   }) => {
     // construct variables
@@ -44,12 +44,13 @@ export default function hoc() {
         data: agendaItems.map((item, idx) => ({ ...item, order: idx + 1 }))
       },
       meetingMembers: {
-        data: emails.map(email => ({
+        data: members.map(({ email, sendAgenda }) => ({
           member_user: {
             data: {
               email
             }
-          }
+          },
+          send_agenda: sendAgenda
         }))
       }
     };

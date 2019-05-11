@@ -1,12 +1,42 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { Modal } from 'antd';
+import { Modal, Checkbox, Divider } from 'antd';
 import { MeetingPropType } from '../../constants/prop-types/meeting';
 import ShareEmail from '../email-previews/share-email';
 
 const EndModal = ({ visible, closeModal, meeting, createMeeting }) => {
+  const options = meeting.emails;
+
+  const [checkState, setCheckState] = useState({
+    checkedList: options,
+    indeterminate: true,
+    checkAll: false
+  });
+
+  const onChange = newCheckedList => {
+    setCheckState({
+      checkedList: newCheckedList,
+      indeterminate:
+        !!newCheckedList.length && newCheckedList.length < options.length,
+      checkAll: newCheckedList.length === options.length
+    });
+  };
+
+  const onCheckAllChange = e => {
+    setCheckState({
+      checkedList: e.target.checked ? options : [],
+      indeterminate: false,
+      checkAll: e.target.checked
+    });
+  };
+
   const onOk = () => {
-    createMeeting(meeting);
+    const members = options.map(email => ({
+      email,
+      sendAgenda: checkState.checkedList.includes(email)
+    }));
+
+    createMeeting({ ...meeting, members });
   };
 
   return (
@@ -15,11 +45,31 @@ const EndModal = ({ visible, closeModal, meeting, createMeeting }) => {
         title={`Share Agenda: ${meeting.name}`}
         visible={visible}
         onOk={onOk}
-        okText="Share"
+        okText={checkState.checkedList.length ? 'Share and Create' : 'Create'}
         onCancel={closeModal}
       >
-        <h2>Preview </h2>
+        <h2>Preview</h2>
         <ShareEmail meeting={meeting} />
+
+        <h2 style={{ marginTop: 16 }}>Share Invitations</h2>
+        <div>
+          <Checkbox
+            indeterminate={checkState.indeterminate}
+            onChange={onCheckAllChange}
+            checked={checkState.checkAll}
+          >
+            Check all
+          </Checkbox>
+
+          <Divider style={{ margin: '14px 0' }} />
+
+          <Checkbox.Group
+            style={{ display: 'flex', flexDirection: 'column' }}
+            options={options}
+            value={checkState.checkedList}
+            onChange={onChange}
+          />
+        </div>
       </Modal>
     </div>
   );
@@ -33,17 +83,12 @@ EndModal.propTypes = {
 };
 EndModal.defaultProps = {
   meeting: {
-    name: 'Capstone Meeting',
-    location: 'Online',
-    startDtm: '2019-05-11T03:20:19.000Z',
-    endDtm: '2019-05-11T04:20:19.000Z',
-    emails: ['bbasinsk@uw.edu'],
-    agendaItems: [
-      {
-        title: 'Item one',
-        desc: 'description'
-      }
-    ]
+    name: '',
+    location: '',
+    startDtm: '',
+    endDtm: '',
+    emails: [],
+    agendaItems: []
   }
 };
 
