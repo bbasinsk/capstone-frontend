@@ -72,9 +72,9 @@ const ShareEmail = ({ meeting, isPreview }) => {
         )}
 
         {!isPreview && (
-          <Item>
+          <Item align="center">
             <A href={`https://www.neatmeet.co/meeting/${meeting.id}`}>
-              Go to NeatMeet
+              Go to meeting on NeatMeet
             </A>
           </Item>
         )}

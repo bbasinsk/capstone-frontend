@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import moment from 'moment';
 import { Modal, Checkbox, Divider } from 'antd';
 import { MeetingPropType } from '../../constants/prop-types/meeting';
-import ShareEmail from '../email-previews/share-email';
+import ShareEmail from '../../shared/mailers/share-email';
 
 const EndModal = ({ visible, closeModal, meeting, createMeeting }) => {
   const options = meeting.emails;
