@@ -1,11 +1,19 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
+import moment from 'moment';
 import { Modal, Checkbox, Divider } from 'antd';
 import { MeetingPropType } from '../../constants/prop-types/meeting';
 import ShareEmail from '../email-previews/share-email';
 
 const EndModal = ({ visible, closeModal, meeting, createMeeting }) => {
   const options = meeting.emails;
+  const meetingInTz = {
+    ...meeting,
+    date: moment(meeting.startDtm).format('L'),
+    time: `${moment(meeting.startDtm).format('LT')} - ${moment(
+      meeting.endDtm
+    ).format('LT z')}`
+  };
 
   const [checkState, setCheckState] = useState({
     checkedList: options,
@@ -47,9 +55,10 @@ const EndModal = ({ visible, closeModal, meeting, createMeeting }) => {
         onOk={onOk}
         okText={checkState.checkedList.length ? 'Share and Create' : 'Create'}
         onCancel={closeModal}
+        width={648}
       >
         <h2>Preview</h2>
-        <ShareEmail meeting={meeting} />
+        <ShareEmail meeting={meetingInTz} isPreview />
 
         <h2 style={{ marginTop: 16 }}>Share Invitations</h2>
         <div>

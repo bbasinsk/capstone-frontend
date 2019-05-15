@@ -1,46 +1,105 @@
 import React from 'react';
-import moment from 'moment';
-import { MeetingPropType } from '../../constants/prop-types/meeting';
+import PropTypes from 'prop-types';
+import { Item, Span, Email, Box, A } from 'react-html-email';
 
-const ShareEmail = ({ meeting }) => (
-  <div className="email__outer-wrapper">
-    <div className="email__info">
-      <h2>Agenda: {meeting.name}</h2>
-      <div>{moment(meeting.startDtm).format('L')}</div>
-      <div>
-        {`${moment(meeting.startDtm).format('LT')} - ${moment(
-          meeting.endDtm
-        ).format('LT')}`}
-      </div>
-      <div>{meeting.location}</div>
-    </div>
-
-    <div>
-      {meeting.agendaItems.map((item, idx) => (
-        // eslint-disable-next-line react/no-array-index-key
-        <div key={idx}>
-          <h3>{item.title}</h3>
-          <p>{item.desc}</p>
+const ShareEmail = ({ meeting, isPreview }) => {
+  const EmailContainer = isPreview
+    ? // eslint-disable-next-line react/prop-types
+      ({ children }) => (
+        <div
+          style={{
+            padding: '24px',
+            width: 600,
+            boxShadow: '0 0 0 rgba(0, 0, 0, 0.2)',
+            border: '1px solid rgba(0, 0, 0, 0.2)'
+          }}
+        >
+          <table style={{ width: '100%' }}>
+            <tbody>{children}</tbody>
+          </table>
         </div>
-      ))}
-    </div>
+      )
+    : // eslint-disable-next-line react/prop-types
+      ({ children }) => <Email title={meeting.name}>{children}</Email>;
 
-    <style>{`
-      .email__outer-wrapper {
-        box-shadow: 0 0 0 rgba(0, 0, 0, 0.2);
-        border: 1px solid rgba(0, 0, 0, 0.2);
-        padding: 24px;
-      }
-  
-      .email__info {
-        text-align: center;
-        margin-bottom: 24px;
-      }
-    `}</style>
-  </div>
-);
+  return (
+    <div className="email__outer-wrapper">
+      <EmailContainer>
+        <Item style={{ borderBottom: '1px solid rgba(0, 0, 0, 0.2)' }}>
+          <Box>
+            <Item align="left">
+              <Box height="50px">
+                <Item>
+                  <Span fontSize={24}>Agenda: {meeting.name}</Span>
+                </Item>
+              </Box>
+            </Item>
+            <Item align="left">
+              <Span>{meeting.date}</Span>
+            </Item>
+            <Item align="left">
+              <Span>{meeting.time}</Span>
+            </Item>
+            <Item align="left" style={{ paddingBottom: 16 }}>
+              <Span>Location: {meeting.location || 'Not Set'}</Span>
+            </Item>
+          </Box>
+        </Item>
+
+        <Item style={{ paddingTop: 16 }}>
+          <Span fontSize={18} lineHeight={40}>
+            Agenda Items
+          </Span>
+        </Item>
+        {meeting.agendaItems.length ? (
+          meeting.agendaItems.map((item, idx) => (
+            // eslint-disable-next-line react/no-array-index-key
+            <Item key={idx}>
+              <Box cellPadding={4}>
+                <Item>
+                  <Span fontSize={14} fontWeight="bold">
+                    {idx + 1}. {item.title}
+                  </Span>
+                </Item>
+                <Item>{item.desc}</Item>
+              </Box>
+            </Item>
+          ))
+        ) : (
+          <Item>
+            <Span style={{ color: '#777' }}>No Agenda Items</Span>
+          </Item>
+        )}
+
+        {!isPreview && (
+          <Item>
+            <A href={`https://www.neatmeet.co/meeting/${meeting.id}`}>
+              Go to NeatMeet
+            </A>
+          </Item>
+        )}
+      </EmailContainer>
+    </div>
+  );
+};
 ShareEmail.propTypes = {
-  meeting: MeetingPropType.isRequired
+  meeting: PropTypes.shape({
+    id: PropTypes.string,
+    name: PropTypes.string.isRequired,
+    location: PropTypes.string,
+    date: PropTypes.string,
+    time: PropTypes.string,
+    agendaItems: PropTypes.arrayOf(
+      PropTypes.shape({
+        title: PropTypes.string.isRequired,
+        desc: PropTypes.string
+      })
+    )
+  }).isRequired,
+  isPreview: PropTypes.bool
+};
+ShareEmail.defaultProps = {
+  isPreview: false
 };
 
 export default ShareEmail;

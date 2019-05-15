@@ -51,9 +51,9 @@ const CreateMeeting = ({
     validateFields((err, values) => {
       if (!err) {
         // get the date, start/end times
-        const [date] = values.date.toISOString().split('T');
-        const [, startTime] = values.startTime.toISOString().split('T');
-        const [, endTime] = values.endTime.toISOString().split('T');
+        const date = values.date.format('YYYY-MM-DD');
+        const startTime = values.startTime.format('HH:mm:ss');
+        const endTime = values.endTime.format('HH:mm:ss');
         const agendaItems = getFieldValue('agendaKeys').map(
           k => values.agendaItems[k]
         );

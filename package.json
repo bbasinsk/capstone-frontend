@@ -31,11 +31,11 @@
     ]
   },
   "scripts": {
-    "start": "cross-env NODE_ENV=production node server.js",
+    "start": "cross-env NODE_ENV=production DATABASE_URL=$(heroku config:get DATABASE_URL -a meeting-magic-frontend) node start.js",
     "start:multicore": "cross-env NODE_ENV=production pm2 start server.js -i max --attach",
     "build": "npm run clean-cache && next build",
     "clean-cache": "rimraf -rf ./node_modules/.cache",
-    "dev": "npm run lint && npm run clean-cache && DATABASE_URL=$(heroku config:get DATABASE_URL -a meeting-magic-frontend) node server.js",
+    "dev": "npm run lint && npm run clean-cache && DATABASE_URL=$(heroku config:get DATABASE_URL -a meeting-magic-frontend) node start.js",
     "lint": "eslint --fix --ext .js pages components containers libraries server helper_scripts",
     "lint:watch": "esw -w --fix components libraries server",
     "analyze": "cross-env ANALYZE_BUILD=true npm run build",
@@ -110,6 +110,7 @@
     "react-ga": "^2.5.7",
     "react-helmet": "5.2.0",
     "react-hotjar": "^2.0.0",
+    "react-html-email": "^3.0.0",
     "react-quill": "^1.3.3",
     "reconnecting-websocket": "^3.2.2",
     "rich-text": "^3.1.0",
@@ -123,7 +124,10 @@
     "ws": "^6.2.1"
   },
   "devDependencies": {
+    "@babel/core": "^7.4.4",
     "@babel/plugin-transform-flow-strip-types": "7.2.3",
+    "@babel/preset-env": "^7.4.4",
+    "@babel/register": "^7.4.4",
     "babel-eslint": "10.0.1",
     "cli-clear": "1.0.4",
     "eslint": "5.11.1",

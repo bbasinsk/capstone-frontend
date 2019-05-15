@@ -1,4 +1,8 @@
 /* eslint-disable no-console */
+import React from 'react';
+import { renderEmail } from 'react-html-email';
+import ShareEmail from './components/email-previews/share-email';
+
 const express = require('express');
 const next = require('next');
 const compression = require('compression');
@@ -155,14 +159,6 @@ const startNextServer = () =>
     server.post(`/events/email/agenda`, async (req, res) => {
       const meeting = req.body.event.data.new;
 
-      const timezone = meeting.timezone || 'America/Los_Angeles';
-      const startDtm = moment.tz(meeting.start_dtm, timezone);
-      const endDtm = moment.tz(meeting.end_dtm, timezone);
-
-      const date = startDtm.format('L');
-      const startTime = startDtm.format('LT');
-      const endTime = endDtm.format('LT z');
-
       const { data } = await client.query({
         query: gql`
           query getMeeting($meetingId: uuid!) {
@@ -185,7 +181,16 @@ const startNextServer = () =>
         variables: { meetingId: meeting.id }
       });
 
-      const agendaItems = data.meeting[0].agenda_items;
+      const timezone = meeting.timezone || 'America/Los_Angeles';
+      const startDtm = moment.tz(meeting.start_dtm, timezone);
+      const endDtm = moment.tz(meeting.end_dtm, timezone);
+
+      meeting.date = startDtm.format('L');
+      meeting.time = `${startDtm.format('LT')} - ${endDtm.format('LT z')}`;
+      meeting.agendaItems = data.meeting[0].agenda_items;
+
+      const htmlEmail = renderEmail(<ShareEmail meeting={meeting} />);
+
       const emails = data.meeting[0].meeting_members
         .filter(member => member.send_agenda)
         .map(member => member.member_user.email);
@@ -198,17 +203,8 @@ const startNextServer = () =>
               Name: 'NeatMeet'
             },
             To: emails.map(Email => ({ Email })),
-            TemplateID: 780768,
-            TemplateLanguage: true,
             Subject: `Meeting Invite & Agenda: ${meeting.name}`,
-            Variables: {
-              meeting_name: meeting.name,
-              meeting_date: date,
-              meeting_time: `${startTime} - ${endTime}`,
-              meeting_location: meeting.location || '',
-              meeting_url: `https://www.neatmeet.co/meeting/${meeting.id}`,
-              agenda_items: agendaItems || []
-            }
+            HTMLPart: htmlEmail
           }
         ]
       };
