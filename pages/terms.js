@@ -9,7 +9,10 @@ export default withData(
       <Helmet>
         <title>Terms of Service</title>
       </Helmet>
-      <Header />
+      <div className="colored-header">
+        <Header />
+      </div>
+
       <div className="container">
         <div className="inner-element">
           <h1> Terms of Service </h1>
@@ -184,6 +187,10 @@ export default withData(
         .inner-element p {
           color: #2a313e;
           font-size: 18px;
+        }
+
+        .colored-header {
+          background-color: #f9f9f9;
         }
       `}</style>
     </div>
