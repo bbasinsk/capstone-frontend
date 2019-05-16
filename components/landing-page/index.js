@@ -13,7 +13,10 @@ const LandingPage = () => (
     <Customers />
     <TryNow />
     <Layout.Footer style={{ textAlign: 'center' }}>
-      NeatMeet ©{moment().year()}
+      <p>NeatMeet ©{moment().year()}</p>
+      <a href="/terms" alt="Link to terms and conditions">
+        Terms and Conditions{' '}
+      </a>
     </Layout.Footer>
   </div>
 );
