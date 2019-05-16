@@ -9,20 +9,13 @@ const fs = require('fs');
 const cors = require('cors');
 const helmet = require('helmet');
 const dotenv = require('dotenv');
-const ShareDB = require('sharedb');
 const richText = require('rich-text');
 const WebSocket = require('ws');
 const WebSocketJSONStream = require('websocket-json-stream');
-const { parse } = require('pg-connection-string');
-
-dotenv.config();
+const ShareDB = require('sharedb');
 
 ShareDB.types.register(richText.type);
-const db = require('sharedb-postgres')({
-  ...parse(process.env.DATABASE_URL),
-  ssl: true
-});
-const shareDbBackend = require('sharedb')({ db });
+dotenv.config();
 
 const isDev = process.env.NODE_ENV !== 'production';
 const isProd = !isDev;
@@ -30,6 +23,7 @@ const ngrok = isDev && process.env.ENABLE_TUNNEL ? require('ngrok') : null;
 const router = require('./routes');
 const events = require('./server/events');
 const logger = require('./server/logger');
+const { shareDbBackend } = require('./server/db');
 
 const customHost = process.env.HOST;
 const host = customHost || '0.0.0.0';

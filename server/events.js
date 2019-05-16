@@ -85,6 +85,7 @@ router.post(`/email/agenda`, async (req, res) => {
   const emailResponse = await mailjet
     .post('send', { version: 'v3.1' })
     .request(emailRequest)
+    // eslint-disable-next-line no-console
     .catch(console.error);
 
   return res.json({ emailRequest, emailResponse });
@@ -154,6 +155,7 @@ router.post(`/email/summary`, async (req, res) => {
   const emailResponse = await mailjet
     .post('send', { version: 'v3.1' })
     .request(emailRequest)
+    // eslint-disable-next-line no-console
     .catch(console.error);
 
   return res.json({ emailRequest, emailResponse });
