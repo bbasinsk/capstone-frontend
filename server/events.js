@@ -1,6 +1,6 @@
 import React from 'react';
 import { renderEmail } from 'react-html-email';
-import { convertDeltaToHtml } from 'node-quill-converter';
+import { QuillDeltaToHtmlConverter } from 'quill-delta-to-html';
 import ShareEmail from '../shared/mailers/share-email';
 import SummaryEmail from '../shared/mailers/summary-email';
 
@@ -156,10 +156,13 @@ router.post(`/email/summary`, async (req, res) => {
   );
 
   // convert rich-text to html component
-  const noteElements = notesData.map(note => (
-    // eslint-disable-next-line react/no-danger
-    <div dangerouslySetInnerHTML={{ __html: convertDeltaToHtml(note) }} />
-  ));
+  const noteElements = notesData.map(note => {
+    const converter = new QuillDeltaToHtmlConverter(note.ops || [], {});
+    return (
+      // eslint-disable-next-line react/no-danger
+      <div dangerouslySetInnerHTML={{ __html: converter.convert() }} />
+    );
+  });
 
   // insert note component into meeting agenda item
   meeting.agendaItems = meeting.agendaItems.map((agendaItem, idx) => ({
