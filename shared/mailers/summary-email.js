@@ -63,7 +63,9 @@ const SummaryEmail = ({ meeting, isPreview }) => {
                     {idx + 1}. {item.title}
                   </Span>
                 </Item>
-                <Item>{item.desc}</Item>
+                <Item>
+                  <div style={{ whiteSpace: 'pre-line' }}>{item.desc}</div>
+                </Item>
               </Box>
             </Item>
           ))
