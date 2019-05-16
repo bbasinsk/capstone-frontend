@@ -16,6 +16,7 @@ const { ApolloClient } = require('apollo-client');
 const { InMemoryCache } = require('apollo-cache-inmemory');
 const { HttpLink } = require('apollo-link-http');
 const fetch = require('isomorphic-fetch');
+const { db } = require('./db');
 
 const client = new ApolloClient({
   link: new HttpLink({
@@ -25,6 +26,21 @@ const client = new ApolloClient({
   }),
   cache: new InMemoryCache()
 });
+
+const getSnapshots = async arr => {
+  const queryIdxs = arr.map((_, i) => `$${i + 1}`).join(',');
+  const queryString = `SELECT data FROM snapshots WHERE collection='agenda_notes' AND doc_id IN (${queryIdxs})`;
+
+  return new Promise((resolve, reject) => {
+    db.pool.query(queryString, arr, (err, res) => {
+      if (res.rows.length) {
+        resolve(res.rows.map(({ data }) => data));
+      } else {
+        reject(err || 'no data returned');
+      }
+    });
+  });
+};
 
 // –––––––––––––––––––––––––––––––––––––––
 // for sending the Meeting Invite & Agenda
@@ -131,6 +147,11 @@ router.post(`/email/summary`, async (req, res) => {
   meeting.time = `${startDtm.format('LT')} - ${endDtm.format('LT z')}`;
   meeting.agendaItems = data.meeting[0].agenda_items;
   meeting.agendaItems.sort((a, b) => a.order - b.order);
+
+  const notesData = await getSnapshots(
+    meeting.agendaItems.map(item => `${item.id}`)
+  );
+  console.log({ notesData });
 
   const htmlEmail = renderEmail(<SummaryEmail meeting={meeting} />);
 
