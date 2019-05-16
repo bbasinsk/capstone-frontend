@@ -1,5 +1,6 @@
 import React from 'react';
 import { renderEmail } from 'react-html-email';
+import { convertDeltaToHtml } from 'node-quill-converter';
 import ShareEmail from '../shared/mailers/share-email';
 import SummaryEmail from '../shared/mailers/summary-email';
 
@@ -117,6 +118,7 @@ router.post(`/email/summary`, async (req, res) => {
     return res.sendStatus(204);
   }
 
+  // get meeting data that is not included in the event data
   const { data } = await client.query({
     query: gql`
       query getMeeting($meetingId: uuid!) {
@@ -148,11 +150,24 @@ router.post(`/email/summary`, async (req, res) => {
   meeting.agendaItems = data.meeting[0].agenda_items;
   meeting.agendaItems.sort((a, b) => a.order - b.order);
 
+  // get notes as rich-text
   const notesData = await getSnapshots(
     meeting.agendaItems.map(item => `${item.id}`)
   );
-  console.log({ notesData });
 
+  // convert rich-text to html component
+  const noteElements = notesData.map(note => () => (
+    // eslint-disable-next-line react/no-danger
+    <div dangerouslySetInnerHTML={{ __html: convertDeltaToHtml(note) }} />
+  ));
+
+  // insert note component into meeting agenda item
+  meeting.agendaItems = meeting.agendaItems.map((agendaItem, idx) => ({
+    ...agendaItem,
+    Notes: noteElements[idx]
+  }));
+
+  // render html email
   const htmlEmail = renderEmail(<SummaryEmail meeting={meeting} />);
 
   const emails = data.meeting[0].meeting_members.map(

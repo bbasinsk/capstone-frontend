@@ -54,21 +54,27 @@ const SummaryEmail = ({ meeting, isPreview }) => {
           </Span>
         </Item>
         {meeting.agendaItems.length ? (
-          meeting.agendaItems.map((item, idx) => (
-            // eslint-disable-next-line react/no-array-index-key
-            <Item key={idx}>
-              <Box cellPadding={4}>
-                <Item>
-                  <Span fontSize={14} fontWeight="bold">
-                    {idx + 1}. {item.title}
-                  </Span>
-                </Item>
-                <Item>
-                  <div style={{ whiteSpace: 'pre-line' }}>{item.desc}</div>
-                </Item>
-              </Box>
-            </Item>
-          ))
+          meeting.agendaItems.map((item, idx) => {
+            const { Notes } = item;
+            return (
+              // eslint-disable-next-line react/no-array-index-key
+              <Item key={idx}>
+                <Box cellPadding={4}>
+                  <Item>
+                    <Span fontSize={14} fontWeight="bold">
+                      {idx + 1}. {item.title}
+                    </Span>
+                  </Item>
+                  <Item>
+                    <div style={{ whiteSpace: 'pre-line' }}>{item.desc}</div>
+                  </Item>
+                  <Item>
+                    <Notes />
+                  </Item>
+                </Box>
+              </Item>
+            );
+          })
         ) : (
           <Item>
             <Span style={{ color: '#777' }}>No Agenda Items</Span>
@@ -96,7 +102,8 @@ SummaryEmail.propTypes = {
     agendaItems: PropTypes.arrayOf(
       PropTypes.shape({
         title: PropTypes.string.isRequired,
-        desc: PropTypes.string
+        desc: PropTypes.string,
+        Notes: PropTypes.element
       })
     )
   }).isRequired,
