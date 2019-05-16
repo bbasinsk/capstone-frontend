@@ -1,38 +1,37 @@
 import React, { useState } from 'react';
 import { useMutation } from 'react-apollo-hooks';
 import { get } from 'lodash';
+import moment from 'moment-timezone';
 import { Router } from '../../routes';
 import Component from './component';
-import EmailModal from './email-modal';
+import ConfirmCreateModal from './confirm-modal';
 import { CREATE_MEETING } from '../../queries';
 import { width } from '../../constants/styles';
+
+const DTM_FORMAT = 'YYYY-MM-DDTHH:mm:ss';
 
 export default function hoc() {
   const createMeetingMutation = useMutation(CREATE_MEETING);
   const [modalOpen, setModalOpen] = useState(false);
   const [meeting, setMeeting] = useState();
 
-  const openConfirm = ({
-    name,
-    location,
-    startDtm,
-    endDtm,
-    emails,
-    agendaItems
-  }) => {
+  const openConfirm = newMeeting => {
     setModalOpen(true);
-    setMeeting({ name, location, startDtm, endDtm, emails, agendaItems });
+    setMeeting(newMeeting);
   };
 
   const createMeeting = async ({
     name,
     location,
-    startDtm,
-    endDtm,
+    localStartDtm,
+    localEndDtm,
     timezone,
     members,
     agendaItems
   }) => {
+    const startDtm = moment(localStartDtm, DTM_FORMAT, timezone).toISOString();
+    const endDtm = moment(localEndDtm, DTM_FORMAT, timezone).toISOString();
+
     // construct variables
     const variables = {
       name,
@@ -66,10 +65,16 @@ export default function hoc() {
   return (
     <div style={{ maxWidth: width, margin: 'auto' }}>
       <Component createMeeting={openConfirm} />
-      <EmailModal
+      <ConfirmCreateModal
         visible={modalOpen}
         closeModal={() => setModalOpen(false)}
-        meeting={meeting}
+        meeting={
+          meeting && {
+            ...meeting,
+            startDtm: meeting.localStartDtm,
+            endDtm: meeting.localEndDtm
+          }
+        }
         createMeeting={createMeeting}
       />
     </div>

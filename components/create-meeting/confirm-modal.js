@@ -5,8 +5,8 @@ import { Modal, Checkbox, Divider } from 'antd';
 import { MeetingPropType } from '../../constants/prop-types/meeting';
 import ShareEmail from '../../shared/mailers/share-email';
 
-const EndModal = ({ visible, closeModal, meeting, createMeeting }) => {
-  const options = meeting.emails;
+const ConfirmModal = ({ visible, closeModal, meeting, createMeeting }) => {
+  const options = meeting.emails || [];
   const meetingInTz = {
     ...meeting,
     date: moment(meeting.startDtm).format('L'),
@@ -84,13 +84,13 @@ const EndModal = ({ visible, closeModal, meeting, createMeeting }) => {
   );
 };
 
-EndModal.propTypes = {
+ConfirmModal.propTypes = {
   visible: PropTypes.bool.isRequired,
   closeModal: PropTypes.func.isRequired,
   meeting: MeetingPropType,
   createMeeting: PropTypes.func.isRequired
 };
-EndModal.defaultProps = {
+ConfirmModal.defaultProps = {
   meeting: {
     name: '',
     location: '',
@@ -101,4 +101,4 @@ EndModal.defaultProps = {
   }
 };
 
-export default EndModal;
+export default ConfirmModal;

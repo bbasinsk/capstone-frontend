@@ -51,9 +51,9 @@ const CreateMeeting = ({
     validateFields((err, values) => {
       if (!err) {
         // get the date, start/end times
-        const date = values.date.format('YYYY-MM-DD');
-        const startTime = values.startTime.format('HH:mm:ss');
-        const endTime = values.endTime.format('HH:mm:ss');
+        const localDate = values.date.format('YYYY-MM-DD');
+        const localStartTime = values.startTime.format('HH:mm:ss');
+        const localEndTime = values.endTime.format('HH:mm:ss');
         const agendaItems = getFieldValue('agendaKeys').map(
           k => values.agendaItems[k]
         );
@@ -68,8 +68,8 @@ const CreateMeeting = ({
         const meeting = {
           name: values.name,
           location: values.location,
-          startDtm: `${date}T${startTime}`,
-          endDtm: `${date}T${endTime}`,
+          localStartDtm: `${localDate}T${localStartTime}`,
+          localEndDtm: `${localDate}T${localEndTime}`,
           timezone: moment.tz.guess(),
           emails,
           agendaItems
