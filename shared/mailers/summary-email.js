@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Item, Span, Email, Box, A } from 'react-html-email';
 
-const ShareEmail = ({ meeting, isPreview }) => {
+const SummaryEmail = ({ meeting, isPreview }) => {
   const EmailContainer = isPreview
     ? // eslint-disable-next-line react/prop-types
       ({ children }) => (
@@ -21,7 +21,7 @@ const ShareEmail = ({ meeting, isPreview }) => {
       )
     : // eslint-disable-next-line react/prop-types
       ({ children }) => (
-        <Email title={`Agenda: ${meeting.name}`}>{children}</Email>
+        <Email title={`Meeting Summary: ${meeting.name}`}>{children}</Email>
       );
 
   return (
@@ -32,7 +32,7 @@ const ShareEmail = ({ meeting, isPreview }) => {
             <Item align="left">
               <Box height="50px">
                 <Item>
-                  <Span fontSize={24}>Agenda: {meeting.name}</Span>
+                  <Span fontSize={24}>Meeting Summary: {meeting.name}</Span>
                 </Item>
               </Box>
             </Item>
@@ -76,7 +76,7 @@ const ShareEmail = ({ meeting, isPreview }) => {
         {!isPreview && (
           <Item align="center">
             <A href={`https://www.neatmeet.co/meeting/${meeting.id}`}>
-              Go to meeting on NeatMeet
+              View this meeting on NeatMeet
             </A>
           </Item>
         )}
@@ -84,7 +84,7 @@ const ShareEmail = ({ meeting, isPreview }) => {
     </div>
   );
 };
-ShareEmail.propTypes = {
+SummaryEmail.propTypes = {
   meeting: PropTypes.shape({
     id: PropTypes.string,
     name: PropTypes.string.isRequired,
@@ -100,8 +100,8 @@ ShareEmail.propTypes = {
   }).isRequired,
   isPreview: PropTypes.bool
 };
-ShareEmail.defaultProps = {
+SummaryEmail.defaultProps = {
   isPreview: false
 };
 
-export default ShareEmail;
+export default SummaryEmail;

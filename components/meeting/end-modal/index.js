@@ -2,9 +2,10 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Modal } from 'antd';
 import { useMutation } from 'react-apollo-hooks';
+import moment from 'moment';
 import { Router } from '../../../routes';
 import { MeetingPropType } from '../../../constants/prop-types/meeting';
-import SummaryEmail from '../../email-previews/summary-email';
+import SummaryEmail from '../../../shared/mailers/summary-email';
 import { UPDATE_MEETING_STATUS } from '../../../queries';
 
 const EndModal = ({ visible, closeModal, meeting }) => {
@@ -17,6 +18,11 @@ const EndModal = ({ visible, closeModal, meeting }) => {
     Router.pushRoute('/complete');
   };
 
+  const startDtm = moment(meeting.startDtm);
+  const endDtm = moment(meeting.endDtm);
+  const date = startDtm.format('L');
+  const time = `${startDtm.format('LT')} - ${endDtm.format('LT z')}`;
+
   return (
     <div>
       <Modal
@@ -25,9 +31,10 @@ const EndModal = ({ visible, closeModal, meeting }) => {
         onOk={onOk}
         okText="Send"
         onCancel={closeModal}
+        width={648}
       >
         <h1>Complete Meeting </h1>
-        <SummaryEmail meeting={meeting} />
+        <SummaryEmail meeting={{ ...meeting, time, date }} isPreview />
       </Modal>
     </div>
   );
