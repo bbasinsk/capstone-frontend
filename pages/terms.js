@@ -152,6 +152,7 @@ export default withData(
           </p>
         </div>
       </div>
+
       <style jsx>{`
         h1 {
           color: #2a313e;
@@ -170,6 +171,7 @@ export default withData(
 
         container {
           position: relative;
+          min-height: 100%;
         }
 
         .inner-element {

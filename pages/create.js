@@ -21,7 +21,10 @@ export default withData(
           </Content>
 
           <Footer style={{ textAlign: 'center' }}>
-            NeatMeet ©{moment().year()}
+            <p>NeatMeet ©{moment().year()}</p>
+            <a href="/terms" alt="Link to terms and conditions">
+              Terms and Conditions{' '}
+            </a>
           </Footer>
         </Layout>
       </div>
