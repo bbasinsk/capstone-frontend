@@ -55,7 +55,7 @@ const SummaryEmail = ({ meeting, isPreview }) => {
         </Item>
         {meeting.agendaItems.length ? (
           meeting.agendaItems.map((item, idx) => {
-            const { Notes = () => <div /> } = item;
+            const { Notes } = item;
             return (
               // eslint-disable-next-line react/no-array-index-key
               <Item key={idx}>
@@ -68,9 +68,7 @@ const SummaryEmail = ({ meeting, isPreview }) => {
                   <Item>
                     <div style={{ whiteSpace: 'pre-line' }}>{item.desc}</div>
                   </Item>
-                  <Item>
-                    <Notes />
-                  </Item>
+                  <Item>{Notes}</Item>
                 </Box>
               </Item>
             );

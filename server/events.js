@@ -156,7 +156,7 @@ router.post(`/email/summary`, async (req, res) => {
   );
 
   // convert rich-text to html component
-  const noteElements = notesData.map(note => () => (
+  const noteElements = notesData.map(note => (
     // eslint-disable-next-line react/no-danger
     <div dangerouslySetInnerHTML={{ __html: convertDeltaToHtml(note) }} />
   ));

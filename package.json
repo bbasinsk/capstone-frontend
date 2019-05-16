@@ -99,6 +99,7 @@
     "offline-plugin": "5.0.6",
     "pg-connection-string": "^2.0.0",
     "prop-types": "15.6.2",
+    "quill-delta-to-html": "^0.10.7",
     "rc-queue-anim": "^1.6.12",
     "rc-scroll-anim": "^2.5.7",
     "rc-tween-one": "^2.4.1",

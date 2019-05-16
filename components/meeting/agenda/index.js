@@ -12,7 +12,7 @@ import { width } from '../../../constants/styles';
 
 const { Title } = Typography;
 
-function Agenda({ meetingId, agendaItems }) {
+function Agenda({ meetingId, agendaItems, connection }) {
   const updateAgendaItemOrderMutation = useMutation(UPDATE_AGENDA_ITEM_ORDER);
 
   return (
@@ -74,6 +74,7 @@ function Agenda({ meetingId, agendaItems }) {
                           duration={duration}
                           completed={completed}
                           dragHandleProps={iProvided.dragHandleProps}
+                          connection={connection}
                         />
                       </div>
                     )}
@@ -102,7 +103,8 @@ function Agenda({ meetingId, agendaItems }) {
 
 Agenda.propTypes = {
   meetingId: PropTypes.string.isRequired,
-  agendaItems: AgendaItemsPropType
+  agendaItems: AgendaItemsPropType,
+  connection: PropTypes.any.isRequired
 };
 Agenda.defaultProps = {
   agendaItems: []

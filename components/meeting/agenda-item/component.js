@@ -11,7 +11,8 @@ const AgendaItem = ({
   deleteAgendaItem,
   collapsed,
   toggleCollapsed,
-  dragHandleProps
+  dragHandleProps,
+  connection
 }) => (
   <div>
     <Card
@@ -63,7 +64,7 @@ const AgendaItem = ({
         </div>
 
         <div className="agenda-item__editor">
-          <Quill agendaItemId={id} />
+          <Quill agendaItemId={id} connection={connection} />
         </div>
       </div>
     </Card>
@@ -94,7 +95,8 @@ AgendaItem.propTypes = {
   duration: PropTypes.number,
   id: PropTypes.number.isRequired,
   title: PropTypes.string.isRequired,
-  toggleCollapsed: PropTypes.func.isRequired
+  toggleCollapsed: PropTypes.func.isRequired,
+  connection: PropTypes.any.isRequired
 };
 AgendaItem.defaultProps = {
   desc: '',

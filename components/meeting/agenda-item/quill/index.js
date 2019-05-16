@@ -1,15 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import sharedb from 'sharedb/lib/client';
-import richText from 'rich-text';
-import ReconnectingWebSocket from 'reconnecting-websocket';
 import 'react-quill/dist/quill.snow.css';
-
-sharedb.types.register(richText.type);
 
 class Quill extends React.Component {
   static propTypes = {
-    agendaItemId: PropTypes.number.isRequired
+    agendaItemId: PropTypes.number.isRequired,
+    connection: PropTypes.any.isRequired
   };
 
   constructor(props) {
@@ -26,14 +22,11 @@ class Quill extends React.Component {
   componentDidMount() {
     this.attachQuillRefs();
 
-    const socket = new ReconnectingWebSocket(
-      (window.location.protocol === 'http:' ? 'ws://' : 'wss://') +
-        window.location.host
-    );
-    const connection = new sharedb.Connection(socket);
-
     // Create local doc instance for the agenda item
-    const doc = connection.get('agenda_notes', `${this.props.agendaItemId}`);
+    const doc = this.props.connection.get(
+      'agenda_notes',
+      `${this.props.agendaItemId}`
+    );
 
     // subscribe to changes
     doc.subscribe(err => {
