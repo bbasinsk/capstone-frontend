@@ -109,6 +109,7 @@ router.post(`/email/summary`, async (req, res) => {
             title
             desc
             duration
+            order
           }
           meeting_members {
             member_user {
@@ -128,6 +129,7 @@ router.post(`/email/summary`, async (req, res) => {
   meeting.date = startDtm.format('L');
   meeting.time = `${startDtm.format('LT')} - ${endDtm.format('LT z')}`;
   meeting.agendaItems = data.meeting[0].agenda_items;
+  meeting.agendaItems.sort((a, b) => a.order - b.order);
 
   const htmlEmail = renderEmail(<SummaryEmail meeting={meeting} />);
 
