@@ -55,7 +55,7 @@ const SummaryEmail = ({ meeting, isPreview }) => {
         </Item>
         {meeting.agendaItems.length ? (
           meeting.agendaItems.map((item, idx) => {
-            const { Notes } = item;
+            const { Notes = () => <div /> } = item;
             return (
               // eslint-disable-next-line react/no-array-index-key
               <Item key={idx}>

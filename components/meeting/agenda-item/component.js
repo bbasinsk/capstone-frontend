@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Card, Popconfirm, Icon } from 'antd';
-import Quill from '../../quill';
+import Quill from './quill';
 
 const AgendaItem = ({
   id,
