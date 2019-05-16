@@ -159,8 +159,14 @@ router.post(`/email/summary`, async (req, res) => {
   const noteElements = notesData.map(note => {
     const converter = new QuillDeltaToHtmlConverter(note.ops || [], {});
     return (
-      // eslint-disable-next-line react/no-danger
-      <div dangerouslySetInnerHTML={{ __html: converter.convert() }} />
+      <div
+        // eslint-disable-next-line react/no-danger
+        dangerouslySetInnerHTML={{ __html: converter.convert() }}
+        style={{
+          borderLeft: '2px solid rgba(0, 0, 0, 0.2)',
+          paddingLeft: '16px'
+        }}
+      />
     );
   });
 

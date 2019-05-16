@@ -74,6 +74,10 @@ class EndModal extends React.Component {
           <div
             // eslint-disable-next-line react/no-danger
             dangerouslySetInnerHTML={{ __html: this.state.notesHtml[idx] }}
+            style={{
+              borderLeft: '2px solid rgba(0, 0, 0, 0.2)',
+              paddingLeft: '16px'
+            }}
           />
         )
       }))
