@@ -7,7 +7,7 @@ import { QuillDeltaToHtmlConverter } from 'quill-delta-to-html';
 import { Router } from '../../../routes';
 import { MeetingPropType } from '../../../constants/prop-types/meeting';
 import SummaryEmail from '../../../shared/mailers/summary-email';
-import { UPDATE_MEETING_STATUS } from '../../../queries';
+import { COMPLETE_MEETING } from '../../../queries';
 
 class EndModal extends React.Component {
   static propTypes = {
@@ -21,11 +21,7 @@ class EndModal extends React.Component {
     super(props);
     this.state = {
       notesHtml: [],
-      checkState: {
-        checkedList: this.props.meeting.emails || [],
-        indeterminate: true,
-        checkAll: false
-      }
+      checkState: {}
     };
   }
 
@@ -33,7 +29,14 @@ class EndModal extends React.Component {
     // when the modal is opened, get notes and update state
     if (this.props.visible && !prevProps.visible) {
       this.getNotes().then(notesHtml => {
-        this.setState({ notesHtml });
+        this.setState({
+          notesHtml,
+          checkState: {
+            checkedList: this.props.meeting.emails || [],
+            indeterminate: false,
+            checkAll: true
+          }
+        });
       });
     }
   }
@@ -79,7 +82,10 @@ class EndModal extends React.Component {
 
   onOk = async updateStatus => {
     await updateStatus({
-      variables: { meetingId: this.props.meeting.id, status: 'COMPLETE' }
+      variables: {
+        meetingId: this.props.meeting.id,
+        emails: this.state.checkState.checkedList
+      }
     });
     Router.pushRoute('/complete');
   };
@@ -112,7 +118,7 @@ class EndModal extends React.Component {
     };
 
     return (
-      <Mutation mutation={UPDATE_MEETING_STATUS}>
+      <Mutation mutation={COMPLETE_MEETING}>
         {updateStatus => (
           <div>
             <Modal

@@ -22,11 +22,24 @@ export const UPDATE_MEETING = gql`
   }
 `;
 
-export const UPDATE_MEETING_STATUS = gql`
-  mutation updateMeeting($meetingId: uuid!, $status: String!) {
+// for updating the meeting status and sending summary emails
+export const COMPLETE_MEETING = gql`
+  mutation updateMeeting($meetingId: uuid!, $emails: [String]!) {
     update_meeting(
       where: { id: { _eq: $meetingId } }
-      _set: { status: $status }
+      _set: { status: "COMPLETE" }
+    ) {
+      affected_rows
+    }
+
+    update_meeting_member(
+      where: {
+        _and: [
+          { meeting: { _eq: $meetingId } }
+          { member_user: { email: { _in: $emails } } }
+        ]
+      }
+      _set: { send_summary: true }
     ) {
       affected_rows
     }
