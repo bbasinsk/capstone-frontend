@@ -122,7 +122,7 @@ class EndModal extends React.Component {
         {updateStatus => (
           <div>
             <Modal
-              title="Meeting Complete!"
+              title="Send Summary"
               visible={visible}
               onOk={() => this.onOk(updateStatus)}
               okText="Send"
@@ -132,7 +132,7 @@ class EndModal extends React.Component {
               <h1>Complete Meeting </h1>
               <SummaryEmail meeting={meetingPreview} isPreview />
 
-              <h2 style={{ marginTop: 16 }}>Share Invitations</h2>
+              <h2 style={{ marginTop: 16 }}>Summary Preview</h2>
               <div>
                 <Checkbox
                   indeterminate={this.state.checkState.indeterminate}

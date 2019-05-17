@@ -71,7 +71,7 @@ const ConfirmModal = ({ visible, closeModal, meeting, createMeeting }) => {
         onCancel={closeModal}
         width={648}
       >
-        <h2>Preview</h2>
+        <h2>Agenda Preview</h2>
         <ShareEmail meeting={meetingInTz} isPreview />
 
         <h2 style={{ marginTop: 16 }}>Share Invitations</h2>
