@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import { Modal, Checkbox, Divider } from 'antd';
@@ -6,21 +6,24 @@ import { MeetingPropType } from '../../constants/prop-types/meeting';
 import ShareEmail from '../../shared/mailers/share-email';
 
 const ConfirmModal = ({ visible, closeModal, meeting, createMeeting }) => {
+  const [checkState, setCheckState] = useState({ checkedList: [] });
+
+  // checkbox options
   const options = meeting.emails || [];
-  const meetingInTz = {
-    ...meeting,
-    date: moment(meeting.startDtm).format('L'),
-    time: `${moment(meeting.startDtm).format('LT')} - ${moment(
-      meeting.endDtm
-    ).format('LT z')}`
-  };
 
-  const [checkState, setCheckState] = useState({
-    checkedList: options,
-    indeterminate: true,
-    checkAll: false
-  });
+  // update list of options when the modal is updated to visible
+  useEffect(
+    () => {
+      setCheckState({
+        checkedList: options,
+        indeterminate: false,
+        checkAll: true
+      });
+    },
+    [visible]
+  );
 
+  // function to handle individual changes
   const onChange = newCheckedList => {
     setCheckState({
       checkedList: newCheckedList,
@@ -30,6 +33,7 @@ const ConfirmModal = ({ visible, closeModal, meeting, createMeeting }) => {
     });
   };
 
+  // function to handle toggle all changes
   const onCheckAllChange = e => {
     setCheckState({
       checkedList: e.target.checked ? options : [],
@@ -38,6 +42,7 @@ const ConfirmModal = ({ visible, closeModal, meeting, createMeeting }) => {
     });
   };
 
+  // function to handle modal OK
   const onOk = () => {
     const members = options.map(email => ({
       email,
@@ -45,6 +50,15 @@ const ConfirmModal = ({ visible, closeModal, meeting, createMeeting }) => {
     }));
 
     createMeeting({ ...meeting, members });
+  };
+
+  // construct a meeting with local times for email preview rendering
+  const meetingInTz = {
+    ...meeting,
+    date: moment(meeting.startDtm).format('L'),
+    time: `${moment(meeting.startDtm).format('LT')} - ${moment(
+      meeting.endDtm
+    ).format('LT z')}`
   };
 
   return (
