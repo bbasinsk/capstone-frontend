@@ -39,7 +39,8 @@ const Meeting = ({ meetingId }) => {
     location: meetings[0].location,
     startDtm: meetings[0].start_dtm,
     endDtm: meetings[0].end_dtm,
-    agendaItems
+    agendaItems: meetings[0].agenda_items,
+    emails: meetings[0].meeting_members.map(member => member.member_user.email)
   };
 
   return (

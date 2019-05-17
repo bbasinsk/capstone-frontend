@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Modal } from 'antd';
+import { Modal, Checkbox, Divider } from 'antd';
 import { Mutation } from 'react-apollo';
 import moment from 'moment';
 import { QuillDeltaToHtmlConverter } from 'quill-delta-to-html';
@@ -20,7 +20,12 @@ class EndModal extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      notesHtml: []
+      notesHtml: [],
+      checkState: {
+        checkedList: this.props.meeting.emails || [],
+        indeterminate: true,
+        checkAll: false
+      }
     };
   }
 
@@ -50,6 +55,28 @@ class EndModal extends React.Component {
       })
     ]);
 
+  onChange = newCheckedList => {
+    this.setState({
+      checkState: {
+        checkedList: newCheckedList,
+        indeterminate:
+          !!newCheckedList.length &&
+          newCheckedList.length < this.props.meeting.emails.length,
+        checkAll: newCheckedList.length === this.props.meeting.emails.length
+      }
+    });
+  };
+
+  onCheckAllChange = e => {
+    this.setState({
+      checkState: {
+        checkedList: e.target.checked ? this.props.meeting.emails : [],
+        indeterminate: false,
+        checkAll: e.target.checked
+      }
+    });
+  };
+
   onOk = async updateStatus => {
     await updateStatus({
       variables: { meetingId: this.props.meeting.id, status: 'COMPLETE' }
@@ -63,6 +90,7 @@ class EndModal extends React.Component {
     const endDtm = moment(meeting.endDtm);
     const date = startDtm.format('L');
     const time = `${startDtm.format('LT')} - ${endDtm.format('LT z')}`;
+    const options = meeting.emails || [];
 
     const meetingPreview = {
       ...meeting,
@@ -97,6 +125,26 @@ class EndModal extends React.Component {
             >
               <h1>Complete Meeting </h1>
               <SummaryEmail meeting={meetingPreview} isPreview />
+
+              <h2 style={{ marginTop: 16 }}>Share Invitations</h2>
+              <div>
+                <Checkbox
+                  indeterminate={this.state.checkState.indeterminate}
+                  onChange={this.onCheckAllChange}
+                  checked={this.state.checkState.checkAll}
+                >
+                  Check all
+                </Checkbox>
+
+                <Divider style={{ margin: '14px 0' }} />
+
+                <Checkbox.Group
+                  style={{ display: 'flex', flexDirection: 'column' }}
+                  options={options}
+                  value={this.state.checkState.checkedList}
+                  onChange={this.onChange}
+                />
+              </div>
             </Modal>
           </div>
         )}

@@ -54,6 +54,11 @@ export const GET_MEETING = gql`
         completed
         order
       }
+      meeting_members {
+        member_user {
+          email
+        }
+      }
     }
   }
 `;
