@@ -134,6 +134,7 @@ router.post(`/email/summary`, async (req, res) => {
             member_user {
               email
             }
+            send_summary
           }
         }
       }
@@ -179,9 +180,9 @@ router.post(`/email/summary`, async (req, res) => {
   // render html email
   const htmlEmail = renderEmail(<SummaryEmail meeting={meeting} />);
 
-  const emails = data.meeting[0].meeting_members.map(
-    member => member.member_user.email
-  );
+  const emails = data.meeting[0].meeting_members
+    .filter(member => member.send_summary)
+    .map(member => member.member_user.email);
 
   const emailRequest = {
     Messages: [
