@@ -1,6 +1,7 @@
 import React from 'react';
 import { renderEmail } from 'react-html-email';
 import { QuillDeltaToHtmlConverter } from 'quill-delta-to-html';
+import sgMail from '@sendgrid/mail';
 import ShareEmail from '../shared/mailers/share-email';
 import SummaryEmail from '../shared/mailers/summary-email';
 
@@ -8,16 +9,13 @@ const gql = require('graphql-tag');
 const router = require('express').Router();
 const moment = require('moment-timezone');
 
-const mailjet = require('node-mailjet').connect(
-  process.env.MJ_APIKEY_PUBLIC,
-  process.env.MJ_APIKEY_PRIVATE
-);
-
 const { ApolloClient } = require('apollo-client');
 const { InMemoryCache } = require('apollo-cache-inmemory');
 const { HttpLink } = require('apollo-link-http');
 const fetch = require('isomorphic-fetch');
 const { db } = require('./db');
+
+sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
 const client = new ApolloClient({
   link: new HttpLink({
@@ -85,27 +83,17 @@ router.post(`/email/agenda`, async (req, res) => {
     .filter(member => member.send_agenda)
     .map(member => member.member_user.email);
 
-  const emailRequest = {
-    Messages: [
-      {
-        From: {
-          Email: 'noreply@neatmeet.co',
-          Name: 'NeatMeet'
-        },
-        To: emails.map(Email => ({ Email })),
-        Subject: `Meeting Invite & Agenda: ${meeting.name}`,
-        HTMLPart: htmlEmail
-      }
-    ]
+  const emailMsg = {
+    to: emails,
+    from: 'NeatMeet <noreply@neatmeet.co>',
+    subject: `Meeting Invite & Agenda: ${meeting.name}`,
+    html: htmlEmail
   };
 
-  const emailResponse = await mailjet
-    .post('send', { version: 'v3.1' })
-    .request(emailRequest)
-    // eslint-disable-next-line no-console
-    .catch(console.error);
+  // eslint-disable-next-line no-console
+  const emailResponse = await sgMail.send(emailMsg).catch(console.error);
 
-  return res.json({ emailRequest, emailResponse });
+  return res.json({ emailMsg, emailResponse });
 });
 
 // –––––––––––––––––––––––––––––––
@@ -184,27 +172,17 @@ router.post(`/email/summary`, async (req, res) => {
     .filter(member => member.send_summary)
     .map(member => member.member_user.email);
 
-  const emailRequest = {
-    Messages: [
-      {
-        From: {
-          Email: 'noreply@neatmeet.co',
-          Name: 'NeatMeet'
-        },
-        To: emails.map(Email => ({ Email })),
-        Subject: `Meeting Summary: ${meeting.name}`,
-        HTMLPart: htmlEmail
-      }
-    ]
+  const emailMsg = {
+    to: emails,
+    from: 'NeatMeet <noreply@neatmeet.co>',
+    subject: `Meeting Summary: ${meeting.name}`,
+    html: htmlEmail
   };
 
-  const emailResponse = await mailjet
-    .post('send', { version: 'v3.1' })
-    .request(emailRequest)
-    // eslint-disable-next-line no-console
-    .catch(console.error);
+  // eslint-disable-next-line no-console
+  const emailResponse = await sgMail.send(emailMsg).catch(console.error);
 
-  return res.json({ emailRequest, emailResponse });
+  return res.json({ emailMsg, emailResponse });
 });
 
 module.exports = router;
