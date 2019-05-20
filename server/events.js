@@ -8,6 +8,7 @@ import SummaryEmail from '../shared/mailers/summary-email';
 const gql = require('graphql-tag');
 const router = require('express').Router();
 const moment = require('moment-timezone');
+const ical = require('ical-generator');
 
 const { ApolloClient } = require('apollo-client');
 const { InMemoryCache } = require('apollo-cache-inmemory');
@@ -16,6 +17,7 @@ const fetch = require('isomorphic-fetch');
 const { db } = require('./db');
 
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+const cal = ical({ domain: 'neatmeet.co', name: 'NeatMeet' });
 
 const client = new ApolloClient({
   link: new HttpLink({
@@ -77,17 +79,39 @@ router.post(`/email/agenda`, async (req, res) => {
   meeting.time = `${startDtm.format('LT')} - ${endDtm.format('LT z')}`;
   meeting.agendaItems = data.meeting[0].agenda_items;
 
+  // render html
   const htmlEmail = renderEmail(<ShareEmail meeting={meeting} />);
 
+  // get email addresses
   const emails = data.meeting[0].meeting_members
     .filter(member => member.send_agenda)
     .map(member => member.member_user.email);
+
+  // create calendar invite
+
+  cal.createEvent({
+    start: meeting.start_dtm,
+    end: meeting.end_dtm,
+    summary: meeting.name,
+    location: meeting.location,
+    url: `https://www.neatmeet.co/meeting/${meeting.id}`,
+    timezone,
+    attendees: emails.map(email => ({ email }))
+  });
+  const calInvite = Buffer.from(cal.toString()).toString('base64');
 
   const emailMsg = {
     to: emails,
     from: 'NeatMeet <noreply@neatmeet.co>',
     subject: `Meeting Invite & Agenda: ${meeting.name}`,
-    html: htmlEmail
+    html: htmlEmail,
+    attachments: [
+      {
+        content: calInvite,
+        filename: 'invite.ics',
+        type: 'text/calendar'
+      }
+    ]
   };
 
   // eslint-disable-next-line no-console
@@ -168,6 +192,7 @@ router.post(`/email/summary`, async (req, res) => {
   // render html email
   const htmlEmail = renderEmail(<SummaryEmail meeting={meeting} />);
 
+  // get emails
   const emails = data.meeting[0].meeting_members
     .filter(member => member.send_summary)
     .map(member => member.member_user.email);
