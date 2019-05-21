@@ -3,6 +3,8 @@ const router = require('express').Router();
 router.get(`/webhook`, async (req, res) => {
   const meetingId = req.get('meeting-id');
 
+  console.log({ meetingId });
+
   // not on a meeting
   if (!meetingId) {
     return res.json({
