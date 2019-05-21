@@ -29,9 +29,15 @@ export default withData(
           }}
         >
           <p>NeatMeet ©{moment().year()}</p>
-          <a href="/terms" alt="Link to terms and conditions">
-            Terms and Conditions{' '}
-          </a>
+          <p>
+            <a href="/terms" alt="Link to terms and conditions">
+              Terms and Conditions
+            </a>
+            {' | '}
+            <a href="/privacy" alt="Link to terms and conditions">
+              Privacy Policy
+            </a>
+          </p>
         </Footer>
         <Spinner />
       </Layout>
