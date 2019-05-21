@@ -22,6 +22,7 @@ const isProd = !isDev;
 const ngrok = isDev && process.env.ENABLE_TUNNEL ? require('ngrok') : null;
 const router = require('./routes');
 const events = require('./server/events');
+const auth = require('./server/auth');
 const logger = require('./server/logger');
 const { shareDbBackend } = require('./server/db');
 
@@ -126,8 +127,11 @@ const startNextServer = () =>
     // allow json for email sending
     server.use(express.json());
 
-    // serve routes for hasura events
+    // serve routes for hasura event webhooks
     server.use('/events', events);
+
+    // serve routes for hasura auth webhooks
+    server.use('/auth', auth);
 
     // serve routes for nextjs application
     server.use(routerHandler);
