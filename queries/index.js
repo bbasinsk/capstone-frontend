@@ -68,6 +68,7 @@ export const GET_MEETING = gql`
         order
       }
       meeting_members {
+        send_agenda
         member_user {
           email
         }

@@ -9,7 +9,7 @@ import { MeetingPropType } from '../../../constants/prop-types/meeting';
 import SummaryEmail from '../../../shared/mailers/summary-email';
 import { COMPLETE_MEETING } from '../../../queries';
 
-class EndModal extends React.Component {
+class ShareModal extends React.Component {
   static propTypes = {
     visible: PropTypes.bool.isRequired,
     closeModal: PropTypes.func.isRequired,
@@ -32,13 +32,17 @@ class EndModal extends React.Component {
         this.setState({
           notesHtml,
           checkState: {
-            checkedList: this.props.meeting.emails || [],
+            checkedList: this.emails || [],
             indeterminate: false,
             checkAll: true
           }
         });
       });
     }
+  }
+
+  get emails() {
+    return this.props.meeting.members.map(member => member.member_user.email);
   }
 
   getNotes = async () =>
@@ -63,9 +67,8 @@ class EndModal extends React.Component {
       checkState: {
         checkedList: newCheckedList,
         indeterminate:
-          !!newCheckedList.length &&
-          newCheckedList.length < this.props.meeting.emails.length,
-        checkAll: newCheckedList.length === this.props.meeting.emails.length
+          !!newCheckedList.length && newCheckedList.length < this.emails.length,
+        checkAll: newCheckedList.length === this.emails.length
       }
     });
   };
@@ -73,7 +76,7 @@ class EndModal extends React.Component {
   onCheckAllChange = e => {
     this.setState({
       checkState: {
-        checkedList: e.target.checked ? this.props.meeting.emails : [],
+        checkedList: e.target.checked ? this.emails : [],
         indeterminate: false,
         checkAll: e.target.checked
       }
@@ -96,7 +99,7 @@ class EndModal extends React.Component {
     const endDtm = moment(meeting.endDtm);
     const date = startDtm.format('L');
     const time = `${startDtm.format('LT')} - ${endDtm.format('LT z')}`;
-    const options = meeting.emails || [];
+    const options = this.emails || [];
 
     const meetingPreview = {
       ...meeting,
@@ -122,14 +125,13 @@ class EndModal extends React.Component {
         {updateStatus => (
           <div>
             <Modal
-              title="Send Summary"
               visible={visible}
               onOk={() => this.onOk(updateStatus)}
               okText="Send"
               onCancel={closeModal}
               width={648}
             >
-              <h1>Complete Meeting </h1>
+              <h1>Share Summary</h1>
               <SummaryEmail meeting={meetingPreview} isPreview />
 
               <h2 style={{ marginTop: 16 }}>Summary Preview</h2>
@@ -159,4 +161,4 @@ class EndModal extends React.Component {
   }
 }
 
-export default EndModal;
+export default ShareModal;

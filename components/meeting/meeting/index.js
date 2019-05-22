@@ -6,14 +6,17 @@ import ReconnectingWebSocket from 'reconnecting-websocket';
 import richText from 'rich-text';
 import BasicInfo from '../basic-info';
 import Agenda from '../agenda';
-import EndModal from '../end-modal';
+import ShareModal from '../share-modal';
+import IntroModal from '../intro-modal';
 import { GET_MEETING } from '../../../queries';
 
 sharedb.types.register(richText.type);
 
-const Meeting = ({ meetingId }) => {
-  const [modalOpen, setModalOpen] = useState(false);
+const Meeting = ({ meetingId, showModal }) => {
+  const [shareModalOpen, setShareModalOpen] = useState(false);
+  const [introModalOpen, setIntroModalOpen] = useState(!!showModal);
   const [connection, setConnection] = useState();
+
   useEffect(() => {
     const socket = new ReconnectingWebSocket(
       (window.location.protocol === 'http:' ? 'ws://' : 'wss://') +
@@ -40,12 +43,12 @@ const Meeting = ({ meetingId }) => {
     startDtm: meetings[0].start_dtm,
     endDtm: meetings[0].end_dtm,
     agendaItems: meetings[0].agenda_items,
-    emails: meetings[0].meeting_members.map(member => member.member_user.email)
+    members: meetings[0].meeting_members
   };
 
   return (
     <div>
-      <BasicInfo meeting={meeting} openModal={() => setModalOpen(true)} />
+      <BasicInfo meeting={meeting} openModal={() => setShareModalOpen(true)} />
       <Agenda
         meetingId={meetingId}
         agendaItems={agendaItems}
@@ -54,12 +57,19 @@ const Meeting = ({ meetingId }) => {
       {/* <AgendaFooter
         agendaItems={agendaItems}
         openModal={() => {
-          setModalOpen(true);
+          setEndModalOpen(true);
         }}
       /> */}
-      <EndModal
-        visible={modalOpen}
-        closeModal={() => setModalOpen(false)}
+      <IntroModal
+        visible={introModalOpen}
+        closeModal={() => setIntroModalOpen(false)}
+        emails={meeting.members
+          .filter(member => member.send_agenda)
+          .map(member => member.member_user.email)}
+      />
+      <ShareModal
+        visible={shareModalOpen}
+        closeModal={() => setShareModalOpen(false)}
         meeting={meeting}
         connection={connection}
       />
@@ -67,7 +77,11 @@ const Meeting = ({ meetingId }) => {
   );
 };
 Meeting.propTypes = {
-  meetingId: PropTypes.string.isRequired
+  meetingId: PropTypes.string.isRequired,
+  showModal: PropTypes.string
+};
+Meeting.defaultProps = {
+  showModal: ''
 };
 
 export default Meeting;

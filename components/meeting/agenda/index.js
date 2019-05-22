@@ -91,6 +91,7 @@ function Agenda({ meetingId, agendaItems, connection }) {
           max-width: ${width};
           margin: auto;
           margin-bottom: 64px;
+          padding: 0 24px;
         }
 
         .agenda-item--draggable {
