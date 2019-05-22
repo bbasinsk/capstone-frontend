@@ -14,8 +14,12 @@ const Footer = () => (
         Terms and Conditions
       </a>
       {' | '}
-      <a href="/privacy" alt="Link to terms and conditions">
+      <a href="/privacy" alt="Link to privacy policy">
         Privacy Policy
+      </a>
+      {' | '}
+      <a href="/about" alt="Link to about us page">
+        About Us
       </a>
     </p>
   </Layout.Footer>
