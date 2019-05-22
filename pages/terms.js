@@ -174,14 +174,7 @@ export default withData(
         .inner-element {
           max-width: 1152px;
           padding: 32px 24px;
-          // position: absolute;
-          // top: 0;
-          // bottom: 0;
-          // left: 0;
-          // right: 0;
           margin: 48px auto;
-          // width: 40vw;
-          // height: 70vh;
           line-height: 30px;
         }
 
