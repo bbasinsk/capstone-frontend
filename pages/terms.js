@@ -2,6 +2,7 @@ import { Helmet } from 'react-helmet';
 import withData from '../libraries/withData';
 import withAuth from '../libraries/withAuth';
 import Header from '../components/header';
+import Footer from '../components/footer';
 
 export default withData(
   withAuth(() => (
@@ -152,19 +153,15 @@ export default withData(
           </p>
         </div>
       </div>
+      <Footer />
 
       <style jsx>{`
-        h1 {
-          color: #2a313e;
-          font-size: 32px;
-        }
-
         h2 {
           margin-top: 30px;
         }
 
         body {
-          height: 100vh;
+          // height: 100vh;
           display: flex;
           font-family: sans-serif;
         }
@@ -175,14 +172,16 @@ export default withData(
         }
 
         .inner-element {
-          position: absolute;
-          top: 0;
-          bottom: 0;
-          left: 0;
-          right: 0;
-          margin: auto;
-          width: 40vw;
-          height: 70vh;
+          max-width: 1152px;
+          padding: 32px 24px;
+          // position: absolute;
+          // top: 0;
+          // bottom: 0;
+          // left: 0;
+          // right: 0;
+          margin: 48px auto;
+          // width: 40vw;
+          // height: 70vh;
           line-height: 30px;
         }
 
