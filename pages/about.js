@@ -8,7 +8,7 @@ export default withData(
   withAuth(() => (
     <div>
       <Helmet>
-        <title>About</title>
+        <title>About Us</title>
       </Helmet>
       <div className="colored-header">
         <Header />
@@ -16,7 +16,7 @@ export default withData(
 
       <div className="container">
         <div className="inner-element">
-          <h1> About </h1>
+          <h1> About Us</h1>
           <h2>Our Mission</h2>
           <p>Enable users to collaborate effectively, today.</p>
 
