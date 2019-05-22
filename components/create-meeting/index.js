@@ -4,7 +4,8 @@ import { get } from 'lodash';
 import moment from 'moment-timezone';
 import { Router } from '../../routes';
 import Component from './component';
-import ConfirmCreateModal from './confirm-modal';
+import ConfirmModal from './confirm-modal';
+import WelcomeModal from './welcome-modal';
 import { CREATE_MEETING } from '../../queries';
 import { width } from '../../constants/styles';
 
@@ -12,11 +13,12 @@ const DTM_FORMAT = 'YYYY-MM-DDTHH:mm:ss';
 
 export default function hoc() {
   const createMeetingMutation = useMutation(CREATE_MEETING);
-  const [modalOpen, setModalOpen] = useState(false);
+  const [confirmModalOpen, setConfirmModalOpen] = useState(false);
+  const [welcomeModalOpen, setWelcomeModalOpen] = useState(true);
   const [meeting, setMeeting] = useState();
 
   const openConfirm = newMeeting => {
-    setModalOpen(true);
+    setConfirmModalOpen(true);
     setMeeting(newMeeting);
   };
 
@@ -65,9 +67,9 @@ export default function hoc() {
   return (
     <div style={{ maxWidth: width, margin: 'auto' }}>
       <Component createMeeting={openConfirm} />
-      <ConfirmCreateModal
-        visible={modalOpen}
-        closeModal={() => setModalOpen(false)}
+      <ConfirmModal
+        visible={confirmModalOpen}
+        closeModal={() => setConfirmModalOpen(false)}
         meeting={
           meeting && {
             ...meeting,
@@ -76,6 +78,10 @@ export default function hoc() {
           }
         }
         createMeeting={createMeeting}
+      />
+      <WelcomeModal
+        visible={welcomeModalOpen}
+        closeModal={() => setWelcomeModalOpen(false)}
       />
     </div>
   );
