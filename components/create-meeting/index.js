@@ -61,7 +61,7 @@ export default function hoc() {
     // get meeting id
     const meetingId = get(data, 'insert_meeting.returning[0].id');
     // go to the meeting page
-    Router.pushRoute('meeting', { meetingId });
+    Router.pushRoute('meeting', { meetingId, modal: 'show' });
   };
 
   return (

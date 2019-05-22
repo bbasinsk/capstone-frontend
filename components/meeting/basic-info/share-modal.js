@@ -15,7 +15,7 @@ const ShareModal = ({ visible, closeModal }) => (
       />
       <Divider />
       <CopyToClipboard
-        text={window.location.href}
+        text={window.location.href.split('?')[0]}
         onCopy={() => {
           message.open({
             content: 'Public link copied to clipboard',

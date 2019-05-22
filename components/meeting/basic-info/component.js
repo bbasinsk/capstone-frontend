@@ -73,7 +73,7 @@ const BasicInfo = ({
           display: flex;
           flex-direction: row;
           justify-content: space-between;
-          padding: 16px;
+          padding: 0 24px;
           max-width: ${width};
           margin: auto;
           margin-bottom: 40px;

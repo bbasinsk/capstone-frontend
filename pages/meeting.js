@@ -19,7 +19,10 @@ export default withData(
         <Header background="white" />
 
         <Content>
-          <Meeting meetingId={props.router.url.query.meetingId} />
+          <Meeting
+            meetingId={props.router.url.query.meetingId}
+            showModal={props.router.url.query.modal}
+          />
         </Content>
 
         <Footer
