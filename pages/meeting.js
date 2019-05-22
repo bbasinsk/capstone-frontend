@@ -1,13 +1,13 @@
 import { Helmet } from 'react-helmet';
 import { Layout } from 'antd';
-import moment from 'moment';
 import withData from '../libraries/withData';
 import withAuth from '../libraries/withAuth';
 import Meeting from '../components/meeting/meeting';
 import Header from '../components/header';
 import Spinner from '../components/spinner';
+import Footer from '../components/footer';
 
-const { Content, Footer } = Layout;
+const { Content } = Layout;
 
 export default withData(
   withAuth(props => (
@@ -25,23 +25,7 @@ export default withData(
           />
         </Content>
 
-        <Footer
-          style={{
-            textAlign: 'center'
-            //  marginBottom: '40px'
-          }}
-        >
-          <p>NeatMeet ©{moment().year()}</p>
-          <p>
-            <a href="/terms" alt="Link to terms and conditions">
-              Terms and Conditions
-            </a>
-            {' | '}
-            <a href="/privacy" alt="Link to terms and conditions">
-              Privacy Policy
-            </a>
-          </p>
-        </Footer>
+        <Footer />
         <Spinner />
       </Layout>
     </div>
