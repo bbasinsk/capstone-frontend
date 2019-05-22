@@ -15,15 +15,7 @@ const httpLink = createHttpLink({
   credentials: 'include'
 });
 
-const wsLink = new WebSocketLink({
-  uri: 'wss://meeting-magic-backend.herokuapp.com/v1alpha1/graphql',
-  options: {
-    reconnect: true
-  },
-  webSocketImpl: process.browser ? undefined : ws
-});
-
-function createClient(headers, token, initialState) {
+function createClient(headers, token, initialState, meetingId) {
   let accessToken = token;
 
   (async () => {
@@ -31,15 +23,24 @@ function createClient(headers, token, initialState) {
     accessToken = token || (await persist.willGetAccessToken());
   })();
 
-  const authLink = new ApolloLink((operation, forward) => {
-    const adminHeaders = process.env.HASURA_ADMIN_SECRET && {
-      'x-hasura-admin-secret': process.env.HASURA_ADMIN_SECRET
-    };
+  const wsLink = new WebSocketLink({
+    uri: 'wss://meeting-magic-backend.herokuapp.com/v1alpha1/graphql',
+    options: {
+      reconnect: true,
+      connectionParams: async () => ({
+        headers: {
+          'meeting-id': meetingId
+        }
+      })
+    },
+    webSocketImpl: process.browser ? undefined : ws
+  });
 
+  const authLink = new ApolloLink((operation, forward) => {
     operation.setContext({
       headers: {
         ...(accessToken && { authorization: `Bearer ${accessToken}` }),
-        ...adminHeaders
+        'meeting-id': meetingId
       }
     });
     return forward(operation);
@@ -83,12 +84,12 @@ function createClient(headers, token, initialState) {
   return client;
 }
 
-export default (headers, token, initialState) => {
+export default (headers, token, initialState, meetingId) => {
   if (!process.browser) {
-    return createClient(headers, token, initialState);
+    return createClient(headers, token, initialState, meetingId);
   }
   if (!apolloClient) {
-    apolloClient = createClient(headers, token, initialState);
+    apolloClient = createClient(headers, token, initialState, meetingId);
   }
   return apolloClient;
 };
