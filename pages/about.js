@@ -72,6 +72,11 @@ export default withData(
             Joseph Tsai (Project Manager): joseph@neatmeet.co <br />
             General Feedback or Questions: contact@neatmeet.co
           </p>
+
+          <p>
+            Please note that as NeatMeet is a student capstone project that it
+            will not be actively worked on, but still kept alive for usage.
+          </p>
         </div>
       </div>
       <Footer />
