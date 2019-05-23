@@ -1,6 +1,7 @@
 /* eslint-disable no-console */
+
 const express = require('express');
-const next = require('next');
+const nextJS = require('next');
 const compression = require('compression');
 const sslRedirect = require('heroku-ssl-redirect');
 const LRUCache = require('lru-cache');
@@ -8,6 +9,7 @@ const path = require('path');
 const fs = require('fs');
 const cors = require('cors');
 const helmet = require('helmet');
+const cookieParser = require('cookie-parser');
 const dotenv = require('dotenv');
 const richText = require('rich-text');
 const WebSocket = require('ws');
@@ -24,7 +26,10 @@ const router = require('./routes');
 const events = require('./server/events');
 const auth = require('./server/auth');
 const logger = require('./server/logger');
+const { sourcemapsForSentryOnly, sessionCookie } = require('./server/sentry');
 const { shareDbBackend } = require('./server/db');
+
+const sentry = require('./shared/utils/sentry');
 
 const customHost = process.env.HOST;
 const host = customHost || '0.0.0.0';
@@ -32,7 +37,7 @@ const prettyHost = customHost || 'localhost';
 const port = process.env.PORT || 3000;
 const publicEnvFilename = 'public.env';
 
-const nextApp = next({ dev: isDev });
+const nextApp = nextJS({ dev: isDev });
 const handle = nextApp.getRequestHandler();
 
 const ssrCache = new LRUCache({
@@ -107,6 +112,8 @@ const routerHandler = router.getRequestHandler(
 
 const startNextServer = () =>
   nextApp.prepare().then(() => {
+    const { Sentry } = sentry(nextApp.buildId);
+
     const server = express();
 
     server.use(compression({ threshold: 0 }));
@@ -126,6 +133,12 @@ const startNextServer = () =>
 
     // allow json for email sending
     server.use(express.json());
+
+    // This attaches request information to sentry errors
+    server.use(Sentry.Handlers.requestHandler());
+    server.use(cookieParser());
+    server.use(sessionCookie);
+    server.get(/\.map$/, sourcemapsForSentryOnly(process.env.SENTRY_TOKEN));
 
     // serve routes for hasura event webhooks
     server.use('/events', events);
@@ -169,6 +182,9 @@ const startNextServer = () =>
     }
 
     server.get('*', (req, res) => handle(req, res));
+
+    // This handles errors if they are thrown before raching the app
+    server.use(Sentry.Handlers.errorHandler());
 
     return server.listen(port, host, err => {
       if (err) {
