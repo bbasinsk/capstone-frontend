@@ -1,17 +1,21 @@
 /* eslint-disable global-require */
-const { IgnorePlugin } = require('webpack');
+const { IgnorePlugin, DefinePlugin } = require('webpack');
 const FilterWarningsPlugin = require('webpack-filter-warnings-plugin');
 const OfflinePlugin = require('offline-plugin');
 const Dotenv = require('dotenv-webpack');
 const withCSS = require('@zeit/next-css');
 const withLess = require('@zeit/next-less');
+const withSourceMaps = require('@zeit/next-source-maps')();
 const lessToJS = require('less-vars-to-js');
 const path = require('path');
 const fs = require('fs');
 const router = require('./routes');
 
 const initExport = {
-  webpack: (config, { dev, isServer }) => {
+  env: {
+    SENTRY_DSN: process.env.SENTRY_DSN
+  },
+  webpack: (config, { dev, isServer, buildId }) => {
     const prod = !dev;
 
     config.plugins.push(new Dotenv({ path: './public.env' }));
@@ -89,6 +93,17 @@ const initExport = {
       })
     );
 
+    config.plugins.push(
+      new DefinePlugin({
+        'process.env.SENTRY_RELEASE': JSON.stringify(buildId)
+      })
+    );
+
+    if (!isServer) {
+      // eslint-disable-next-line no-param-reassign
+      config.resolve.alias['@sentry/node'] = '@sentry/browser';
+    }
+
     return config;
   },
 
@@ -127,4 +142,4 @@ if (typeof require !== 'undefined') {
 }
 
 /* eslint-enable global-require */
-module.exports = withLess(withCSS(initExport));
+module.exports = withSourceMaps(withLess(withCSS(initExport)));
