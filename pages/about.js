@@ -69,7 +69,8 @@ export default withData(
             Kari Nasu (UX/UI Designer): kari@neatmeet.co <br />
             Ben Basinski (Web Developer): ben@neatmeet.co <br />
             McKaulay Kolakowski (Web Developer): mckaulay@neatmeet.co <br />
-            Joseph Tsai (Project Manager): joseph@neatmeet.co
+            Joseph Tsai (Project Manager): joseph@neatmeet.co <br />
+            General Feedback or Questions: contact@neatmeet.co
           </p>
         </div>
       </div>
