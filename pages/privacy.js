@@ -115,7 +115,7 @@ export default withData(
           <p>
             If you have any questions or suggestions about our Privacy Policy,
             do not hesitate to contact us. Our current email of contact is:
-            josephkt@uw.edu.
+            contact@neatmeet.co
           </p>
         </div>
       </div>
