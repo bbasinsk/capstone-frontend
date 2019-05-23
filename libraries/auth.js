@@ -2,7 +2,7 @@ import jwtDecode from 'jwt-decode';
 import gql from 'graphql-tag';
 import persist from './persist';
 import { login as loginAuth0, logout as logoutAuth0 } from './auth0';
-import apolloClient from './apolloClient';
+import apolloClient from './apollo/client';
 
 export const createUser = (accessToken, name) => {
   const mutation = gql`

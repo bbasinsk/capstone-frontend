@@ -5,7 +5,7 @@ import { ApolloProvider as ApolloHooksProvider } from 'react-apollo-hooks';
 import PropTypes from 'prop-types';
 import 'isomorphic-fetch';
 import cookies from 'next-cookies';
-import apolloClient from './apolloClient';
+import apolloClient from './apollo/client';
 import persist from './persist';
 
 type Props = {

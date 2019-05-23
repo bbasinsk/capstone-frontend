@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { useSubscription } from 'react-apollo-hooks';
+import { Spin } from 'antd';
 import sharedb from 'sharedb/lib/client';
 import ReconnectingWebSocket from 'reconnecting-websocket';
 import richText from 'rich-text';
@@ -32,7 +33,12 @@ const Meeting = ({ meetingId, showModal }) => {
     }
   );
   if (error) return <div>Error! {error.message}</div>;
-  if (loading) return <div>Loading...</div>;
+  if (loading)
+    return (
+      <div style={{ textAlign: 'center', marginTop: 256 }}>
+        <Spin size="large" tip="Loading..." />
+      </div>
+    );
 
   const { agenda_items: agendaItems } = meetings[0];
 
