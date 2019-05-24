@@ -4,26 +4,30 @@ import { createHttpLink } from 'apollo-link-http';
 import { WebSocketLink } from 'apollo-link-ws';
 import { getMainDefinition } from 'apollo-utilities';
 
-export default ({ accessToken }) => {
+const WS_URL = 'wss://meeting-magic-backend.herokuapp.com/v1alpha1/graphql';
+const HTTP_URL = 'https://meeting-magic-backend.herokuapp.com/v1alpha1/graphql';
+
+export default ({ meetingId }) => {
+  const headers = {
+    ...(meetingId && { 'meeting-id': meetingId })
+  };
+
   const httpLink = createHttpLink({
-    uri: 'https://meeting-magic-backend.herokuapp.com/v1alpha1/graphql',
+    uri: HTTP_URL,
     credentials: 'include'
   });
 
   const wsLink = new WebSocketLink({
-    uri: 'wss://meeting-magic-backend.herokuapp.com/v1alpha1/graphql',
+    uri: WS_URL,
     options: {
-      reconnect: true
+      reconnect: true,
+      connectionParams: { headers }
     },
     webSocketImpl: process.browser ? undefined : ws
   });
 
   const authMiddleware = new ApolloLink((operation, forward) => {
-    operation.setContext({
-      headers: {
-        ...(accessToken && { authorization: `Bearer ${accessToken}` })
-      }
-    });
+    operation.setContext({ headers });
     return forward(operation);
   });
 

@@ -3,9 +3,7 @@ import { InMemoryCache } from 'apollo-cache-inmemory';
 import getApolloLink from './link';
 import persist from '../persist';
 
-let apolloClient = null;
-
-function createClient(headers, token, initialState) {
+function createClient(headers, token, initialState, meetingId) {
   let accessToken = token;
 
   (async () => {
@@ -18,7 +16,7 @@ function createClient(headers, token, initialState) {
   const client = new ApolloClient({
     headers,
     cache,
-    link: getApolloLink({ accessToken }),
+    link: getApolloLink({ accessToken, meetingId }),
     connectToDevTools: process.browser,
     ssrMode: !process.browser,
     shouldBatch: true,
@@ -41,12 +39,4 @@ function createClient(headers, token, initialState) {
   return client;
 }
 
-export default (headers, token, initialState) => {
-  if (!process.browser) {
-    return createClient(headers, token, initialState);
-  }
-  if (!apolloClient) {
-    apolloClient = createClient(headers, token, initialState);
-  }
-  return apolloClient;
-};
+export default createClient;

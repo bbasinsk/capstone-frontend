@@ -43,7 +43,12 @@ export default (
 
     constructor(props: Props) {
       super(props);
-      this.apolloClient = apolloClient({}, '', this.props.apolloState);
+      this.apolloClient = apolloClient(
+        {},
+        '',
+        this.props.apolloState,
+        props.router.url.query.meetingId
+      );
     }
 
     static async getInitialProps(ctx: Context) {
@@ -62,7 +67,13 @@ export default (
       };
 
       if (!process.browser) {
-        const client = apolloClient(headers || {}, token || '', {}, ctx);
+        const client = apolloClient(
+          headers || {},
+          token || '',
+          {},
+          ctx,
+          ctx.query.meetingId
+        );
 
         try {
           const app = (
