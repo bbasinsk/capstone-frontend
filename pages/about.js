@@ -66,11 +66,20 @@ export default withData(
           </p>
 
           <p>
-            Kari Nasu (UX/UI Designer): kari@neatmeet.co <br />
-            Ben Basinski (Web Developer): ben@neatmeet.co <br />
-            McKaulay Kolakowski (Web Developer): mckaulay@neatmeet.co <br />
-            Joseph Tsai (Project Manager): joseph@neatmeet.co <br />
-            General Feedback or Questions: contact@neatmeet.co
+            Kari Nasu (UX/UI Designer):
+            <a href="mailto: kari@neatmeet.co"> kari@neatmeet.co</a>
+            <br />
+            Ben Basinski (Web Developer):
+            <a href="mailto: ben@neatmeet.co"> ben@neatmeet.co</a>
+            <br />
+            McKaulay Kolakowski (Web Developer):
+            <a href="mailto: mckaulay@neatmeet.co"> mckaulay@neatmeet.co </a>
+            <br />
+            Joseph Tsai (Project Manager):
+            <a href="mailto: joseph@neatmeet.co"> joseph@neatmeet.co </a>
+            <br />
+            General Feedback or Questions:
+            <a href="mailto: contact@neatmeet.co"> contact@neatmeet.co </a>
           </p>
 
           <p>
