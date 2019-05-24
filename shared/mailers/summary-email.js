@@ -21,7 +21,12 @@ const SummaryEmail = ({ meeting, isPreview }) => {
       )
     : // eslint-disable-next-line react/prop-types
       ({ children }) => (
-        <Email title={`Meeting Summary: ${meeting.name}`}>{children}</Email>
+        <Email
+          style={{ padding: 16 }}
+          title={`Meeting Summary: ${meeting.name}`}
+        >
+          {children}
+        </Email>
       );
 
   return (
