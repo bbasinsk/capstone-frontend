@@ -15,7 +15,7 @@ export default withData(
         <Header />
       </div>
 
-      <div className="container">
+      <div className="container" style={{ minHeight: '100vh' }}>
         <div className="inner-element">
           <h1> About Us</h1>
           <h2>Our Mission</h2>
