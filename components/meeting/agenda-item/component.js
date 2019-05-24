@@ -79,6 +79,7 @@ const AgendaItem = ({
       .agenda-item__desc {
         padding: 24px;
         white-space: pre-line;
+        word-break: break-all;
       }
 
       .agenda-item__duration {

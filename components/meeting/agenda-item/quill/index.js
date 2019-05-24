@@ -82,6 +82,7 @@ class Quill extends React.Component {
           .react-quill--wrapper {
             height: 100%;
             border-left: 1px solid #e8e8e8;
+            word-break: break-all;
           }
 
           .react-quill {
