@@ -1,4 +1,5 @@
 import { Helmet } from 'react-helmet';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import withData from '../libraries/withData';
 import withAuth from '../libraries/withAuth';
 import Header from '../components/header';
@@ -66,19 +67,24 @@ export default withData(
           </p>
 
           <p>
-            Kari Nasu (UX/UI Designer):
+            Kari Nasu (UX/UI Designer): &nbsp;
+            <FontAwesomeIcon icon={['far', 'envelope']} />
             <a href="mailto: kari@neatmeet.co"> kari@neatmeet.co</a>
             <br />
-            Ben Basinski (Web Developer):
+            Ben Basinski (Web Developer): &nbsp;
+            <FontAwesomeIcon icon={['far', 'envelope']} />
             <a href="mailto: ben@neatmeet.co"> ben@neatmeet.co</a>
             <br />
-            McKaulay Kolakowski (Web Developer):
-            <a href="mailto: mckaulay@neatmeet.co"> mckaulay@neatmeet.co </a>
+            McKaulay Kolakowski (Web Developer): &nbsp;
+            <FontAwesomeIcon icon={['far', 'envelope']} />
+            <a href="mailto: mckaulay@neatmeet.co"> mckaulay@neatmeet.co</a>
             <br />
-            Joseph Tsai (Project Manager):
+            Joseph Tsai (Project Manager): &nbsp;
+            <FontAwesomeIcon icon={['far', 'envelope']} />
             <a href="mailto: joseph@neatmeet.co"> joseph@neatmeet.co </a>
             <br />
-            General Feedback or Questions:
+            General Feedback or Questions: &nbsp;
+            <FontAwesomeIcon icon={['far', 'envelope']} />
             <a href="mailto: contact@neatmeet.co"> contact@neatmeet.co </a>
           </p>
 
