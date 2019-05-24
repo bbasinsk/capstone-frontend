@@ -10,11 +10,13 @@ const Header = ({ background }) => (
       <div className="header--left">
         <span className="header__logo">
           <Link href="/">
-            <img
-              src="/static/logo/logo_color.svg"
-              alt="NeatMeet"
-              style={{ width: '120px', cursor: 'pointer' }}
-            />
+            <a>
+              <img
+                src="/static/logo/logo_color.svg"
+                alt="NeatMeet"
+                style={{ width: '120px', cursor: 'pointer' }}
+              />
+            </a>
           </Link>
         </span>
       </div>
