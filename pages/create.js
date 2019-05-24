@@ -5,6 +5,7 @@ import withAuth from '../libraries/withAuth';
 import Header from '../components/header';
 import CreateMeeting from '../components/create-meeting';
 import Footer from '../components/footer';
+import Spinner from '../components/spinner';
 
 const { Content } = Layout;
 
@@ -21,6 +22,7 @@ export default withData(
           </Content>
 
           <Footer />
+          <Spinner />
         </Layout>
       </div>
     </div>

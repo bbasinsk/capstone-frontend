@@ -22,6 +22,7 @@ const Spinner = () => {
           background-color: rgba(0, 0, 0, 0.7);
           opacity: 1;
           transition: opacity 0.1s ease-in;
+          z-index: 2147483641;
         }
 
         .spinner-hide {

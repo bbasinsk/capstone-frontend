@@ -2,11 +2,14 @@ import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import { Modal, Checkbox, Divider } from 'antd';
+import { useMutation } from 'react-apollo-hooks';
 import { MeetingPropType } from '../../constants/prop-types/meeting';
 import ShareEmail from '../../shared/mailers/share-email';
+import { SET_WAIT } from '../../queries';
 
 const ConfirmModal = ({ visible, closeModal, meeting, createMeeting }) => {
   const [checkState, setCheckState] = useState({ checkedList: [] });
+  const setWait = useMutation(SET_WAIT);
 
   // checkbox options
   const options = meeting.emails || [];
@@ -43,13 +46,14 @@ const ConfirmModal = ({ visible, closeModal, meeting, createMeeting }) => {
   };
 
   // function to handle modal OK
-  const onOk = () => {
+  const onOk = async () => {
+    await setWait({ variables: { wait: true } });
     const members = options.map(email => ({
       email,
       sendAgenda: checkState.checkedList.includes(email)
     }));
 
-    createMeeting({ ...meeting, members });
+    return createMeeting({ ...meeting, members });
   };
 
   // construct a meeting with local times for email preview rendering
