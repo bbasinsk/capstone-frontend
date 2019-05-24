@@ -149,7 +149,7 @@ export default withData(
           <p>
             If you have any questions or suggestions about our Terms and
             Conditions, do not hesitate to contact us. Our email of contact is:
-            contact@neatmeet.co
+            <a href="mailto: contact@neatmeet.co"> contact@neatmeet.co </a>
           </p>
         </div>
       </div>
