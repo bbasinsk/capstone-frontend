@@ -277,4 +277,40 @@
   body {
     background-color: lightblue;
   }
+
+  .home-layout-wrapper {
+    width: 100%;
+    text-align: center;
+    overflow: wrap;
+    .home-layout {
+      margin: 0 auto;
+      padding: 0 24px;
+      overflow: hidden;
+      height: 100%;
+      > div {
+        float: left;
+        width: 100%;
+      }
+      .col {
+        .content-wrapper {
+          border-radius: 4px;
+          background: #fff;
+          cursor: pointer;
+          overflow: hidden;
+          position: relative;
+        }
+      }
+
+      .home-banner-image-wrapper svg {
+        width: 60%;
+        height: 60%;
+      }
+    }
+    &:nth-of-type(odd) {
+      background-image: linear-gradient(-45deg, @bgColorStart, @bgColor);
+    }
+    &:nth-of-type(even) {
+      background: #fff;
+    }
+  }
 }
