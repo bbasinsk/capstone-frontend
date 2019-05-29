@@ -1,6 +1,6 @@
 @import './default.less';
 
-@media screen and (min-width: 1165px) {
+@media screen and (min-width: 500px) {
   .home-page {
     .fd-content {
       min-width: 1216px;
@@ -273,11 +273,8 @@
   }
 }
 
-@media screen and (max-width: 1165px) {
-  body {
-    background-color: lightblue;
-  }
-
+// Mobile adapted version
+@media screen and (max-width: 500px) {
   .home-layout-wrapper {
     width: 100%;
     text-align: center;
@@ -301,9 +298,27 @@
         }
       }
 
+      .home-banner-content-wrapper h1 {
+        color: #fff;
+      }
+
+      .home-banner-content-wrapper p {
+        margin-bottom: 40px;
+        font-size: 20px;
+        line-height: 28px;
+        color: @contentColor;
+      }
+
       .home-banner-image-wrapper svg {
+        margin-top: 10px;
         width: 60%;
         height: 60%;
+      }
+
+      .home-banner-content-wrapper button {
+        width: 30%;
+        height: 30%;
+        margin-bottom: 10px;
       }
     }
     &:nth-of-type(odd) {
@@ -312,5 +327,35 @@
     &:nth-of-type(even) {
       background: #fff;
     }
+  }
+
+  h2,
+  h3 {
+    text-align: center;
+    font-weight: normal;
+  }
+  h2 {
+    font-size: 30px;
+    line-height: 38px;
+    color: @titleColor;
+    margin-top: 88px;
+  }
+  h3 {
+    font-size: 24px;
+    line-height: 32px;
+    margin-bottom: 16px;
+    color: @titleColor;
+  }
+  .line {
+    width: 40px;
+    height: 2px;
+    display: block;
+    background: #b4e654;
+    margin: 16px auto 72px;
+  }
+  /* banner 区域 */
+  .home-banner {
+    color: #fff;
+    padding-bottom: 50px;
   }
 }
