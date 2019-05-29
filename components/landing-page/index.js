@@ -12,6 +12,11 @@ const LandingPage = () => (
     <Customers />
     <TryNow />
     <Footer />
+    <style jsx>{`
+      body {
+        background-color: lightblue;
+      }
+    `}</style>
   </div>
 );
 

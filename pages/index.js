@@ -12,6 +12,11 @@ export default withData(
       <div>
         <LandingPage />
       </div>
+      <style jsx>{`
+        body {
+          background-color: 'lightblue';
+        }
+      `}</style>
     </div>
   ))
 );
