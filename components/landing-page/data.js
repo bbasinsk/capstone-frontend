@@ -5,19 +5,19 @@ export const steps = [
     title: '1. Create an agenda to structure your meeting',
     content:
       'Define what needs to be discussed in this meeting, how long it should take, and who the point person is.',
-    src: '/static/images/create.svg'
+    src: '/static/images/landingpage_create.svg'
   },
   {
     title: '2. Collaborate in real-time with your team',
     content:
       'Collaborate with your team on the meeting document. Check off agenda items as they’re completed to keep a record of your team’s progress.',
-    src: '/static/images/collaborate.svg'
+    src: '/static/images/landingpage_collaborate.svg'
   },
   {
     title: '3. Send auto-generated meeting summaries',
     content:
       'Once the meeting is over, you’ll receive a summary document that includes what was accomplished. Send this to your team!',
-    src: '/static/images/summary.svg'
+    src: '/static/images/landingpage_summary.svg'
   }
 ];
 
