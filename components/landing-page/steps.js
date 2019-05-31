@@ -1,28 +1,41 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import QueueAnim from 'rc-queue-anim';
 import OverPack from 'rc-scroll-anim/lib/ScrollOverPack';
 import { Row, Col } from 'antd';
 import { steps } from './data';
 
+const Column = ({ children }) => (
+  <Col lg={8} style={{ marginBottom: 48 }}>
+    {children}
+  </Col>
+);
+Column.propTypes = {
+  children: PropTypes.any.isRequired
+};
+
 export default function Page1() {
   const children = steps.map((d, i) => (
     <QueueAnim
-      component={Col}
       // eslint-disable-next-line react/no-array-index-key
       key={i}
+      component={Column}
       type="bottom"
       className="col"
       componentProps={{ span: 8 }}
     >
-      <div
-        key="image"
-        className="image"
-        style={{
-          backgroundImage: `url(${d.src})`
-        }}
-      />
-      <h3 key="h3">{d.title}</h3>
-      <p key="p">{d.content}</p>
+      <div style={{ padding: 16 }}>
+        <div
+          key="image"
+          className="image"
+          style={{
+            backgroundImage: `url(${d.src})`,
+            backgroundSize: 'contain'
+          }}
+        />
+        <h3 key="h3">{d.title}</h3>
+        <p key="p">{d.content}</p>
+      </div>
     </QueueAnim>
   ));
 
