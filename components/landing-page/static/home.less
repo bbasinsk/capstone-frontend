@@ -370,16 +370,15 @@
     }
   }
 
-  // Current 'hacky' way of overriding the ant design styles by using the !important keyword and a given id
   div.col {
     margin: auto;
-    padding: 100px !important;
+    padding: 100px;
     width: 100%;
-    padding-bottom: 0px !important;
-    padding-top: 15px !important;
+    padding-bottom: 0px;
+    padding-top: 15px;
   }
 
-  div.col.image {
+  div.col .image {
     height: 260px;
     position: relative;
     background-position: bottom center;
@@ -401,13 +400,9 @@
   .home-user h2 {
     color: rgba(255, 255, 255, 0.75);
   }
-  #trusted-customers-wrapper {
+
+  div.home-page div.home-try-wrapper {
     margin-top: 25px;
     margin-bottom: 25px;
   }
-
-  // .ant-layout-footer p {
-  //   padding-left: 25px;
-  //   padding-right: 25px;
-  // }
 }
