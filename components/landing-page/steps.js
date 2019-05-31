@@ -13,7 +13,6 @@ export default function Page1() {
       type="bottom"
       className="col"
       componentProps={{ span: 8 }}
-      id="step"
     >
       <div
         key="image"
