@@ -101,20 +101,21 @@ router.post(`/email/agenda`, async (req, res) => {
     timezone,
     attendees: emails.map(email => ({ email }))
   });
+  // eslint-disable-next-line no-unused-vars
   const calInvite = Buffer.from(cal.toString()).toString('base64');
 
   const emailMsg = {
     to: emails,
     from: 'NeatMeet <noreply@neatmeet.co>',
     subject: `Meeting Invite & Agenda: ${meeting.name}`,
-    html: htmlEmail,
-    attachments: [
-      {
-        content: calInvite,
-        filename: 'invite.ics',
-        type: 'text/calendar'
-      }
-    ]
+    html: htmlEmail
+    // attachments: [
+    //   {
+    //     content: calInvite,
+    //     filename: 'invite.ics',
+    //     type: 'text/calendar'
+    //   }
+    // ]
   };
 
   // eslint-disable-next-line no-console
